@@ -37,7 +37,7 @@ const { title, summary, tags, href, index } = Astro.props;
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(29, 78, 216, 0.09), transparent 70%);
+    background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(var(--accent-rgb), 0.09), transparent 70%);
     opacity: 0;
     transition: opacity 0.35s ease;
     pointer-events: none;
