@@ -1,0 +1,154 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AgentPipeline from '../../components/nexa-aws/AgentPipeline.astro';
+
+const problemStats = [
+  { value: '5–8 months', label: 'to full productivity for a typical new hire' },
+  { value: '7+ systems', label: 'VPN, email, SharePoint, Workday, software — provisioned by hand' },
+  { value: '17.4%', label: 'leave within 90 days, citing poor onboarding' },
+  { value: 'Day one', label: 'chaos — no clear tasks, no answers, no context' },
+];
+
+const burdenStats = [
+  { value: '10 hrs', label: 'HR paperwork per hire' },
+  { value: '3+ hrs', label: 'manual work — for 42% of managers' },
+  { value: '$1,252', label: 'manager training cost per hire' },
+];
+
+const features = [
+  { t: 'Profile card', d: 'Photo, role, team & contacts at a glance', img: '/images/nexa-aws/setup-progress.png' },
+  { t: 'Interactive org chart', d: 'Click anyone to DM on Teams or email', img: '/images/nexa-aws/org-chart.png' },
+  { t: 'AI chat assistant', d: 'Ask anything — cited, role-aware answers, routed to the right agent', img: '/images/nexa-aws/orchestrator-chat.png' },
+  { t: 'Daily tasks & incidents', d: "Today's work, training modules, and blockers in one tabbed view", img: '/images/nexa-aws/task-tab-tasks.png' },
+  { t: 'Communication log', d: 'Every welcome email, Teams post, and calendar invite in one thread', img: '/images/nexa-aws/communication-thread.png' },
+  { t: 'Live setup progress', d: 'Watch VPN → email → software provisioning hit 100%', img: '/images/nexa-aws/task-tab-training.png' },
+];
+---
+<BaseLayout
+  title="AWS-IQ — agentic AI employee onboarding — Eileen Yeoh"
+  description="A five-agent onboarding assistant built on Amazon Bedrock Multi-Agent Collaboration, for the AWS x UTP GenAI Hackathon 2026."
+>
+  <section class="section wrap nexaaws-hero">
+    <p class="eyebrow" data-reveal>Project 03 · 2026 · AWS x UTP GenAI Hackathon</p>
+    <h1 data-split>AWS-IQ</h1>
+    <p class="nexaaws-tagline" data-reveal>
+      Agentic AI employee onboarding — from fragmented information to one
+      intelligent, personalised journey, powered by Amazon Bedrock
+      multi-agent AI.
+    </p>
+    <ul class="nexaaws-tags" data-reveal>
+      {['Amazon Bedrock', 'Multi-Agent Collaboration', 'Serverless', 'DynamoDB', 'WebSocket'].map((t) => <li>{t}</li>)}
+    </ul>
+  </section>
+
+  <section class="section wrap">
+    <p class="eyebrow" data-reveal>The problem</p>
+    <h2 data-split>Onboarding is slow, costly, and fragmented.</h2>
+    <div class="stat-grid">
+      {problemStats.map((s, i) => (
+        <div class="stat-card" data-reveal data-reveal-delay={i * 0.05}>
+          <span class="stat-value">{s.value}</span>
+          <span class="stat-label muted">{s.label}</span>
+        </div>
+      ))}
+    </div>
+    <p class="muted burden-lead" data-reveal>The hidden HR / IT burden, per hire:</p>
+    <div class="stat-grid burden-grid">
+      {burdenStats.map((s, i) => (
+        <div class="stat-card small" data-reveal data-reveal-delay={i * 0.05}>
+          <span class="stat-value small">{s.value}</span>
+          <span class="stat-label muted">{s.label}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <p class="eyebrow" data-reveal>The system</p>
+    <h2 data-split>One orchestrator. Five specialist agents.</h2>
+    <p class="muted" data-reveal>
+      Serverless, event-driven, multi-agent — a request's journey end to end
+      on AWS, from the dashboard through the Orchestrator to whichever
+      specialist agent the task needs.
+    </p>
+    <AgentPipeline />
+  </section>
+
+  <section class="section wrap">
+    <p class="eyebrow" data-reveal>What the new hire sees</p>
+    <h2 data-split>One dashboard, five agents behind it.</h2>
+    <div class="feature-grid">
+      {features.map((f, i) => (
+        <figure class="card feature-card" data-reveal data-reveal-delay={i * 0.05}>
+          <img src={f.img} alt={f.t} loading="lazy" />
+          <figcaption>
+            <h3>{f.t}</h3>
+            <p class="muted">{f.d}</p>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+
+  <section class="section wrap outcome">
+    <p class="eyebrow" data-reveal>Outcome</p>
+    <h2 data-split>A command center instead of 7 disconnected systems.</h2>
+    <p class="muted outcome-note" data-reveal>
+      Built with my NEXA teammates for the AWS x UTP GenAI Hackathon 2026 —
+      one Orchestrator agent replaces the scattered VPN, email, SharePoint,
+      Workday, and software-provisioning steps with a single, cited,
+      role-aware conversation.
+    </p>
+    <a class="btn" href="https://github.com/Jessy123123/NEXA_AWS" target="_blank" rel="noopener" data-reveal>
+      View the source on GitHub →
+    </a>
+  </section>
+</BaseLayout>
+
+<style>
+  .nexaaws-hero h1 { font-size: clamp(3.4rem, 11vw, 7rem); }
+  .nexaaws-tagline { font-size: 1.3rem; max-width: 44ch; margin-top: 1.2rem; }
+  .nexaaws-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
+  .nexaaws-tags li {
+    font-size: 0.8rem;
+    font-weight: 550;
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.2rem;
+    margin-top: 2.5rem;
+  }
+  .stat-card {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .stat-value { font-family: var(--font-display); font-size: 1.9rem; color: var(--accent); }
+  .stat-value.small { font-size: 1.5rem; }
+  .stat-label { font-size: 0.85rem; }
+  .burden-lead { margin-top: 2rem; }
+  .burden-grid { margin-top: 1rem; }
+  .stat-card.small { padding: 1.1rem; }
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  .feature-card { padding: 0; overflow: hidden; }
+  .feature-card img { width: 100%; height: 200px; object-fit: cover; object-position: top; display: block; border-bottom: 1px solid var(--line); }
+  .feature-card figcaption { padding: 1rem 1.1rem 1.2rem; }
+  .feature-card h3 { font-size: 1.02rem; }
+  .feature-card p { font-size: 0.88rem; margin-top: 0.3rem; }
+  .outcome-note { max-width: 62ch; margin-top: 2rem; }
+  .outcome .btn { margin-top: 1.5rem; }
+</style>
