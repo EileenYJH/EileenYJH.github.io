@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import AgentPipeline from '../../components/nexa-aws/AgentPipeline.astro';
+import DashboardExplorer from '../../components/nexa-aws/DashboardExplorer.astro';
 
 const problemStats = [
   { value: '5–8 months', label: 'to full productivity for a typical new hire' },
@@ -13,15 +13,6 @@ const burdenStats = [
   { value: '10 hrs', label: 'HR paperwork per hire' },
   { value: '3+ hrs', label: 'manual work — for 42% of managers' },
   { value: '$1,252', label: 'manager training cost per hire' },
-];
-
-const features = [
-  { t: 'Profile card', d: 'Photo, role, team & contacts at a glance', img: '/images/nexa-aws/setup-progress.png' },
-  { t: 'Interactive org chart', d: 'Click anyone to DM on Teams or email', img: '/images/nexa-aws/org-chart.png' },
-  { t: 'AI chat assistant', d: 'Ask anything — cited, role-aware answers, routed to the right agent', img: '/images/nexa-aws/orchestrator-chat.png' },
-  { t: 'Daily tasks & incidents', d: "Today's work, training modules, and blockers in one tabbed view", img: '/images/nexa-aws/task-tab-tasks.png' },
-  { t: 'Communication log', d: 'Every welcome email, Teams post, and calendar invite in one thread', img: '/images/nexa-aws/communication-thread.png' },
-  { t: 'Live setup progress', d: 'Watch VPN → email → software provisioning hit 100%', img: '/images/nexa-aws/task-tab-training.png' },
 ];
 ---
 <BaseLayout
@@ -71,23 +62,20 @@ const features = [
       on AWS, from the dashboard through the Orchestrator to whichever
       specialist agent the task needs.
     </p>
-    <AgentPipeline />
+    <figure class="arch-shot" data-reveal>
+      <img src="/images/nexa-aws/architecture-diagram.png" alt="AWS-IQ architecture: Web Dashboard sends HTTPS to Amazon API Gateway, which routes to the Orchestrator Agent (Amazon Bedrock Multi-Agent Collaboration), which dispatches to Profile, Setup, Knowledge, Communication, and Daily Task agents, backed by DynamoDB, S3, Bedrock KB, SES, and EventBridge — responses stream back to the dashboard over WebSocket." loading="lazy" />
+    </figure>
   </section>
 
   <section class="section wrap">
     <p class="eyebrow" data-reveal>What the new hire sees</p>
-    <h2 data-split>One dashboard, five agents behind it.</h2>
-    <div class="feature-grid">
-      {features.map((f, i) => (
-        <figure class="card feature-card" data-reveal data-reveal-delay={i * 0.05}>
-          <img src={f.img} alt={f.t} loading="lazy" />
-          <figcaption>
-            <h3>{f.t}</h3>
-            <p class="muted">{f.d}</p>
-          </figcaption>
-        </figure>
-      ))}
-    </div>
+    <h2 data-split>One dashboard, six views in.</h2>
+    <p class="muted" data-reveal>
+      This is the actual "Onboarding Command Center" from the live prototype
+      — click a numbered marker or a label to see that section full-size,
+      with an explanation.
+    </p>
+    <DashboardExplorer />
   </section>
 
   <section class="section wrap outcome">
@@ -138,17 +126,14 @@ const features = [
   .burden-lead { margin-top: 2rem; }
   .burden-grid { margin-top: 1rem; }
   .stat-card.small { padding: 1.1rem; }
-  .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2.5rem;
+  .arch-shot {
+    margin: 2.5rem 0 0;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1rem;
   }
-  .feature-card { padding: 0; overflow: hidden; }
-  .feature-card img { width: 100%; height: 200px; object-fit: cover; object-position: top; display: block; border-bottom: 1px solid var(--line); }
-  .feature-card figcaption { padding: 1rem 1.1rem 1.2rem; }
-  .feature-card h3 { font-size: 1.02rem; }
-  .feature-card p { font-size: 0.88rem; margin-top: 0.3rem; }
+  .arch-shot img { width: 100%; height: auto; display: block; border-radius: calc(var(--radius) - 8px); }
   .outcome-note { max-width: 62ch; margin-top: 2rem; }
   .outcome .btn { margin-top: 1.5rem; }
 </style>

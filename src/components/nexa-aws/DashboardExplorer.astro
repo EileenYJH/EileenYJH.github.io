@@ -1,0 +1,202 @@
+---
+const sections = [
+  {
+    id: 'profile',
+    n: '01',
+    t: 'Profile card',
+    x: 9,
+    y: 13,
+    d: 'Photo, role, team, manager, and start date at a glance — the first thing a new hire sees.',
+    img: '/images/nexa-aws/dashboard-overview.png',
+  },
+  {
+    id: 'progress',
+    n: '02',
+    t: 'Onboarding progress',
+    x: 9,
+    y: 60,
+    d: 'Overall completion, IT setup, and tasks-done percentages, plus a step-by-step path from VPN access through benefits enrollment.',
+    img: '/images/nexa-aws/setup-progress.png',
+  },
+  {
+    id: 'chat',
+    n: '03',
+    t: 'Orchestrator chat',
+    x: 58,
+    y: 16,
+    d: 'Ask anything — the Orchestrator routes the request to the right specialist agent and streams a cited, role-aware answer back in real time.',
+    img: '/images/nexa-aws/orchestrator-chat.png',
+  },
+  {
+    id: 'comms',
+    n: '04',
+    t: 'Communication log',
+    x: 58,
+    y: 78,
+    d: 'Every welcome email, Teams post, manager briefing, and milestone notification the Communication agent has sent — one single thread.',
+    img: '/images/nexa-aws/communication-thread.png',
+  },
+  {
+    id: 'orgchart',
+    n: '05',
+    t: 'Interactive org chart',
+    d: "Click any teammate to message them on Teams or send an email — the new hire's reporting line, visualised.",
+    img: '/images/nexa-aws/org-chart.png',
+  },
+  {
+    id: 'tasks',
+    n: '06',
+    t: 'Daily tasks & incidents',
+    d: 'Tasks, blocked incidents, and required training modules in one tabbed checklist, prioritised and due-dated by the Daily Task agent.',
+    img: '/images/nexa-aws/task-tab-tasks.png',
+  },
+];
+---
+<div class="dexplorer" data-reveal>
+  <div class="dexplorer-stage">
+    <img src="/images/nexa-aws/dashboard-overview.png" alt="AWS-IQ Onboarding Command Center — full dashboard" class="dexplorer-shot" />
+    {sections.filter((s) => s.x !== undefined).map((s) => (
+      <button class="dexplorer-dot" style={`left:${s.x}%; top:${s.y}%;`} data-target={s.id} aria-label={`View details: ${s.t}`}>{s.n}</button>
+    ))}
+  </div>
+
+  <div class="dexplorer-panel">
+    <ul class="dexplorer-list">
+      {sections.map((s, i) => (
+        <li>
+          <button class:list={['dexplorer-item', { 'is-active': i === 0 }]} data-target={s.id}>
+            <span class="dexplorer-num">{s.n}</span>
+            {s.t}
+          </button>
+        </li>
+      ))}
+    </ul>
+    <div class="dexplorer-detail">
+      <img id="dexplorer-detail-img" src={sections[0].img} alt={sections[0].t} />
+      <h3 id="dexplorer-detail-title">{sections[0].t}</h3>
+      <p class="muted" id="dexplorer-detail-desc">{sections[0].d}</p>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ sections }}>
+  const stage = document.querySelector('.dexplorer');
+  if (stage) {
+    const img = document.getElementById('dexplorer-detail-img');
+    const title = document.getElementById('dexplorer-detail-title');
+    const desc = document.getElementById('dexplorer-detail-desc');
+    const items = stage.querySelectorAll('.dexplorer-item, .dexplorer-dot');
+
+    function activate(id) {
+      const s = sections.find((x) => x.id === id);
+      if (!s) return;
+      img.src = s.img;
+      img.alt = s.t;
+      title.textContent = s.t;
+      desc.textContent = s.d;
+      stage.querySelectorAll('.dexplorer-item').forEach((el) => el.classList.toggle('is-active', el.dataset.target === id));
+      stage.querySelectorAll('.dexplorer-dot').forEach((el) => el.classList.toggle('is-active', el.dataset.target === id));
+      stage.querySelector('.dexplorer-detail')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+
+    items.forEach((el) => el.addEventListener('click', () => activate(el.dataset.target)));
+  }
+</script>
+
+<style>
+  .dexplorer {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+  .dexplorer-stage {
+    position: relative;
+    background: #F1F4F9;
+    border: 1px solid var(--line);
+    border-radius: calc(var(--radius) - 6px);
+    overflow: hidden;
+  }
+  .dexplorer-shot { display: block; width: 100%; height: auto; }
+  .dexplorer-dot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    border: 2px solid #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(20, 24, 31, 0.25);
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .dexplorer-dot:hover { transform: translate(-50%, -50%) scale(1.15); }
+  .dexplorer-dot.is-active { background: #14181F; }
+
+  .dexplorer-panel {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .dexplorer-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+  .dexplorer-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    border-radius: calc(var(--radius) - 8px);
+    border: 1px solid transparent;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .dexplorer-item:hover { background: var(--paper); }
+  .dexplorer-item.is-active { background: var(--accent-soft); border-color: var(--accent); font-weight: 600; }
+  .dexplorer-num {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    font-size: 0.68rem;
+    font-weight: 600;
+  }
+  .dexplorer-item.is-active .dexplorer-num { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .dexplorer-detail {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: calc(var(--radius) - 6px);
+    padding: 1.25rem;
+  }
+  .dexplorer-detail img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: calc(var(--radius) - 10px);
+    border: 1px solid var(--line);
+    margin-bottom: 1rem;
+  }
+  .dexplorer-detail h3 { font-size: 1.1rem; }
+  .dexplorer-detail p { font-size: 0.9rem; margin-top: 0.4rem; }
+
+  @media (max-width: 800px) {
+    .dexplorer-panel { grid-template-columns: 1fr; }
+    .dexplorer-list { flex-direction: row; flex-wrap: wrap; }
+    .dexplorer-item { width: auto; font-size: 0.8rem; }
+    .dexplorer-dot { width: 24px; height: 24px; font-size: 0.62rem; }
+  }
+</style>
