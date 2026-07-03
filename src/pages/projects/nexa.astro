@@ -1,0 +1,204 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PipelineDiagram from '../../components/nexa/PipelineDiagram.astro';
+import VideoCard from '../../components/nexa/VideoCard.astro';
+
+const demos = [
+  { title: 'AI Chatbot', description: 'Ask the assistant a question about a shipment — it routes by topic, cites every number, and remembers the conversation.', poster: '/images/nexa/poster-ai-chatbot.jpg', src: '/videos/nexa/demo-ai-chatbot.mp4' },
+  { title: 'Parallel Processing', description: 'Five threads classify, match, and cost multiple shipments concurrently instead of one at a time.', poster: '/images/nexa/poster-parallel-processing.jpg', src: '/videos/nexa/demo-parallel-processing.mp4' },
+  { title: 'Dashboard & Analytics', description: 'Live batch progress, AI confidence distribution, and FTA savings — the analyst’s home screen.', poster: '/images/nexa/poster-dashboard-analytics.png', src: '/videos/nexa/demo-dashboard-analytics.mp4' },
+  { title: 'Shipment Filter & Lookup', description: 'Search and filter across all shipments by HS code, confidence, or status.', poster: '/images/nexa/poster-shipment-filter.jpg', src: '/videos/nexa/demo-shipment-filter.mp4' },
+  { title: 'Validation Workflow', description: 'Three confidence tiers, three review depths — from one-click bulk approval to full manual escalation.', poster: '/images/nexa/poster-validation-cases.jpg', src: '/videos/nexa/demo-validation-cases.mp4' },
+  { title: 'Audit Trail', description: 'Every AI step and human decision, logged immutably — the documentary proof an Excel sheet can never provide.', poster: '/images/nexa/poster-audit-trail.jpg', src: '/videos/nexa/demo-audit-trail.mp4' },
+];
+
+const tiers = [
+  { range: '>95%', name: 'Scan & Approve', action: 'Reviews the summary line. Can bulk-approve all green items in one click.' },
+  { range: '70–94%', name: 'Individual Review', action: 'Opens the reasoning log, reviews HS chapter notes, approves or overrides with a documented reason.' },
+  { range: '<70% / alert', name: 'Full Manual', action: 'Senior analyst reviews with full context — can override, request supplier clarification, or hold the shipment.' },
+];
+
+const roi = [
+  { value: '98%', label: 'reduction in processing time', sub: '12.5 hrs → ~15 min analyst review per batch' },
+  { value: 'RM 64K', label: 'net monthly savings', sub: 'RM 83K saved − RM 18K operating cost' },
+  { value: '85–90%', label: 'AI classification accuracy', sub: 'at 10-digit HTS, hybrid human + AI' },
+  { value: 'Month 8', label: 'breakeven, base case', sub: '5-year NPV positive from Year 1' },
+];
+---
+<BaseLayout
+  title="NEXA — AI-powered tariff automation — Eileen Yeoh"
+  description="A hybrid AI + human-validated system that classifies HS tariff codes, matches FTAs, and calculates landed cost for Jabil's trade compliance team. Champion, Jabil IT ECP Bootcamp 3.0."
+>
+  <section class="section wrap nexa-hero">
+    <p class="eyebrow" data-reveal>Project 02 · 2026 · Jabil IT ECP Bootcamp 3.0</p>
+    <h1 data-split>NEXA</h1>
+    <p class="nexa-tagline" data-reveal>
+      An AI-assisted, human-validated bridge between SAP and global trade
+      compliance — turning a 12.5-hour manual batch into a 15-minute review.
+    </p>
+    <ul class="nexa-tags" data-reveal>
+      {['🏆 Champion — Use Case 2', 'LangChain', 'Azure OpenAI', 'SAP S/4HANA', 'e2open GTM'].map((t) => <li>{t}</li>)}
+    </ul>
+  </section>
+
+  <section class="section wrap">
+    <p class="eyebrow" data-reveal>The problem</p>
+    <h2 data-split>Manual tariff classification doesn't scale.</h2>
+    <div class="problem-grid">
+      <p data-reveal>
+        Jabil's trade compliance analysts classify HS codes, match free-trade
+        agreements, and calculate landed cost by hand — an 8-step process
+        costing 12.5 hours per 50-item batch, with roughly $2,500 in
+        financial error exposure per batch. At ~100,000 SKUs a year, that's a
+        structural bottleneck, not a one-off delay.
+      </p>
+      <p data-reveal>
+        SAP and e2open already hold the data, but it stays fragmented across
+        platforms, earlier automation lacked explainability, and there was no
+        governance framework to make AI a safe option — until now.
+      </p>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <p class="eyebrow" data-reveal>The system</p>
+    <h2 data-split>One pipeline. Mandatory human sign-off.</h2>
+    <p class="muted" data-reveal>
+      NEXA sits as an intelligent bridge layer between SAP S/4HANA, SAP GTS,
+      the regulatory feed, and e2open GTM. It classifies, matches, and costs
+      every shipment — then stops for a human before anything is written
+      back.
+    </p>
+    <PipelineDiagram />
+  </section>
+
+  <section class="section wrap">
+    <p class="eyebrow" data-reveal>See it in action</p>
+    <h2 data-split>Six views into the system.</h2>
+    <p class="muted" data-reveal>
+      Captured from the live prototype — click any card to play.
+    </p>
+    <div class="demo-grid">
+      {demos.map((d) => <VideoCard title={d.title} description={d.description} poster={d.poster} src={d.src} />)}
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <p class="eyebrow" data-reveal>AI-human workflow</p>
+    <h2 data-split>AI handles the volume. Humans handle the complexity.</h2>
+    <p class="muted" data-reveal>
+      Every classification carries a confidence score, and the score decides
+      how much scrutiny it gets before touching SAP.
+    </p>
+    <div class="tier-grid">
+      {tiers.map((t, i) => (
+        <div class="card tier-card" data-reveal data-reveal-delay={i * 0.08}>
+          <span class="tier-range">{t.range}</span>
+          <h3>{t.name}</h3>
+          <p class="muted">{t.action}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <p class="eyebrow" data-reveal>Governance & security</p>
+    <h2 data-split>What the AI can — and can't — do.</h2>
+    <div class="gov-grid">
+      <div class="card" data-reveal>
+        <h3>AI can</h3>
+        <p class="muted">Classify HS codes and match FTAs with a confidence score. Calculate landed cost and flag uncertain items.</p>
+      </div>
+      <div class="card" data-reveal data-reveal-delay="0.08">
+        <h3>AI cannot — by design</h3>
+        <p class="muted">Write any figure to SAP unapproved. Change its own confidence thresholds. Act without an audit-trail entry.</p>
+      </div>
+      <div class="card" data-reveal data-reveal-delay="0.16">
+        <h3>Data stays local</h3>
+        <p class="muted">In-region Azure OpenAI — no trade data leaves Jabil's tenancy. Names and financials are stripped before anything reaches the model.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap outcome">
+    <p class="eyebrow" data-reveal>Outcome</p>
+    <h2 data-split>The numbers that won it.</h2>
+    <div class="roi-grid">
+      {roi.map((r, i) => (
+        <div class="roi-card" data-reveal data-reveal-delay={i * 0.06}>
+          <span class="roi-value">{r.value}</span>
+          <span class="roi-label">{r.label}</span>
+          <span class="roi-sub muted">{r.sub}</span>
+        </div>
+      ))}
+    </div>
+    <p class="muted outcome-note" data-reveal>
+      Built with Eavan Tan, Jessy Pang, Xin Yuan, and Chua Xin Ying for
+      Jabil's IT ECP Bootcamp 3.0 — <strong>Champion, Use Case 2</strong>.
+    </p>
+    <a class="btn" href="https://github.com/eavan127/NEXA-AI-Powered-Tariff" target="_blank" rel="noopener" data-reveal>
+      View the source on GitHub →
+    </a>
+  </section>
+</BaseLayout>
+
+<style>
+  .nexa-hero h1 { font-size: clamp(4rem, 14vw, 9rem); }
+  .nexa-tagline { font-size: 1.3rem; max-width: 42ch; margin-top: 1.2rem; }
+  .nexa-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
+  .nexa-tags li {
+    font-size: 0.8rem;
+    font-weight: 550;
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+  }
+  .nexa-tags li:first-child { background: var(--accent-soft); border-color: transparent; color: var(--accent); font-weight: 650; }
+  .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 2rem; }
+  .demo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.2rem;
+    margin-top: 2.5rem;
+  }
+  .tier-range { display: inline-block; font-size: 0.78rem; font-weight: 650; color: var(--accent); }
+  .tier-card h3 { margin-top: 0.35rem; }
+  .tier-card p { font-size: 0.9rem; margin-top: 0.4rem; }
+  .gov-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.2rem;
+    margin-top: 2.5rem;
+  }
+  .gov-grid p { font-size: 0.9rem; margin-top: 0.4rem; }
+  .roi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  .roi-card {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .roi-value { font-family: var(--font-display); font-size: 2.2rem; color: var(--accent); }
+  .roi-label { font-weight: 600; }
+  .roi-sub { font-size: 0.82rem; }
+  .outcome-note { margin-top: 2.5rem; max-width: 60ch; }
+  .outcome .btn { margin-top: 1.5rem; }
+  @media (max-width: 800px) {
+    .problem-grid { grid-template-columns: 1fr; }
+  }
+</style>

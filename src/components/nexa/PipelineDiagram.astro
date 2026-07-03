@@ -1,0 +1,60 @@
+---
+const stages = [
+  { n: '01', t: 'HS Classifier', d: 'Matches HS codes with confidence score' },
+  { n: '02', t: 'FTA Matcher', d: 'Finds the best of 17 trade agreements' },
+  { n: '03', t: 'Landed Cost Calc', d: 'Duties, taxes & freight, computed in real time' },
+  { n: '04', t: 'Audit Trail', d: 'Logs every agent decision with reasoning' },
+];
+---
+<div class="pipeline" data-reveal>
+  <div class="pipeline-row">
+    {stages.map((s, i) => (
+      <>
+        <div class="pipeline-stage">
+          <span class="pipeline-num">{s.n}</span>
+          <h3>{s.t}</h3>
+          <p class="muted">{s.d}</p>
+        </div>
+        {i < stages.length - 1 && <div class="pipeline-arrow" aria-hidden="true">→</div>}
+      </>
+    ))}
+  </div>
+  <div class="pipeline-gate">
+    <span class="pipeline-gate-icon" aria-hidden="true">🚩</span>
+    <div>
+      <h3>Human validation dashboard</h3>
+      <p class="muted">Every result routes here before it touches SAP — analysts approve, edit, or escalate. Nothing is written back unsupervised.</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pipeline { background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.75rem; }
+  .pipeline-row { display: flex; align-items: stretch; gap: 0.75rem; flex-wrap: wrap; }
+  .pipeline-stage {
+    flex: 1 1 160px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: calc(var(--radius) - 6px);
+    padding: 1.1rem;
+  }
+  .pipeline-num { font-size: 0.72rem; font-weight: 600; color: var(--accent); letter-spacing: 0.06em; }
+  .pipeline-stage h3 { font-size: 0.98rem; margin-top: 0.35rem; }
+  .pipeline-stage p { font-size: 0.82rem; margin-top: 0.3rem; }
+  .pipeline-arrow { display: flex; align-items: center; justify-content: center; color: var(--line); font-size: 1.3rem; flex: 0 0 auto; }
+  .pipeline-gate {
+    margin-top: 1.25rem;
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+    background: var(--accent-soft);
+    border-radius: calc(var(--radius) - 6px);
+    padding: 1.1rem 1.3rem;
+  }
+  .pipeline-gate-icon { font-size: 1.3rem; line-height: 1; }
+  .pipeline-gate h3 { font-size: 0.98rem; }
+  .pipeline-gate p { font-size: 0.85rem; margin-top: 0.25rem; }
+  @media (max-width: 700px) {
+    .pipeline-arrow { display: none; }
+  }
+</style>
