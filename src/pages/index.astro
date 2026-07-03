@@ -14,7 +14,7 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
   <section class="hero wrap">
     <div class="hero-copy">
       <p class="eyebrow" data-reveal>Electrical &amp; electronics engineering</p>
-      <h1 data-split>I build systems where hardware meets intelligence.</h1>
+      <h1 data-split>I build systems where <em>hardware</em> meets <em>intelligence</em>.</h1>
     </div>
     <RoboticArm />
     <div class="hero-scroll" aria-hidden="true"><span></span></div>
@@ -29,11 +29,17 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
       <a class="btn" href="/projects/aria">Explore ARIA</a>
       <a class="btn btn--ghost" href="/about">About me</a>
     </div>
+    <dl class="spec-strip" data-reveal data-reveal-delay="0.2">
+      <div><dt>Systems built</dt><dd>03</dd></div>
+      <div><dt>ESP32 mesh nodes</dt><dd>06</dd></div>
+      <div><dt>Batch time cut</dt><dd>−98%</dd></div>
+      <div><dt>Bedrock agents</dt><dd>05</dd></div>
+    </dl>
   </section>
 
   <section class="section wrap">
     <p class="eyebrow" data-reveal>Featured work</p>
-    <h2 data-split>Projects you can play with</h2>
+    <h2 data-split>Projects you can <em>play</em> with</h2>
     <div class="proj-grid">
       {projects.map((p, i) => (
         <ProjectCard
@@ -49,7 +55,7 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
 
   <section class="section wrap about-teaser">
     <p class="eyebrow" data-reveal>About</p>
-    <h2 data-split>Engineering is a story worth telling well.</h2>
+    <h2 data-split>Engineering is a story worth <em>telling well</em>.</h2>
     <p class="muted" data-reveal>
       I'm an electrical &amp; electronics engineering student who believes a
       project isn't finished until someone else can understand it. This site is
@@ -86,6 +92,17 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
     min-height: 430px;
     padding-block: 0.5rem 3rem;
   }
+  .hero::before {
+    content: '';
+    position: absolute;
+    right: -8%;
+    top: 8%;
+    width: 60%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(29, 78, 216, 0.1), transparent 65%);
+    pointer-events: none;
+  }
   .hero h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); max-width: 15ch; }
   .hero-scroll {
     position: absolute;
@@ -116,11 +133,39 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
   .hero-intro { padding-block: 4rem 0; }
   .hero-sub { font-size: 1.2rem; max-width: 46ch; }
   .hero-actions { display: flex; gap: 1rem; margin-top: 1.8rem; flex-wrap: wrap; }
+  .spec-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.4rem 3.5rem;
+    margin-top: 3.2rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--line);
+  }
+  .spec-strip dt {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .spec-strip dd {
+    margin: 0.1rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+    font-weight: 560;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
   .proj-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
     margin-top: 2.5rem;
+  }
+  .proj-grid > :global(.proj-card:first-child) { grid-column: 1 / -1; }
+  @media (max-width: 700px) {
+    .proj-grid { grid-template-columns: 1fr; }
   }
   .about-teaser h2 { max-width: 18ch; }
   .about-teaser .btn--ghost { margin-top: 1.8rem; }
@@ -135,9 +180,11 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
     text-decoration: none;
     transition: background 0.2s ease;
   }
-  .post-row:hover { background: var(--paper-raised); }
+  .post-row:hover { background: var(--paper-raised); padding-left: 1rem; }
+  .post-row { transition: background 0.25s ease, padding-left 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
   .post-title { font-family: var(--font-display); font-size: 1.25rem; }
-  .post-arrow { color: var(--accent); }
+  .post-arrow { color: var(--accent); transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+  .post-row:hover .post-arrow { transform: translateX(5px); }
   .post-date { font-size: 0.85rem; }
   @media (max-width: 800px) {
     .hero { grid-template-columns: 1fr; text-align: center; align-content: center; gap: 1rem; }

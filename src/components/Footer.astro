@@ -13,14 +13,39 @@ const year = new Date().getFullYear();
       <a href="mailto:eileenyeoh06@gmail.com">Email</a>
     </nav>
   </div>
+  <p class="footer-wordmark" aria-hidden="true">EILEEN YEOH</p>
   <div class="wrap muted footer-meta">© {year} Eileen Yeoh · Built with Astro</div>
 </footer>
 <style>
-  .footer { border-top: 1px solid var(--line); padding-block: 3rem 2rem; margin-top: var(--space-section); }
+  .footer {
+    border-top: 1px solid var(--line);
+    padding-block: 3rem 1.4rem;
+    margin-top: var(--space-section);
+    overflow: hidden;
+  }
   .footer-inner { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: space-between; align-items: start; }
   .footer-name { font-family: var(--font-display); font-size: 1.3rem; }
   .footer-tag { font-size: 0.9rem; }
   .footer-links { display: flex; gap: 1.5rem; }
-  .footer-links a { font-size: 0.95rem; }
-  .footer-meta { margin-top: 2.5rem; font-size: 0.8rem; }
+  .footer-links a {
+    font-size: 0.95rem;
+    text-decoration-color: transparent;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
+  }
+  .footer-links a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+  .footer-wordmark {
+    margin-top: 2.5rem;
+    font-family: var(--font-display);
+    font-weight: 620;
+    font-size: clamp(3.5rem, 13.5vw, 12rem);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    text-align: center;
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--line);
+    user-select: none;
+    pointer-events: none;
+  }
+  .footer-meta { margin-top: 1.6rem; font-size: 0.8rem; }
 </style>
