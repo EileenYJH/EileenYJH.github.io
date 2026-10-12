@@ -1,0 +1,81 @@
+---
+const branches = [
+  { n: 'A', t: 'IQ branch', d: 'Dilated 1-D CNN on the raw I/Q samples, full time resolution. Keeps phase — what BPSK, QPSK and QAM are defined by.' },
+  { n: 'B', t: 'STFT branch', d: 'Spectrogram + small 2-D CNN. Makes frequency movement explicit — radar chirps and FHSS hops.' },
+];
+const head = [
+  { t: 'Fuse', d: 'Concatenate to 192 channels' },
+  { t: 'Energy-gated attention', d: 'Learned pooling over time, also reads raw I²+Q² power' },
+  { t: '8 × sigmoid', d: 'Each class judged independently — any subset can be present' },
+];
+---
+<div class="arch" data-reveal>
+  <div class="arch-input">
+    <span class="arch-label">Input</span>
+    <h3>Raw IQ window</h3>
+    <p class="muted">2 × 512 samples · 160 µs · 3.2 MHz</p>
+  </div>
+  <div class="arch-down" aria-hidden="true">↓</div>
+  <div class="arch-branches">
+    {branches.map((b) => (
+      <div class="arch-branch">
+        <span class="arch-label">Branch {b.n}</span>
+        <h3>{b.t}</h3>
+        <p class="muted">{b.d}</p>
+      </div>
+    ))}
+  </div>
+  <div class="arch-down" aria-hidden="true">↓</div>
+  <div class="arch-head">
+    {head.map((h, i) => (
+      <>
+        <div class="arch-step">
+          <h3>{h.t}</h3>
+          <p class="muted">{h.d}</p>
+        </div>
+        {i < head.length - 1 && <div class="arch-arrow" aria-hidden="true">→</div>}
+      </>
+    ))}
+  </div>
+  <div class="arch-out">
+    <span class="arch-out-icon" aria-hidden="true">📡</span>
+    <div>
+      <h3>Output: e.g. <code>{'{QPSK, JAMMING}'}</code></h3>
+      <p class="muted">A jammer overlaid on a civilian link is reported as both — not forced into one winning class.</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .arch { background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.75rem; margin-top: 2rem; }
+  .arch h3 { font-size: 0.98rem; margin-top: 0.3rem; }
+  .arch p { font-size: 0.84rem; margin-top: 0.3rem; }
+  .arch-label { font-size: 0.72rem; font-weight: 600; color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase; }
+  .arch-input, .arch-branch, .arch-step {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: calc(var(--radius) - 6px);
+    padding: 1.1rem;
+  }
+  .arch-input { max-width: 340px; margin: 0 auto; text-align: center; }
+  .arch-down { text-align: center; color: var(--muted); font-size: 1.3rem; margin: 0.5rem 0; }
+  .arch-branches { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .arch-head { display: flex; gap: 0.75rem; align-items: stretch; flex-wrap: wrap; }
+  .arch-step { flex: 1 1 160px; }
+  .arch-arrow { display: flex; align-items: center; color: var(--muted); font-size: 1.3rem; }
+  .arch-out {
+    margin-top: 1.25rem;
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+    background: var(--accent-soft);
+    border-radius: calc(var(--radius) - 6px);
+    padding: 1.1rem 1.3rem;
+  }
+  .arch-out-icon { font-size: 1.3rem; line-height: 1; }
+  .arch-out code { font-size: 0.9em; color: var(--accent); }
+  @media (max-width: 700px) {
+    .arch-branches { grid-template-columns: 1fr; }
+    .arch-arrow { display: none; }
+  }
+</style>
