@@ -39,6 +39,12 @@
   --accent-rgb: 180, 83, 9;
   --accent-soft: #F7E8D4;
 }
+/* Power supply: PCB green. */
+[data-theme='psu'] {
+  --accent: #15803D;
+  --accent-rgb: 21, 128, 61;
+  --accent-soft: #DCF2E3;
+}
 /* MOSFET: fuchsia (photoresist / cleanroom). */
 [data-theme='mosfet'] {
   --accent: #A21CAF;

@@ -1,0 +1,231 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// Small illustrative waveforms for each stage (not measured data).
+const W = 220, H = 70, mid = 35, amp = 26, cycles = 2.5;
+const pts = (f: (t: number) => number) =>
+  Array.from({ length: 221 }, (_, i) => {
+    const t = (i / 220) * cycles * 2 * Math.PI;
+    return `${i},${(H - 6 - f(t)).toFixed(1)}`;
+  }).join(' ');
+const sine = Array.from({ length: 221 }, (_, i) => {
+  const t = (i / 220) * cycles * 2 * Math.PI;
+  return `${i},${(mid - amp * Math.sin(t)).toFixed(1)}`;
+}).join(' ');
+const rect = pts((t) => (H - 12) * Math.abs(Math.sin(t)));
+const smooth = pts((t) => {
+  // capacitor follows the rectified peak, then discharges linearly until the next half-cycle catches up
+  const top = H - 12;
+  const sinceP = ((t % Math.PI) - Math.PI / 2 + Math.PI) % Math.PI;
+  return Math.max(top * Math.abs(Math.sin(t)), top - 9 * (sinceP / Math.PI));
+});
+const flat = `0,${H - 6 - 30} 220,${H - 6 - 30}`;
+
+const stages = [
+  { n: '01', t: 'Transformer', part: '8-0-8 V center-tap', d: 'Steps 240 V mains down and isolates the low-voltage side.', measured: '8.37 V rms', wave: sine, zero: true },
+  { n: '02', t: 'Full-wave rectifier', part: '2 × 1N4007', d: 'Each diode conducts on alternate half-cycles — both halves come out positive, at 100 Hz.', measured: '12.0 V pk-pk · 7.03 V mean', wave: rect },
+  { n: '03', t: 'Filter', part: '1000 µF / 16 V', d: 'Charges at each peak, discharges into the load between them — a small 100 Hz sawtooth ripple remains.', measured: '10.85 V DC', wave: smooth },
+  { n: '04', t: 'Regulator', part: 'LM7805', d: 'Holds a flat 5 V as long as its input stays above ~7 V — a 3.8 V margin here.', measured: '5.058 V DC', wave: flat },
+];
+
+const rules = [
+  ['Trace width', '40 mil min.', 'Carries the regulator’s current without overheating or lifting during soldering.'],
+  ['Trace clearance', '40 mil', 'Avoids solder bridges between the unregulated input and the 5 V rail.'],
+  ['Copper to edge', '40 mil', 'Safety margin so cutting the board can’t sever a trace.'],
+  ['Pad / via clearance', '15 / 30 mil', 'Keeps isolation in the denser parts of the layout.'],
+  ['Drill size', '24 mil min.', 'Fits the power-component leads with enough copper ring left around the hole.'],
+  ['Pads & corners', 'Round · 45°', 'Strong solder fillets; no sharp corners for etchant to pool in.'],
+];
+
+const testPoints = [
+  ['TP1', 'Raw AC from the transformer'],
+  ['TP2', 'Rectified, pulsating DC'],
+  ['TP3', 'Common ground'],
+  ['TP4', 'Regulated +5 V output'],
+  ['TP5', 'Voltage across the indicator LED'],
+];
+
+const fab = ['Eagle design + DRC', 'Print 1:1 film artwork', 'CNC drill & scrub board', 'Laminate dry-film resist', 'Align film to holes', 'UV expose ~20 s', 'Develop', 'Ferric chloride etch', 'Strip resist & inspect', 'Hand-solder components'];
+---
+<BaseLayout
+  theme="psu"
+  title="5 V DC power supply PCB — Eileen Yeoh"
+  description="A regulated 5 V DC power supply from 240 V mains: center-tap full-wave rectifier, filter and LM7805, verified on the oscilloscope and built as a single-layer PCB in Autodesk Eagle."
+>
+  <section class="section wrap psu-hero">
+    <p class="eyebrow" data-reveal>Project 06 · 2026 · UTP electronics lab, Session 4 Group 1</p>
+    <h1 data-split>Wall socket to a clean 5 volts</h1>
+    <p class="psu-tagline" data-reveal>
+      A regulated DC power supply built the full way: calculated on paper,
+      simulated in LTspice, proven on a breadboard, then turned into a PCB we
+      etched and soldered ourselves.
+    </p>
+    <ul class="psu-tags" data-reveal>
+      {['5.058 V measured output', 'Autodesk Eagle', 'LTspice', 'Single-layer PCB', 'Oscilloscope verification'].map((t) => <li>{t}</li>)}
+    </ul>
+  </section>
+
+  <section class="section wrap">
+    <p class="eyebrow" data-reveal>The signal chain</p>
+    <h2 data-split>Four stages, each one checked on the scope.</h2>
+    <p class="muted" data-reveal>
+      Every stage was measured with a multimeter and oscilloscope to prove it
+      did its job before the next one was trusted. Waveforms below are
+      illustrative; values are what we measured.
+    </p>
+    <div class="chain">
+      {stages.map((s, i) => (
+        <>
+          <div class="card stage" data-reveal data-reveal-delay={i * 0.08}>
+            <span class="stage-num">{s.n}</span>
+            <h3>{s.t}</h3>
+            <p class="stage-part">{s.part}</p>
+            <svg viewBox={`0 0 ${W} ${H}`} class="wave" aria-hidden="true">
+              <line x1="0" x2={W} y1={s.zero ? mid : H - 6} y2={s.zero ? mid : H - 6} class="axis" />
+              <polyline points={s.wave} class="trace" />
+            </svg>
+            <p class="muted stage-d">{s.d}</p>
+            <p class="stage-m"><span>Measured</span> {s.measured}</p>
+          </div>
+          {i < stages.length - 1 && <div class="chain-arrow" aria-hidden="true">→</div>}
+        </>
+      ))}
+    </div>
+    <div class="card callout" data-reveal>
+      <h3>📐 Designed before it was built</h3>
+      <p class="muted">
+        Ripple was sized on paper first: V<sub>ripple</sub> = I / (f·C) with the
+        doubled 100 Hz rectifier frequency gives about 0.08 V — roughly 0.7%,
+        well under the 5% target — so a single 1000 µF capacitor was enough to
+        keep the regulator's input above its 7 V dropout at every trough.
+      </p>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <p class="eyebrow" data-reveal>PCB design</p>
+    <h2 data-split>Rules chosen for a board we'd etch and solder by hand.</h2>
+    <p class="muted" data-reveal>
+      All traces were routed on the bottom layer — simpler to etch and drill,
+      cheaper to prototype, and it leaves the top side clear for components.
+    </p>
+    <div class="table-wrap" data-reveal>
+      <table class="rules">
+        <thead><tr><th>Rule</th><th>Value</th><th>Why</th></tr></thead>
+        <tbody>
+          {rules.map(([r, v, w]) => (
+            <tr><td>{r}</td><td class="val">{v}</td><td class="muted">{w}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div class="tp-wrap" data-reveal>
+      <h3>Five test points, designed in</h3>
+      <ul class="tp-list">
+        {testPoints.map(([k, v]) => (
+          <li><span class="tp-key">{k}</span><span class="muted">{v}</span></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <p class="eyebrow" data-reveal>Fabrication</p>
+    <h2 data-split>From film artwork to a soldered board.</h2>
+    <ol class="fab" data-reveal>
+      {fab.map((f, i) => (
+        <li><span class="fab-num">{String(i + 1).padStart(2, '0')}</span>{f}</li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="section wrap">
+    <p class="eyebrow" data-reveal>Limits &amp; next steps</p>
+    <h2 data-split>Where a linear supply runs out.</h2>
+    <div class="lim-grid">
+      <div class="card" data-reveal>
+        <h3>Heat, not efficiency</h3>
+        <p class="muted">The LM7805 burns off the extra ~5.8 V as heat. Fine for an LED; at its 1 A rating it would need a heatsink to avoid thermal shutdown.</p>
+      </div>
+      <div class="card" data-reveal data-reveal-delay="0.08">
+        <h3>Ripple grows with load</h3>
+        <p class="muted">A heavier load drains the capacitor faster. If a ripple trough dips below 7 V, regulation fails — so the filter is sized for this load, not any load.</p>
+      </div>
+      <div class="card" data-reveal data-reveal-delay="0.16">
+        <h3>Next revision</h3>
+        <p class="muted">Add the datasheet's 0.33 µF / 0.1 µF ceramic decoupling caps at the regulator's input and output to suppress high-frequency noise and oscillation.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap outcome">
+    <p class="eyebrow" data-reveal>Team</p>
+    <h2 data-split>Three of us, one board.</h2>
+    <p class="muted outcome-note" data-reveal>
+      Designed, built and tested with Kuik Pei Wen and Ch'ng Shu Yun — from
+      breadboard prototype through Eagle schematic and layout to the etched,
+      hand-soldered PCB.
+    </p>
+    <a class="btn" href="https://youtu.be/gHXMLzDkNnc" target="_blank" rel="noopener" data-reveal>
+      Watch the demo video →
+    </a>
+  </section>
+</BaseLayout>
+
+<style>
+  .psu-hero h1 { font-size: clamp(2.6rem, 8vw, 5.6rem); max-width: 15ch; }
+  .psu-tagline { font-size: 1.3rem; max-width: 46ch; margin-top: 1.2rem; }
+  .psu-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
+  .psu-tags li {
+    font-size: 0.8rem;
+    font-weight: 550;
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+  }
+  .psu-tags li:first-child { background: var(--accent-soft); border-color: transparent; color: var(--accent); font-weight: 650; }
+  .chain { display: flex; gap: 0.6rem; align-items: stretch; margin-top: 2.5rem; }
+  .stage { flex: 1 1 0; min-width: 0; padding: 1.2rem; display: flex; flex-direction: column; }
+  .stage-num { font-size: 0.72rem; font-weight: 650; color: var(--accent); letter-spacing: 0.05em; }
+  .stage h3 { margin-top: 0.2rem; font-size: 1.05rem; }
+  .stage-part { font-size: 0.8rem; font-weight: 600; color: var(--steel); }
+  .wave { width: 100%; height: auto; margin: 0.8rem 0; background: var(--paper); border-radius: 8px; border: 1px solid var(--line); }
+  .wave .axis { stroke: var(--line); stroke-width: 1; stroke-dasharray: 3 3; }
+  .wave .trace { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; }
+  .stage-d { font-size: 0.85rem; flex: 1; }
+  .stage-m { margin-top: 0.8rem; font-size: 0.85rem; font-weight: 650; color: var(--accent); }
+  .stage-m span { display: block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .chain-arrow { display: flex; align-items: center; color: var(--muted); font-size: 1.3rem; }
+  .callout { margin-top: 1.5rem; background: var(--accent-soft); border-color: transparent; }
+  .callout p { font-size: 0.93rem; margin-top: 0.4rem; }
+  .table-wrap { overflow-x: auto; margin-top: 2rem; }
+  .rules { width: 100%; border-collapse: collapse; background: var(--paper-raised); border: 1px solid var(--line); font-size: 0.92rem; }
+  .rules th, .rules td { text-align: left; padding: 0.8rem 1rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .rules th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); }
+  .rules tr:last-child td { border-bottom: none; }
+  .rules .val { font-weight: 650; white-space: nowrap; }
+  .tp-wrap { margin-top: 2rem; }
+  .tp-list { list-style: none; padding: 0; margin-top: 0.8rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.7rem; }
+  .tp-list li { display: flex; gap: 0.7rem; align-items: baseline; background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.88rem; }
+  .tp-key { font-weight: 700; color: var(--accent); font-size: 0.8rem; }
+  .fab {
+    list-style: none;
+    padding: 0;
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.7rem;
+  }
+  .fab li { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px; padding: 0.85rem 1rem; font-size: 0.9rem; font-weight: 550; display: flex; flex-direction: column; gap: 0.2rem; }
+  .fab-num { font-size: 0.72rem; font-weight: 650; color: var(--accent); }
+  .lim-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; margin-top: 2.5rem; }
+  .lim-grid p { font-size: 0.9rem; margin-top: 0.4rem; }
+  .outcome-note { margin-top: 1.5rem; max-width: 62ch; }
+  .outcome .btn { margin-top: 1.5rem; }
+  @media (max-width: 900px) {
+    .fab { grid-template-columns: repeat(2, 1fr); }
+    .chain { flex-direction: column; }
+    .chain-arrow { justify-content: center; transform: rotate(90deg); }
+  }
+</style>
