@@ -39,6 +39,12 @@
   --accent-rgb: 180, 83, 9;
   --accent-soft: #F7E8D4;
 }
+/* MOSFET: fuchsia (photoresist / cleanroom). */
+[data-theme='mosfet'] {
+  --accent: #A21CAF;
+  --accent-rgb: 162, 28, 175;
+  --accent-soft: #F8E3F8;
+}
 /* SEDIC: violet (RF spectrum / signal intelligence). */
 [data-theme='sedic'] {
   --accent: #6D28D9;

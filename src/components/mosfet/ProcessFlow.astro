@@ -1,0 +1,178 @@
+---
+// Interactive NMOS process flow: pick a step, the cross-section redraws to
+// show the wafer after that step. Layer visibility is driven by data-from /
+// data-until (step numbers, 1-based) on each SVG group.
+const steps = [
+  { t: 'Wafer preparation', d: 'P-type wafer labelled, cleaned in BOE for 60 s and spin-dried.' },
+  { t: 'Field oxidation', d: 'Wet oxidation at 1050 °C for 60 min grows the thick field oxide — 495.8 nm on average across 5 points.' },
+  { t: 'Mask 1 · source/drain', d: 'Photolithography plus a 180 s BOE etch opens the source and drain windows.' },
+  { t: 'Source/drain diffusion', d: 'Phosphorus diffuses at 800 °C through the windows, forming the n+ source and drain.' },
+  { t: 'Mask 2 · gate', d: 'A second litho cycle opens the gate window in the field oxide.' },
+  { t: 'Gate oxidation', d: 'Dry oxidation at 1000 °C for 90 min grows a thin, dense gate oxide — measured at 19.8 nm.' },
+  { t: 'Mask 3 · contacts', d: 'Contact windows are etched through the oxide to expose source and drain.' },
+  { t: 'Metallization', d: 'Aluminium is deposited by PVD as a blanket film across the whole wafer.' },
+  { t: 'Mask 4 · metal', d: 'A 60 s aluminium etch patterns the metal into separate source, gate and drain pads.' },
+  { t: 'Wafer test', d: 'The finished transistor is probed on a test station to measure its I–V characteristics.' },
+];
+---
+<div class="pf" data-reveal>
+  <ol class="pf-steps" role="tablist" aria-label="Fabrication steps">
+    {steps.map((s, i) => (
+      <li>
+        <button type="button" role="tab" class:list={['pf-step', { 'is-active': i === steps.length - 1 }]} data-step={i + 1} aria-selected={i === steps.length - 1 ? 'true' : 'false'}>
+          <span class="pf-num">{String(i + 1).padStart(2, '0')}</span>
+          <span>{s.t}</span>
+        </button>
+      </li>
+    ))}
+  </ol>
+  <div class="pf-view">
+    <svg class="pf-svg" viewBox="0 0 600 270" role="img" aria-label="Cross-section of the wafer after the selected step" data-step="10">
+      <!-- p-type substrate -->
+      <rect x="0" y="160" width="600" height="100" class="l-sub" />
+      <text x="560" y="245" class="l-label" text-anchor="end">p-Si substrate</text>
+      <!-- n+ source / drain -->
+      <g data-from="4">
+        <path d="M95 160 h90 v20 q0 18 -20 18 h-50 q-20 0 -20 -18z" class="l-n" />
+        <path d="M415 160 h90 v20 q0 18 -20 18 h-50 q-20 0 -20 -18z" class="l-n" />
+        <text x="140" y="186" class="l-label l-light" text-anchor="middle">n+</text>
+        <text x="460" y="186" class="l-label l-light" text-anchor="middle">n+</text>
+      </g>
+      <!-- field oxide: full sheet before Mask 1 -->
+      <rect data-from="2" data-until="2" x="0" y="122" width="600" height="38" class="l-ox" />
+      <!-- field oxide with S/D windows (Mask 1–4) -->
+      <g data-from="3" data-until="4">
+        <rect x="0" y="122" width="100" height="38" class="l-ox" />
+        <rect x="180" y="122" width="240" height="38" class="l-ox" />
+        <rect x="500" y="122" width="100" height="38" class="l-ox" />
+      </g>
+      <!-- regrown oxide over S/D after diffusion, gate window open from Mask 2 -->
+      <g data-from="5">
+        <rect x="0" y="122" width="240" height="38" class="l-ox" />
+        <rect x="360" y="122" width="240" height="38" class="l-ox" />
+      </g>
+      <!-- thin gate oxide -->
+      <rect data-from="6" x="240" y="150" width="120" height="10" class="l-gox" />
+      <!-- contact windows cut through oxide over S/D (Mask 3) -->
+      <g data-from="7">
+        <rect x="110" y="122" width="60" height="38" class="l-cut" />
+        <rect x="430" y="122" width="60" height="38" class="l-cut" />
+      </g>
+      <!-- blanket aluminium -->
+      <g data-from="8" data-until="8">
+        <path d="M0 98 H600 V122 H490 V160 H430 V122 H360 V150 H240 V122 H170 V160 H110 V122 H0Z" class="l-al" />
+      </g>
+      <!-- patterned aluminium pads -->
+      <g data-from="9">
+        <path d="M95 98 H185 V122 H170 V160 H110 V122 H95Z" class="l-al" />
+        <path d="M250 98 H350 V150 H250Z" class="l-al" />
+        <path d="M415 98 H505 V122 H490 V160 H430 V122 H415Z" class="l-al" />
+        <text x="152" y="60" class="l-label" text-anchor="start">S</text>
+        <text x="312" y="60" class="l-label" text-anchor="start">G</text>
+        <text x="472" y="60" class="l-label" text-anchor="start">D</text>
+      </g>
+      <!-- probes -->
+      <g data-from="10" class="l-probe">
+        <path d="M140 20 L140 80 L134 96 M300 20 L300 80 L294 96 M460 20 L460 80 L454 96" />
+      </g>
+    </svg>
+    <div class="pf-legend" aria-hidden="true">
+      <span><i class="sw sw-sub"></i>p-Si</span>
+      <span><i class="sw sw-n"></i>n+ (phosphorus)</span>
+      <span><i class="sw sw-ox"></i>SiO₂</span>
+      <span><i class="sw sw-al"></i>Aluminium</span>
+    </div>
+    <div class="pf-detail" aria-live="polite">
+      {steps.map((s, i) => (
+        <div class="pf-desc" data-desc={i + 1} hidden={i !== steps.length - 1}>
+          <p class="pf-desc-num">Step {String(i + 1).padStart(2, '0')} of 10</p>
+          <h3>{s.t}</h3>
+          <p class="muted">{s.d}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.pf').forEach((root) => {
+    const svg = root.querySelector<SVGSVGElement>('.pf-svg')!;
+    const buttons = root.querySelectorAll<HTMLButtonElement>('.pf-step');
+    const descs = root.querySelectorAll<HTMLElement>('[data-desc]');
+    const layers = svg.querySelectorAll<SVGElement>('[data-from]');
+    const show = (n: number) => {
+      layers.forEach((el) => {
+        const from = Number(el.dataset.from);
+        const until = el.dataset.until ? Number(el.dataset.until) : Infinity;
+        el.style.display = n >= from && n <= until ? '' : 'none';
+      });
+      buttons.forEach((b) => {
+        const on = Number(b.dataset.step) === n;
+        b.classList.toggle('is-active', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      descs.forEach((d) => (d.hidden = Number(d.dataset.desc) !== n));
+    };
+    buttons.forEach((b) => b.addEventListener('click', () => show(Number(b.dataset.step))));
+    show(10);
+  });
+</script>
+
+<style>
+  .pf {
+    display: grid;
+    grid-template-columns: minmax(220px, 280px) 1fr;
+    gap: 1.5rem;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  .pf-steps { list-style: none; padding: 0; display: grid; gap: 0.35rem; }
+  .pf-step {
+    width: 100%;
+    display: flex;
+    gap: 0.7rem;
+    align-items: baseline;
+    text-align: left;
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 0.5rem 0.7rem;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .pf-step:hover { background: var(--paper); }
+  .pf-step.is-active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .pf-step:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .pf-num { font-size: 0.72rem; font-weight: 650; color: var(--accent); letter-spacing: 0.04em; }
+  .pf-view { display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
+  .pf-svg { width: 100%; height: auto; background: var(--paper); border-radius: 10px; border: 1px solid var(--line); }
+  .l-sub { fill: #CBD5E1; }
+  .l-n { fill: #2563EB; }
+  .l-ox, .l-gox { fill: #F5D0FE; stroke: #C026D3; stroke-width: 1; }
+  .l-cut { fill: var(--paper); }
+  .l-al { fill: #94A3B8; stroke: #475569; stroke-width: 1; }
+  .l-probe path { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+  .l-label { font: 600 13px var(--font-body); fill: var(--ink); }
+  .l-light { fill: #fff; }
+  .pf-legend { display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.8rem; color: var(--muted); }
+  .pf-legend span { display: inline-flex; gap: 0.4rem; align-items: center; }
+  .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .sw-sub { background: #CBD5E1; }
+  .sw-n { background: #2563EB; }
+  .sw-ox { background: #F5D0FE; border: 1px solid #C026D3; }
+  .sw-al { background: #94A3B8; }
+  .pf-desc-num { font-size: 0.75rem; font-weight: 650; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase; }
+  .pf-desc h3 { margin-top: 0.2rem; }
+  .pf-desc p.muted { margin-top: 0.3rem; font-size: 0.95rem; }
+  @media (max-width: 800px) {
+    .pf { grid-template-columns: 1fr; }
+    .pf-steps { grid-template-columns: repeat(2, 1fr); }
+    .pf-step { font-size: 0.82rem; }
+  }
+</style>
