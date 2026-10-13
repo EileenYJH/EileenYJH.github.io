@@ -113,9 +113,9 @@ const posters = [
 
     <div class="mat-two">
       <div class="mat-block">
-        <div class="mat-head"><h3>Demo video</h3><span class="muted">Our submission video (short version).</span></div>
+        <div class="mat-head"><h3>Demo video</h3><span class="muted">Our submission video.</span><a class="mat-link" href="https://www.youtube.com/watch?v=11AyQioekdo" target="_blank" rel="noopener">Watch on YouTube ↗</a></div>
         <div class="video-frame">
-          <iframe src="https://drive.google.com/file/d/1LgCeBnWdeTlPP7gU6_BmuPQgQ2KIhFwi/preview" title="NEXA SEDIC 2026 demo video" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
+          <iframe src="https://www.youtube-nocookie.com/embed/11AyQioekdo?rel=0" title="NEXA SEDIC 2026 demo video" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
       </div>
       <a class="mat-block report-card" href="https://docs.google.com/document/d/1Sin00wQhauDyScpZ8gFa7-64XwEvTTql7f9Fw3NbgE8/preview" target="_blank" rel="noopener">
@@ -272,6 +272,7 @@ const posters = [
   .mat-head h3 { font-size: 1.3rem; }
   .mat-head .muted { font-size: 0.92rem; }
   .mat-btn { margin-left: auto; }
+  .mat-link { margin-left: auto; font-size: 0.9rem; font-weight: 600; color: var(--accent); text-decoration: none; }
   .poster-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: 1.2rem; }
   .poster { margin: 0; }
   .poster-frame { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 14px; border: 1px solid var(--line); background: #fff; box-shadow: 0 24px 50px -32px rgba(21, 26, 46, 0.5); }
