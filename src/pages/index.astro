@@ -35,8 +35,7 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
       </p>
       <p class="hero-where">
         Bachelor of Electrical and Electronics Engineering with Honours<br />
-        Universiti Teknologi PETRONAS (UTP), Malaysia<br />
-        Student exchange at the University of Sheffield, UK
+        Universiti Teknologi PETRONAS (UTP), Malaysia
       </p>
       <div class="hero-actions">
         <a class="btn btn--trace" href="#work">See my projects</a>
@@ -69,7 +68,6 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
 
   <section class="section wrap highlights" id="highlights">
     <h2>Awards, competitions and events</h2>
-    <p class="muted journey-lede">Grouped by type, newest first. Linked titles open the full project.</p>
     <Highlights />
   </section>
 
@@ -269,8 +267,13 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
 
   /* ---------- Contact ---------- */
   .contact { background: var(--ink); color: #fff; padding-block: clamp(4rem, 10vh, 7rem); margin-top: var(--space-section); }
-  .contact h2 { font-size: clamp(1.8rem, 3.6vw, 2.9rem); max-width: 24ch; }
+  .contact h2 { font-size: clamp(1.8rem, 3.6vw, 2.9rem); max-width: none; text-wrap: wrap; }
   .contact-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
+  @media (min-width: 900px) {
+    .contact-inner { display: flex; align-items: flex-end; justify-content: space-between; gap: 3rem; }
+    .contact h2 { flex: 1; }
+    .contact-actions { margin-top: 0; flex-wrap: nowrap; flex-shrink: 0; }
+  }
   /* The footer follows the dark band directly. */
   :global(footer.footer.footer) { margin-top: 0; }
 
