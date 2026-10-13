@@ -26,8 +26,10 @@ const years = [...new Set(items.map((m) => m.year))];
         {items.filter((m) => m.year === y).map((m, i, arr) => {
           // A left card with nothing beside it shows its subjects in the empty right column.
           const solo = i % 2 === 0 && i === arr.length - 1 && !!m.courses;
+          // A card with a neighbour opens its subjects as a flyout over the other column.
+          const pair = !!m.courses && !solo;
           return (<>
-          <li class:list={['tl-item', `tl-item--${m.kind}`, i % 2 ? 'tl-item--right' : 'tl-item--left', { 'tl-item--img': m.img, 'tl-item--solo': solo }]}>
+          <li class:list={['tl-item', `tl-item--${m.kind}`, i % 2 ? 'tl-item--right' : 'tl-item--left', { 'tl-item--img': m.img, 'tl-item--solo': solo, 'tl-item--pair': pair }]}>
             <span class="tl-dot" aria-hidden="true"></span>
             <div class="tl-body">
               {m.img && <img class="tl-img" src={m.img} alt="" loading="lazy" decoding="async" />}
@@ -65,6 +67,19 @@ const years = [...new Set(items.map((m) => m.year))];
                 </ul>
               )}
             </div>
+            {pair && (
+              <div class="tl-flyout">
+                <p class="tl-panel-title">{m.title} subjects</p>
+                <table>
+                  <thead><tr><th>Code</th><th>Subject</th><th>Grade</th></tr></thead>
+                  <tbody>
+                    {m.courses!.map((c) => (
+                      <tr><td class="tl-code">{c.code}</td><td>{c.name}</td><td class="tl-grade">{c.grade}</td></tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </li>
           {solo && (
             <li class="tl-panel">
@@ -87,6 +102,24 @@ const years = [...new Set(items.map((m) => m.year))];
 </ol>
 
 <script>
+  // Subject flyouts: one open per row, and the row makes room if the flyout is taller than the cards.
+  const wide = matchMedia('(min-width: 900px)');
+  const fit = (row: HTMLElement) => {
+    row.style.paddingBottom = '';
+    const open = row.querySelector<HTMLElement>('.tl-item--pair:has(.tl-courses[open]) .tl-flyout');
+    if (!wide.matches || !open) return;
+    const extra = open.getBoundingClientRect().bottom - row.getBoundingClientRect().bottom;
+    if (extra > 0) row.style.paddingBottom = `${extra}px`;
+  };
+  document.querySelectorAll<HTMLDetailsElement>('.tl-item--pair .tl-courses').forEach((d) => {
+    d.addEventListener('toggle', () => {
+      const row = d.closest<HTMLElement>('.tl-items')!;
+      if (d.open) row.querySelectorAll<HTMLDetailsElement>('.tl-item--pair .tl-courses[open]').forEach((o) => { if (o !== d) o.open = false; });
+      fit(row);
+    });
+  });
+  wide.addEventListener('change', () => document.querySelectorAll<HTMLElement>('.tl-items').forEach(fit));
+
   // Scroll effects: the rail fills as you scroll, each card slides in from
   // its side, dots light up once passed, and a large year floats behind.
   const tl = document.getElementById('tl');
@@ -200,10 +233,10 @@ const years = [...new Set(items.map((m) => m.year))];
   .tl-courses { margin-top: 0.8rem; font-size: 0.9rem; }
   .tl-courses summary { cursor: pointer; font-weight: 600; color: var(--accent); width: fit-content; }
   .tl-courses summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
-  .tl-panel { display: none; }
-  .tl-courses table, .tl-panel table { width: 100%; border-collapse: collapse; margin-top: 0.6rem; }
-  .tl-panel th, .tl-courses th { text-align: left; font-size: 0.75rem; font-weight: 600; color: var(--muted); padding: 0.3rem 0.5rem 0.3rem 0; border-bottom: 1px solid var(--line); }
-  .tl-panel td, .tl-courses td { padding: 0.4rem 0.5rem 0.4rem 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .tl-panel, .tl-flyout { display: none; }
+  .tl-courses table, .tl-panel table, .tl-flyout table { width: 100%; border-collapse: collapse; margin-top: 0.6rem; }
+  .tl-flyout th, .tl-panel th, .tl-courses th { text-align: left; font-size: 0.75rem; font-weight: 600; color: var(--muted); padding: 0.3rem 0.5rem 0.3rem 0; border-bottom: 1px solid var(--line); }
+  .tl-flyout td, .tl-panel td, .tl-courses td { padding: 0.4rem 0.5rem 0.4rem 0; border-bottom: 1px solid var(--line); vertical-align: top; }
   .tl-code { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
   .tl-grade { font-weight: 700; text-align: center; width: 3.5rem; }
   .tl-chips { list-style: none; padding: 0; margin-top: 0.9rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
@@ -263,11 +296,31 @@ const years = [...new Set(items.map((m) => m.year))];
       font-size: 0.9rem;
       animation: tl-panel-in 0.35s ease both;
     }
+    .tl-item--pair .tl-courses table { display: none; }
+    .tl-item--pair:has(.tl-courses[open]) { z-index: 4; }
+    .tl-item--pair:has(.tl-courses[open]) .tl-flyout {
+      display: block;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      padding: 1rem 1.2rem;
+      background: var(--paper-raised);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 18px 40px -20px rgba(21, 26, 46, 0.35);
+      font-size: 0.9rem;
+      animation: tl-panel-in 0.35s ease both;
+    }
+    .tl-item--left .tl-flyout { left: calc(100% + 4.4rem); }
+    .tl-item--right .tl-flyout { right: calc(100% + 4.4rem); }
+    .tl-item--right:has(.tl-courses[open]) .tl-flyout { animation-name: tl-panel-in-r; }
     .tl-panel-title { font-weight: 650; font-size: 0.95rem; color: var(--ink); margin-bottom: 0.3rem; }
   }
   @keyframes tl-panel-in { from { opacity: 0; transform: translateX(-12px); } }
+  @keyframes tl-panel-in-r { from { opacity: 0; transform: translateX(12px); } }
   @media (min-width: 900px) and (prefers-reduced-motion: reduce) {
-    .tl-items:has(.tl-item--solo .tl-courses[open]) .tl-panel { animation: none; }
+    .tl-items:has(.tl-item--solo .tl-courses[open]) .tl-panel,
+    .tl-item--pair:has(.tl-courses[open]) .tl-flyout { animation: none; }
   }
 
   /* ---------- Scroll effects ---------- */
