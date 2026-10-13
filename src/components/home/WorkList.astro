@@ -26,7 +26,7 @@ const projects = (await getCollection('projects'))
         <span class="work-swatch" aria-hidden="true"></span>
         <span class="work-main">
           <span class="work-context">{p.context}</span>
-          <span class="work-name">{p.name}</span>
+          <span class:list={['work-name', { 'work-name--long': p.name.length > 24 }]}>{p.name}</span>
           <span class="work-what">{p.what}</span>
         </span>
         <span class="work-summary">{p.summary}</span>
@@ -54,6 +54,7 @@ const projects = (await getCollection('projects'))
   .work-main { display: grid; gap: 0.2rem; }
   .work-context { font-size: 0.85rem; font-weight: 600; color: var(--c); }
   .work-name { font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; transition: color 0.2s ease; }
+  .work-name--long { font-size: clamp(1.15rem, 1.8vw, 1.45rem); line-height: 1.2; letter-spacing: -0.015em; }
   .work-what { font-size: 0.98rem; color: var(--steel); line-height: 1.4; }
   .work-summary { font-size: 0.95rem; color: var(--muted); line-height: 1.6; }
   .work-tags { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
