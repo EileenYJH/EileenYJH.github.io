@@ -45,6 +45,11 @@ const dayPhotos = [
   { src: '/images/sedic/event/with-judge.jpg', shape: 'wide', alt: 'Team NEXA with a guest in uniform at the SEDIC 2026 exhibition', cap: 'Team NEXA at the SEDIC 2026 exhibition.' },
   { src: '/images/sedic/event/cyberdsa.jpg', shape: 'tall', alt: 'Team NEXA in front of the CyberDSA 2026 sign with the Track Winner cheque', cap: 'At CyberDSA 2026, MITEC.' },
 ];
+
+const posters = [
+  { src: '/sedic/materials/nexa-poster-1.html', title: 'Poster 1: A dual-branch fusion CNN for multi-label RF signal classification' },
+  { src: '/sedic/materials/nexa-poster-2.html', title: 'Poster 2: Inside NEXA, the system architecture' },
+];
 ---
 <BaseLayout
   overlayNav
@@ -73,6 +78,52 @@ const dayPhotos = [
           <figcaption>{d.cap}</figcaption>
         </figure>
       ))}
+    </div>
+  </section>
+
+  <section class="section wrap sedic-mat" id="materials">
+    <p class="eyebrow" data-reveal>What we presented</p>
+    <h2 data-split>Poster, brochure, video and report.</h2>
+
+    <div class="mat-block">
+      <div class="mat-head"><h3>Finale posters</h3><span class="muted">Shown on the TV screens at our booth. They're live, so they animate here too.</span></div>
+      <div class="poster-grid">
+        {posters.map((pt) => (
+          <figure class="poster">
+            <div class="poster-frame" data-poster>
+              <iframe src={pt.src} title={pt.title} loading="lazy" tabindex="-1"></iframe>
+            </div>
+            <figcaption><strong>{pt.title}</strong> <a href={pt.src} target="_blank" rel="noopener">Open full screen ↗</a></figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+
+    <div class="mat-block">
+      <div class="mat-head"><h3>eBrochure</h3><span class="muted">Eight pages. Scroll sideways to flip through.</span><a class="btn mat-btn" href="/sedic/materials/NEXA-eBrochure.pdf" target="_blank" rel="noopener">Open the PDF ↗</a></div>
+      <div class="brochure">
+        {Array.from({ length: 8 }, (_, i) => (
+          <a class="bro-page" href="/sedic/materials/NEXA-eBrochure.pdf" target="_blank" rel="noopener">
+            <img src={`/sedic/materials/brochure-${i + 1}.jpg`} alt={`NEXA eBrochure page ${i + 1}`} loading="lazy" decoding="async" />
+            <span>{i + 1}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <div class="mat-two">
+      <div class="mat-block">
+        <div class="mat-head"><h3>Demo video</h3><span class="muted">Our submission video (short version).</span></div>
+        <div class="video-frame">
+          <iframe src="https://drive.google.com/file/d/1LgCeBnWdeTlPP7gU6_BmuPQgQ2KIhFwi/preview" title="NEXA SEDIC 2026 demo video" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+      <a class="mat-block report-card" href="https://docs.google.com/document/d/1Sin00wQhauDyScpZ8gFa7-64XwEvTTql7f9Fw3NbgE8/preview" target="_blank" rel="noopener">
+        <span class="report-kicker">Technical report</span>
+        <strong>NEXA: SEDIC 2026 report</strong>
+        <span class="muted">Our full technical write-up for SEDIC 2026.</span>
+        <span class="report-go">Read the report ↗</span>
+      </a>
     </div>
   </section>
 
@@ -205,9 +256,45 @@ const dayPhotos = [
       View the source on GitHub →
     </a>
   </section>
+  <script>
+    // The posters are built for a 1920 × 1080 screen; scale each to fit its frame.
+    const frames = document.querySelectorAll<HTMLElement>('[data-poster]');
+    const fit = () => frames.forEach((f) => f.style.setProperty('--s', String(f.clientWidth / 1920)));
+    new ResizeObserver(fit).observe(document.body);
+    fit();
+  </script>
 </BaseLayout>
 
 <style>
+  .sedic-mat h2 { margin-bottom: 0.5rem; }
+  .mat-block { margin-top: 2.4rem; }
+  .mat-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 1rem; margin-bottom: 1rem; }
+  .mat-head h3 { font-size: 1.3rem; }
+  .mat-head .muted { font-size: 0.92rem; }
+  .mat-btn { margin-left: auto; }
+  .poster-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: 1.2rem; }
+  .poster { margin: 0; }
+  .poster-frame { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 14px; border: 1px solid var(--line); background: #fff; box-shadow: 0 24px 50px -32px rgba(21, 26, 46, 0.5); }
+  .poster-frame iframe { position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; border: 0; transform: scale(var(--s, 0.3)); transform-origin: 0 0; pointer-events: none; }
+  .poster figcaption { margin-top: 0.6rem; font-size: 0.9rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; }
+  .poster figcaption strong { color: var(--ink); font-weight: 600; }
+  .poster figcaption a { color: var(--accent); font-weight: 600; text-decoration: none; }
+  .brochure { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0.3rem 0.2rem 1rem; }
+  .bro-page { position: relative; flex: 0 0 auto; width: min(260px, 62vw); scroll-snap-align: start; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 16px 34px -24px rgba(21, 26, 46, 0.55); transition: transform 0.3s ease; }
+  .bro-page:hover { transform: translateY(-4px) rotate(-0.6deg); }
+  .bro-page img { width: 100%; height: auto; display: block; }
+  .bro-page span { position: absolute; left: 0.5rem; bottom: 0.5rem; font-size: 0.75rem; font-weight: 700; color: #fff; background: var(--accent); border-radius: 999px; padding: 0.1rem 0.5rem; }
+  .mat-two { display: grid; grid-template-columns: 1.6fr 1fr; gap: 1.4rem; align-items: start; }
+  .video-frame { aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #0B0F1C; }
+  .video-frame iframe { width: 100%; height: 100%; border: 0; }
+  .report-card { display: grid; gap: 0.5rem; align-content: start; margin-top: calc(2.4rem + 2.6rem); padding: 1.4rem; border-radius: 14px; text-decoration: none; color: #fff; background: linear-gradient(150deg, var(--accent), #22D3EE); box-shadow: 0 24px 50px -30px rgba(var(--accent-rgb), 0.8); transition: transform 0.3s ease; }
+  .report-card:hover { transform: translateY(-4px); }
+  .report-card strong { font-size: 1.3rem; line-height: 1.2; }
+  .report-card .muted { color: rgba(255, 255, 255, 0.85); font-size: 0.92rem; }
+  .report-kicker { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.9; }
+  .report-go { font-weight: 650; margin-top: 0.4rem; }
+  @media (max-width: 800px) { .mat-two { grid-template-columns: 1fr; } .report-card { margin-top: 1.4rem; } .mat-btn { margin-left: 0; } }
+
   .sedic-hero h1 { font-size: clamp(3rem, 10vw, 7rem); }
   .sedic-tagline { font-size: 1.3rem; max-width: 44ch; margin-top: 1.2rem; }
   .sedic-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
