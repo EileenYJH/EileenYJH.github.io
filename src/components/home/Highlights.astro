@@ -9,22 +9,35 @@ const kindLabel: Record<Kind, string> = {
   now: 'Now',
 };
 
-// Newest first; the "Now" roles render as their own list below the grid.
+// Grouped by category, newest first within each; "Now" roles render as their own list.
 const items = timeline.filter((m) => !m.academic && m.kind !== 'now').reverse();
+const groups: { kind: Kind; title: string }[] = [
+  { kind: 'award', title: 'Awards' },
+  { kind: 'competition', title: 'Competitions' },
+  { kind: 'event', title: 'Events' },
+];
 const roles = timeline.find((m) => m.kind === 'now')?.chips ?? [];
 ---
-<ul class="hl">
-  {items.map((m) => (
-    <li class:list={['hl-card', `hl-card--${m.kind}`]}>
-      {m.img && <img class="hl-img" src={m.img} alt="" loading="lazy" decoding="async" />}
-      <div class="hl-body">
-        <p class="hl-meta"><span class="hl-kind">{kindLabel[m.kind]}</span><span class="hl-date">{m.date}</span></p>
-        <h3 class="hl-title">{m.href ? <a href={m.href}>{m.title}</a> : m.title}</h3>
-        {m.detail && <p class="hl-detail">{m.detail}</p>}
-      </div>
-    </li>
-  ))}
-</ul>
+{groups.map((g) => {
+  const list = items.filter((m) => m.kind === g.kind);
+  return list.length > 0 && (
+    <div class:list={['hl-group', `hl-group--${g.kind}`]}>
+      <h3 class="hl-group-title">{g.title} <span>{list.length}</span></h3>
+      <ul class="hl">
+        {list.map((m) => (
+          <li class:list={['hl-card', `hl-card--${m.kind}`]}>
+            {m.img && <img class="hl-img" src={m.img} alt="" loading="lazy" decoding="async" />}
+            <div class="hl-body">
+              <p class="hl-meta"><span class="hl-date">{m.date}</span></p>
+              <h4 class="hl-title">{m.href ? <a href={m.href}>{m.title}</a> : m.title}</h4>
+              {m.detail && <p class="hl-detail">{m.detail}</p>}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+})}
 
 {roles.length > 0 && (
   <div class="hl-roles">
@@ -39,10 +52,23 @@ const roles = timeline.find((m) => m.kind === 'now')?.chips ?? [];
 )}
 
 <style>
+  .hl-group { margin-top: 2.5rem; }
+  .hl-group-title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-size: 1.4rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--gk, var(--line));
+  }
+  .hl-group-title span { font-size: 0.9rem; font-weight: 600; color: var(--gk, var(--muted)); font-variant-numeric: tabular-nums; }
+  .hl-group--award { --gk: #B7791F; }
+  .hl-group--competition { --gk: #6D28D9; }
+  .hl-group--event { --gk: var(--steel); }
   .hl {
     list-style: none;
     padding: 0;
-    margin-top: 2rem;
+    margin-top: 1.2rem;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1.2rem;
@@ -63,7 +89,7 @@ const roles = timeline.find((m) => m.kind === 'now')?.chips ?? [];
   .hl-meta { display: flex; flex-wrap: wrap; gap: 0.2rem 0.7rem; font-size: 0.82rem; }
   .hl-kind { font-weight: 650; color: var(--k); }
   .hl-date { color: var(--muted); font-variant-numeric: tabular-nums; }
-  .hl-title { font-size: 1.05rem; font-weight: 650; line-height: 1.3; margin-top: 0.2rem; letter-spacing: -0.01em; }
+  .hl-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 650; line-height: 1.3; margin-top: 0.2rem; letter-spacing: -0.01em; }
   .hl-title a { text-decoration-color: var(--line); text-underline-offset: 3px; }
   .hl-title a:hover { color: var(--k); text-decoration-color: currentColor; }
   .hl-detail { font-size: 0.9rem; color: var(--muted); margin-top: 0.3rem; }

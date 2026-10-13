@@ -56,7 +56,7 @@ const years = [...new Set(items.map((m) => m.year))];
             {m.img && <img class="tl-img" src={m.img} alt="" loading="lazy" decoding="async" />}
             {m.chips && (
               <ul class="tl-chips">
-                {m.chips.map((c) => <li>{c}</li>)}
+                {m.chips.map((c) => <li class:list={{ 'tl-chip--dean': c.startsWith('Dean'), 'tl-chip--award': c.includes('Award') }}>{c}</li>)}
               </ul>
             )}
           </li>
@@ -179,6 +179,9 @@ const years = [...new Set(items.map((m) => m.year))];
   .tl-chips { grid-column: 1 / -1; list-style: none; padding: 0; margin-top: -0.4rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
   .tl-chips li { font-size: 0.82rem; font-weight: 550; padding: 0.25rem 0.7rem; border-radius: 999px; background: color-mix(in srgb, var(--k) 10%, transparent); color: var(--ink); }
   .tl-img { width: 190px; height: auto; max-height: 260px; object-fit: cover; border-radius: 10px; align-self: start; }
+  /* Dean's List uses the same green as the degree semesters' standing. */
+  .tl-chips li.tl-chip--dean { background: #DCF2E3; color: #15803D; font-weight: 650; }
+  .tl-chips li.tl-chip--award { background: #FBEFD5; color: #8A5A0B; font-weight: 650; }
   @media (max-width: 600px) {
     .tl-item { margin-left: 1.8rem; padding: 1rem; }
     .tl-dot { left: calc(-1.8rem + 1px); }
