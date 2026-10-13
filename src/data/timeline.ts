@@ -236,7 +236,7 @@ export const timeline: Moment[] = [
     kind: 'award',
     title: 'Track Winner, Project Overwatch (Track 1), SEDIC 2026',
     detail: 'Team NEXA. An offline AI system that classifies civilian comms, military radar and jamming from raw IQ data, even when they overlap. Presented at MITEC alongside CyberDSA.',
-    img: '/images/timeline/sedic.jpg',
+    img: '/images/timeline/sedic-ceremony.jpg',
     href: '/projects/sedic',
   },
   {
