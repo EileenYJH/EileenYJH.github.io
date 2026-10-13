@@ -11,24 +11,23 @@ const kindLabel: Record<Kind, string> = {
 
 // Grouped by category, newest first within each; "Now" roles render as their own list.
 const items = timeline.filter((m) => !m.academic && m.kind !== 'now').reverse();
-const groups: { kind: Kind; title: string }[] = [
-  { kind: 'award', title: 'Awards' },
-  { kind: 'competition', title: 'Competitions' },
-  { kind: 'event', title: 'Events' },
+const groups: { id: string; kinds: Kind[]; title: string }[] = [
+  { id: 'award', kinds: ['award', 'competition'], title: 'Competitions & awards' },
+  { id: 'event', kinds: ['event'], title: 'Events' },
 ];
 const roles = timeline.find((m) => m.kind === 'now')?.chips ?? [];
 ---
 {groups.map((g) => {
-  const list = items.filter((m) => m.kind === g.kind);
+  const list = items.filter((m) => g.kinds.includes(m.kind));
   return list.length > 0 && (
-    <div class:list={['hl-group', `hl-group--${g.kind}`]}>
+    <div class:list={['hl-group', `hl-group--${g.id}`]}>
       <h3 class="hl-group-title">{g.title} <span>{list.length}</span></h3>
       <ul class="hl">
         {list.map((m) => (
           <li class:list={['hl-card', `hl-card--${m.kind}`]}>
             {m.img && <img class="hl-img" src={m.img} alt="" loading="lazy" decoding="async" />}
             <div class="hl-body">
-              <p class="hl-meta"><span class="hl-date">{m.date}</span></p>
+              <p class="hl-meta">{g.kinds.length > 1 && <span class="hl-kind">{m.kind === 'award' ? 'Award' : 'Competition'}</span>}<span class="hl-date">{m.date}</span></p>
               <h4 class="hl-title">{m.href ? <a href={m.href}>{m.title}</a> : m.title}</h4>
               {m.detail && <p class="hl-detail">{m.detail}</p>}
             </div>
