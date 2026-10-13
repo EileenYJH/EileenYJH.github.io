@@ -1,5 +1,6 @@
 ---
-// The T-shaped floor plan from the live ARIA dashboard.
+// The T-shaped floor plan from the live ARIA dashboard, driven by the same rules as the hub firmware:
+// zone routing, the 30-LED corridor strip the hub lights up, and the laser-beam people counters at each exit.
 const rooms = [
   { n: 'N1', z: 'A', x: 76, y: 30, w: 150, h: 84 },
   { n: 'N2', z: 'B', x: 232, y: 30, w: 150, h: 84 },
@@ -8,16 +9,30 @@ const rooms = [
   { n: 'N5', z: 'A', x: 150, y: 176, w: 96, h: 64 },
   { n: 'N6', z: 'C', x: 514, y: 176, w: 96, h: 64 },
 ];
+// 30 WS2812B LEDs along the corridor, 10 per zone (zone A on the left).
+const leds = Array.from({ length: 30 }, (_, i) => ({ i, x: 74 + i * (612 / 29) }));
 ---
 <div class="evac card" data-reveal>
   <div class="evac-map">
-    <svg viewBox="0 0 760 300" role="img" aria-label="T-shaped floor plan from the ARIA dashboard: six nodes in zones A, B and C along one corridor, with Exit A on the left, Exit C on the right and Exit B down the middle. Click a room to start a fire in its zone and see the routing change.">
+    <svg viewBox="0 0 760 300" role="img" aria-label="T-shaped floor plan from the ARIA dashboard: six nodes in zones A, B and C along one corridor, with Exit A on the left, Exit C on the right and Exit B down the middle. Click a room to start a fire in its zone and see the routing, the hub's LED strip and the exit counters respond.">
+      <defs>
+        <filter id="evac-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="2.4" /></filter>
+      </defs>
       <!-- corridor: the T -->
       <rect x="64" y="122" width="632" height="40" fill="#E2E8F0" />
       <rect x="360" y="162" width="40" height="76" fill="#E2E8F0" />
-      <!-- escape routes are drawn here by the script -->
-      <defs><marker id="evac-head" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke" /></marker></defs>
-      <g id="evac-routes"></g>
+      <!-- hub LED strip: 30 pixels, 10 per zone -->
+      <g id="evac-leds">
+        {leds.map((l) => <circle cx={l.x} cy="127" r="3.2" class="led" data-led={l.i} />)}
+      </g>
+      <!-- people moving along each escape route -->
+      <g id="evac-parts"></g>
+      <!-- laser beams across each exit -->
+      <g class="beams">
+        <line x1="66" y1="122" x2="66" y2="162" class="beam" id="beam-A" />
+        <line x1="694" y1="122" x2="694" y2="162" class="beam" id="beam-C" />
+        <line x1="360" y1="234" x2="400" y2="234" class="beam" id="beam-B" />
+      </g>
       <!-- exits -->
       <g class="exit"><rect x="6" y="116" width="58" height="52" rx="8" fill="#E3F0E8" stroke="#2E7D4F" stroke-width="1.5" id="exit-A" />
         <text x="35" y="138" text-anchor="middle" class="ex-t">Exit A</text><text x="35" y="154" text-anchor="middle" class="ex-s" id="exit-s-A">OPEN</text></g>
@@ -36,54 +51,89 @@ const rooms = [
       ))}
     </svg>
     <p class="evac-hint muted">Click any room to start a fire in its zone. Click again to put it out.</p>
-    <ul class="evac-routes" id="evac-route-text"></ul>
   </div>
-  <div class="evac-side">
-    <p class="evac-title">Exit congestion</p>
-    {(['A', 'B', 'C'] as const).map((z) => (
-      <label class="evac-check"><input type="checkbox" data-congest={z} /> Exit {z} congested</label>
-    ))}
-    <button type="button" id="evac-reset" class="evac-reset">Reset</button>
-    <ul class="evac-legend muted">
-      <li><span style="background: #2E7D4F;"></span> safe: follow arrows</li>
-      <li><span style="background: #C03028;"></span> fire: routing away</li>
-      <li><span style="background: #D98E1B;"></span> exit congested: re-routed</li>
-    </ul>
+
+  <div class="evac-panels">
+    <div class="evac-panel">
+      <p class="evac-title">Laser-beam counters</p>
+      <p class="evac-note muted">Each exit has a laser shining on an LDR. Every person who walks through breaks the beam once. More than 23 people in a 30-second window marks that exit congested. The demo clock runs 5× faster.</p>
+      {(['A', 'B', 'C'] as const).map((z) => (
+        <div class="ctr" data-exit={z}>
+          <div class="ctr-top">
+            <b>Exit {z}</b>
+            <span class="ctr-beam" id={`ctr-beam-${z}`}>beam clear</span>
+            <span class="ctr-count"><span id={`ctr-n-${z}`}>0</span> / 23</span>
+          </div>
+          <div class="ctr-bar"><i id={`ctr-bar-${z}`}></i></div>
+          <label class="ctr-flow">
+            <span>People per minute</span>
+            <input type="range" min="0" max="80" step="1" value="0" data-flow={z} />
+            <output id={`ctr-flow-${z}`}>0</output>
+          </label>
+        </div>
+      ))}
+      <p class="ctr-window muted">Window <span id="ctr-window">0</span> s of 30</p>
+    </div>
+    <div class="evac-panel">
+      <p class="evac-title">What the hub does</p>
+      <ul class="evac-routes" id="evac-route-text"></ul>
+      <p class="evac-note muted">The dots along the corridor are the hub's 30-LED strip, 10 per zone. It stays dark until a zone reaches fire level. Then each zone's packet of light chases toward the exit people should use, growing as it nears the exit.</p>
+      <ul class="evac-legend muted">
+        <li><span style="background: #2E7D4F;"></span> safe: follow the light</li>
+        <li><span style="background: #C03028;"></span> fire: routing away</li>
+        <li><span style="background: #D98E1B;"></span> exit congested</li>
+      </ul>
+      <button type="button" id="evac-reset" class="evac-reset">Reset</button>
+    </div>
   </div>
 </div>
 
 <style>
-  .evac { display: grid; grid-template-columns: 2.2fr 1fr; gap: 1.5rem; padding: 1.5rem; align-items: center; }
+  .evac { padding: 1.5rem; }
   .evac-map svg { width: 100%; height: auto; font-family: var(--font-body); }
   .evac-map :global(.rm-n) { font-size: 17px; font-weight: 700; fill: #151A2E; }
   .evac-map :global(.rm-z) { font-size: 11px; fill: #5A6272; }
   .evac-map :global(.ex-t) { font-size: 11px; font-weight: 700; fill: #151A2E; }
   .evac-map :global(.ex-s) { font-size: 9px; font-weight: 600; fill: #5A6272; letter-spacing: 0.04em; }
   .evac-map .zone:hover rect { stroke-width: 2.6; }
+  .evac-map :global(.led) { fill: #C9D1DC; }
+  .evac-map :global(.beam) { stroke: #E5484D; stroke-width: 1.6; stroke-dasharray: 3 3; opacity: 0.75; }
+  .evac-map :global(.beam.cut) { stroke-dasharray: none; stroke-width: 3.2; opacity: 1; }
   .evac-hint { font-size: 0.8rem; margin-top: 0.4rem; }
-  .evac-routes { list-style: none; padding: 0; margin-top: 0.6rem; display: grid; gap: 0.3rem; font-size: 0.85rem; }
+  .evac-panels { display: grid; grid-template-columns: 1.1fr 1fr; gap: 1.4rem; margin-top: 1.1rem; }
+  .evac-panel { border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.1rem; background: var(--paper); }
+  .evac-title { font-weight: 700; font-size: 0.95rem; }
+  .evac-note { font-size: 0.8rem; margin-top: 0.3rem; line-height: 1.5; }
+  .ctr { margin-top: 0.8rem; }
+  .ctr-top { display: flex; align-items: baseline; gap: 0.7rem; font-size: 0.88rem; }
+  .ctr-beam { font-size: 0.75rem; color: var(--muted); }
+  .ctr-beam.cut { color: #E5484D; font-weight: 650; }
+  .ctr-count { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 650; }
+  .ctr.congested .ctr-count { color: #D98E1B; }
+  .ctr-bar { height: 6px; border-radius: 6px; background: var(--line); overflow: hidden; margin-top: 0.3rem; }
+  .ctr-bar i { display: block; height: 100%; width: 0; background: #2E7D4F; transition: width 0.15s ease; }
+  .ctr.congested .ctr-bar i { background: #D98E1B; }
+  .ctr-flow { display: grid; grid-template-columns: auto 1fr 2.2rem; gap: 0.6rem; align-items: center; font-size: 0.78rem; color: var(--muted); margin-top: 0.35rem; }
+  .ctr-flow input { accent-color: var(--accent); width: 100%; }
+  .ctr-flow output { font-variant-numeric: tabular-nums; text-align: right; color: var(--ink); }
+  .ctr-window { font-size: 0.78rem; margin-top: 0.7rem; font-variant-numeric: tabular-nums; }
+  .evac-routes { list-style: none; padding: 0; margin-top: 0.5rem; display: grid; gap: 0.3rem; font-size: 0.85rem; }
   .evac-routes :global(li) { padding: 0.35rem 0.7rem; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
-  .evac-map :global(.route) { fill: none; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 2 14; animation: evac-flow 0.9s linear infinite; }
-  @keyframes evac-flow { to { stroke-dashoffset: -16; } }
-  @media (prefers-reduced-motion: reduce) { .evac-map :global(.route) { animation: none; stroke-dasharray: none; stroke-width: 3; opacity: 0.8; } }
-  .evac-title { font-weight: 600; font-size: 0.9rem; }
-  .evac-check { display: flex; gap: 0.45rem; align-items: center; font-size: 0.9rem; margin-top: 0.5rem; }
-  .evac-check input { accent-color: var(--accent); }
   .evac-reset {
-    margin-top: 1rem;
+    margin-top: 0.9rem;
     font: inherit;
     font-size: 0.85rem;
     font-weight: 550;
     padding: 0.45rem 1.1rem;
     border-radius: 999px;
     border: 1px solid var(--line);
-    background: var(--paper);
+    background: #fff;
     cursor: pointer;
   }
   .evac-reset:hover { border-color: var(--accent); }
-  .evac-legend { list-style: none; padding: 0; margin-top: 1.4rem; font-size: 0.8rem; display: grid; gap: 0.4rem; }
+  .evac-legend { list-style: none; padding: 0; margin-top: 0.8rem; font-size: 0.8rem; display: grid; gap: 0.35rem; }
   .evac-legend span { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 0.4rem; vertical-align: -1px; }
-  @media (max-width: 800px) { .evac { grid-template-columns: 1fr; } }
+  @media (max-width: 800px) { .evac-panels { grid-template-columns: 1fr; } }
 </style>
 
 <script>
@@ -92,25 +142,13 @@ const rooms = [
   const fire = new Set<ZoneId>();
   const congested = new Set<ZoneId>();
   const ZONES: ZoneId[] = ['A', 'B', 'C'];
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const FILL: Record<string, string> = {
-    off: '#FFFFFF',
-    green: '#E3F0E8',
-    red: '#F7E2E0',
-    orange: '#F9EDDA',
-  };
-  const STROKE: Record<string, string> = {
-    off: '#DDE3EC',
-    green: '#2E7D4F',
-    red: '#C03028',
-    orange: '#D98E1B',
-  };
+  const FILL: Record<string, string> = { off: '#FFFFFF', green: '#E3F0E8', red: '#F7E2E0', orange: '#F9EDDA' };
+  const STROKE: Record<string, string> = { off: '#DDE3EC', green: '#2E7D4F', red: '#C03028', orange: '#D98E1B' };
+  const LED: Record<string, string> = { green: '#22C55E', red: '#EF4444', orange: '#F59E0B' };
 
-  // Where each zone is sent, following the hub firmware: a safe zone uses its own exit;
-  // a zone on fire is sent the other way, to the nearest exit whose zone is not burning.
-  const Y = { A: 136, B: 142, C: 148 } as const;
-  const START: Record<ZoneId, number[]> = { A: [151], B: [310, 466], C: [619] };
-  const EXIT_X: Record<string, number> = { A: 64, C: 696 };
+  // ---------- routing: where each zone is sent (hub firmware rules) ----------
   function target(z: ZoneId): ZoneId {
     const all = fire.has('A') && fire.has('B') && fire.has('C');
     if (!fire.has(z) || all) return z;
@@ -118,17 +156,125 @@ const rooms = [
     if (z === 'B') return !fire.has('A') ? 'A' : 'C';
     return !fire.has('B') ? 'B' : 'A';
   }
-  function pathFor(z: ZoneId, x0: number, to: ZoneId): string {
-    const y = Y[z];
-    if (to === 'B') return `M${x0},${y} L380,${y} L380,236`;
-    return `M${x0},${y} L${EXIT_X[to]},${y}`;
+  const Y = 142, STUB_X = 380, EXIT_B_Y = 262, EXIT_A_X = 35, EXIT_C_X = 725;
+  const START: Record<ZoneId, number[]> = { A: [151, 198], B: [307, 453], C: [619, 562] };
+  function pathFor(x0: number, to: ZoneId): number[][] {
+    if (to === 'B') return [[x0, Y], [STUB_X, Y], [STUB_X, EXIT_B_Y]];
+    return [[x0, Y], [to === 'A' ? EXIT_A_X : EXIT_C_X, Y]];
+  }
+
+  // ---------- particles moving along the routes, like the live dashboard ----------
+  type Route = { pts: number[][]; len: number; colour: string };
+  let routes: Route[] = [];
+  const seg = (a: number[], b: number[]) => Math.hypot(b[0] - a[0], b[1] - a[1]);
+  function pointAt(r: Route, d: number) {
+    let rem = d;
+    for (let i = 0; i < r.pts.length - 1; i++) {
+      const s = seg(r.pts[i], r.pts[i + 1]);
+      if (rem <= s) {
+        const t = s ? rem / s : 0;
+        return [r.pts[i][0] + (r.pts[i + 1][0] - r.pts[i][0]) * t, r.pts[i][1] + (r.pts[i + 1][1] - r.pts[i][1]) * t];
+      }
+      rem -= s;
+    }
+    return r.pts[r.pts.length - 1];
   }
   const NS = 'http://www.w3.org/2000/svg';
-  function render() {
+  const partsLayer = document.getElementById('evac-parts');
+  function drawParticles(t: number) {
+    if (!partsLayer) return;
+    partsLayer.textContent = '';
+    for (const r of routes) {
+      const head = still ? r.len * 0.85 : (t * 80) % r.len;
+      const toEnd = r.len - head;
+      const n = toEnd < r.len * 0.2 ? 3 : toEnd < r.len * 0.4 ? 2 : 1;
+      for (let k = 0; k < n; k++) {
+        const d = head - k * 10;
+        if (d < 0) break;
+        const [x, y] = pointAt(r, d);
+        const glow = document.createElementNS(NS, 'circle');
+        glow.setAttribute('cx', String(x)); glow.setAttribute('cy', String(y)); glow.setAttribute('r', '7');
+        glow.setAttribute('fill', r.colour); glow.setAttribute('opacity', k === 0 ? '0.45' : '0.25'); glow.setAttribute('filter', 'url(#evac-glow)');
+        const dot = document.createElementNS(NS, 'circle');
+        dot.setAttribute('cx', String(x)); dot.setAttribute('cy', String(y)); dot.setAttribute('r', '3.6'); dot.setAttribute('fill', r.colour);
+        partsLayer.append(glow, dot);
+      }
+    }
+  }
+
+  // ---------- hub LED strip: 30 pixels, 10 per zone, chasing toward the exit ----------
+  const ledEls = [...document.querySelectorAll<SVGCircleElement>('[data-led]')];
+  function drawLeds(step: number) {
     const plan = routeZones(fire, congested);
-    const g = document.getElementById('evac-routes');
+    ledEls.forEach((el) => (el.style.fill = ''));
+    if (fire.size === 0) return;
+    ZONES.forEach((z, zi) => {
+      const zr = plan[z];
+      if (zr.direction === 'none') return;
+      const start = zi * 10, end = start + 9, len = 10;
+      const progress = still ? 7 : step % len;
+      const lead = zr.direction === 'left' ? end - progress : start + progress;
+      const exitPos = zr.direction === 'left' ? start : end;
+      const dist = Math.abs(lead - exitPos);
+      const pkt = dist <= 2 ? 3 : dist <= 4 ? 2 : 1;
+      for (let p = 0; p < pkt; p++) {
+        const pos = zr.direction === 'left' ? lead + p : lead - p;
+        if (pos >= start && pos <= end) ledEls[pos].style.fill = LED[zr.color] ?? '';
+      }
+    });
+  }
+
+  // ---------- laser-beam counters (firmware: more than 23 people in a 30 s window = congested) ----------
+  const SPEED = 5;
+  const WINDOW = 30, LIMIT = 23, CUT_S = 0.6;
+  const flow: Record<ZoneId, number> = { A: 0, B: 0, C: 0 };
+  const count: Record<ZoneId, number> = { A: 0, B: 0, C: 0 };
+  const nextIn: Record<ZoneId, number> = { A: 0.5, B: 0.5, C: 0.5 };
+  const cutLeft: Record<ZoneId, number> = { A: 0, B: 0, C: 0 };
+  let windowT = 0;
+  function tickCounters(dtSim: number) {
+    windowT += dtSim;
+    for (const z of ZONES) {
+      cutLeft[z] = Math.max(0, cutLeft[z] - dtSim);
+      if (flow[z] > 0) {
+        nextIn[z] -= dtSim;
+        while (nextIn[z] <= 0) {
+          count[z]++;
+          cutLeft[z] = CUT_S;
+          nextIn[z] += 60 / flow[z];
+          // the hub flags congestion the moment the count passes the limit
+          if (count[z] > LIMIT && !congested.has(z)) { congested.add(z); refresh(); }
+        }
+      } else nextIn[z] = 0.5;
+    }
+    if (windowT >= WINDOW) {
+      // end of window: re-check (this is how congestion clears), then reset the counters
+      let changed = false;
+      for (const z of ZONES) {
+        const now = count[z] > LIMIT;
+        if (now !== congested.has(z)) { changed = true; if (now) congested.add(z); else congested.delete(z); }
+        count[z] = 0;
+      }
+      windowT = 0;
+      if (changed) refresh();
+    }
+    for (const z of ZONES) {
+      const n = document.getElementById(`ctr-n-${z}`); if (n) n.textContent = String(count[z]);
+      const bar = document.getElementById(`ctr-bar-${z}`); if (bar) bar.style.width = `${Math.min(100, (count[z] / (LIMIT + 1)) * 100)}%`;
+      const beamTxt = document.getElementById(`ctr-beam-${z}`);
+      const cut = cutLeft[z] > 0;
+      if (beamTxt) { beamTxt.textContent = cut ? 'beam broken' : 'beam clear'; beamTxt.classList.toggle('cut', cut); }
+      document.getElementById(`beam-${z}`)?.classList.toggle('cut', cut);
+      document.querySelector(`.ctr[data-exit="${z}"]`)?.classList.toggle('congested', congested.has(z));
+    }
+    const w = document.getElementById('ctr-window'); if (w) w.textContent = String(Math.floor(windowT));
+  }
+
+  // ---------- rooms, exits and the route list ----------
+  function refresh() {
+    const plan = routeZones(fire, congested);
+    routes = [];
     const list = document.getElementById('evac-route-text');
-    if (g) g.textContent = '';
     if (list) list.textContent = '';
     for (const z of ZONES) {
       const route = plan[z];
@@ -140,12 +286,10 @@ const rooms = [
       const to = target(z);
       const colour = fire.has(z) ? STROKE.red : congested.has(to) ? STROKE.orange : STROKE.green;
       for (const x0 of START[z]) {
-        const path = document.createElementNS(NS, 'path');
-        path.setAttribute('d', pathFor(z, x0, to));
-        path.setAttribute('class', 'route');
-        path.setAttribute('marker-end', 'url(#evac-head)');
-        path.setAttribute('stroke', colour);
-        g?.appendChild(path);
+        const pts = pathFor(x0, to);
+        let len = 0;
+        for (let i = 0; i < pts.length - 1; i++) len += seg(pts[i], pts[i + 1]);
+        routes.push({ pts, len, colour });
       }
       if (list) {
         const li = document.createElement('li');
@@ -167,27 +311,41 @@ const rooms = [
   document.querySelectorAll<SVGGElement>('.zone').forEach((g) => {
     g.addEventListener('click', () => {
       const z = g.dataset.zone as ZoneId;
-      if (fire.has(z)) fire.delete(z);
-      else fire.add(z);
-      render();
+      if (fire.has(z)) fire.delete(z); else fire.add(z);
+      refresh();
     });
   });
-
-  document.querySelectorAll<HTMLInputElement>('[data-congest]').forEach((cb) => {
-    cb.addEventListener('change', () => {
-      const z = cb.dataset.congest as ZoneId;
-      if (cb.checked) congested.add(z);
-      else congested.delete(z);
-      render();
+  document.querySelectorAll<HTMLInputElement>('[data-flow]').forEach((input) => {
+    input.addEventListener('input', () => {
+      const z = input.dataset.flow as ZoneId;
+      flow[z] = Number(input.value);
+      const o = document.getElementById(`ctr-flow-${z}`); if (o) o.textContent = input.value;
     });
   });
-
   document.getElementById('evac-reset')?.addEventListener('click', () => {
     fire.clear();
     congested.clear();
-    document.querySelectorAll<HTMLInputElement>('[data-congest]').forEach((cb) => (cb.checked = false));
-    render();
+    for (const z of ZONES) { flow[z] = 0; count[z] = 0; cutLeft[z] = 0; }
+    windowT = 0;
+    document.querySelectorAll<HTMLInputElement>('[data-flow]').forEach((i) => {
+      i.value = '0';
+      const o = document.getElementById(`ctr-flow-${i.dataset.flow}`); if (o) o.textContent = '0';
+    });
+    refresh();
   });
 
-  render();
+  refresh();
+  let last = performance.now(), t = 0, ledAcc = 0, ledStep = 0;
+  function loop(now: number) {
+    const dt = Math.min(0.1, (now - last) / 1000);
+    last = now;
+    t += dt;
+    ledAcc += dt;
+    if (ledAcc >= 0.08) { ledAcc = 0; ledStep++; }
+    drawParticles(t);
+    drawLeds(ledStep);
+    tickCounters(dt * SPEED);
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
 </script>
