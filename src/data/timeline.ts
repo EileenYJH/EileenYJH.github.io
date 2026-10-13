@@ -26,6 +26,11 @@ export interface Moment {
   academic?: boolean;
 }
 
+/** Short note shown under a year marker on the academic timeline. */
+export const yearNotes: Record<number, string> = {
+  2025: 'Started the Bachelor of Electrical and Electronics Engineering with Honours, UTP',
+};
+
 export const timeline: Moment[] = [
   {
     year: 2024,
@@ -75,8 +80,7 @@ export const timeline: Moment[] = [
     date: 'Sep 2025',
     kind: 'study',
     academic: true,
-    title: 'Degree semester 1: Bachelor of Electrical and Electronics Engineering with Honours, UTP',
-    detail: 'Started my degree.',
+    title: 'Degree semester 1',
     gpa: '3.97',
     cgpa: '3.97',
     standing: 'Dean’s List',

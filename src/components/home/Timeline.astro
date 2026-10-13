@@ -1,5 +1,5 @@
 ---
-import { timeline, type Kind } from '../../data/timeline';
+import { timeline, yearNotes, type Kind } from '../../data/timeline';
 
 const kindLabel: Record<Kind, string> = {
   study: 'Studies',
@@ -19,9 +19,10 @@ const years = [...new Set(items.map((m) => m.year))];
     <li class="tl-year">
       <span class="tl-ghost" aria-hidden="true">{y}</span>
       <h3 class="tl-year-label">{y}</h3>
+      {yearNotes[y] && <p class="tl-year-note">{yearNotes[y]}</p>}
       <ol class="tl-items">
-        {items.filter((m) => m.year === y).map((m) => (
-          <li class:list={['tl-item', `tl-item--${m.kind}`, items.indexOf(m) % 2 ? 'tl-item--right' : 'tl-item--left', { 'tl-item--img': m.img }]}>
+        {items.filter((m) => m.year === y).map((m, i) => (
+          <li class:list={['tl-item', `tl-item--${m.kind}`, i % 2 ? 'tl-item--right' : 'tl-item--left', { 'tl-item--img': m.img }]}>
             <span class="tl-dot" aria-hidden="true"></span>
             <div class="tl-body">
               <p class="tl-meta">
@@ -126,6 +127,18 @@ const years = [...new Set(items.map((m) => m.year))];
     color: var(--ink);
     line-height: 1;
   }
+  .tl-year-note {
+    position: relative;
+    margin: 0.5rem 0 0 2.2rem;
+    width: fit-content;
+    max-width: 100%;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
   .tl-items { display: grid; gap: 1rem; margin-top: 1.2rem; }
   .tl-item {
     --k: var(--accent);
@@ -183,6 +196,7 @@ const years = [...new Set(items.map((m) => m.year))];
   .tl-chips li.tl-chip--dean { background: #DCF2E3; color: #15803D; font-weight: 650; }
   .tl-chips li.tl-chip--award { background: #FBEFD5; color: #8A5A0B; font-weight: 650; }
   @media (max-width: 600px) {
+    .tl-year-note { margin-left: 1.8rem; font-size: 0.85rem; }
     .tl-item { margin-left: 1.8rem; padding: 1rem; }
     .tl-dot { left: calc(-1.8rem + 1px); }
     .tl-year-label { padding-left: 1.8rem; }
@@ -204,6 +218,7 @@ const years = [...new Set(items.map((m) => m.year))];
       margin-inline: auto;
       padding: 0.3rem 0.8rem;
     }
+    .tl-year-note { margin: 0.3rem auto 0; text-align: center; }
     .tl-items {
       margin-top: 0.8rem;
       display: grid;
