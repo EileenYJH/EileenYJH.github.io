@@ -1,23 +1,21 @@
 ---
 import { wallPhotos } from '../../data/wall';
 
-// Deal the photos round-robin into columns so each column shows a different set.
-const COLS = 5;
-const cols = Array.from({ length: COLS }, (_, c) => wallPhotos.filter((_, i) => i % COLS === c));
-const speeds = [70, 88, 62, 82, 74];
+// Deal the photos round-robin into rows so each row shows a different set.
+const ROWS = 4;
+const rows = Array.from({ length: ROWS }, (_, r) => wallPhotos.filter((_, i) => i % ROWS === r));
+const speeds = [90, 110, 80, 100];
 ---
 <div class="wall" aria-hidden="true">
-  <div class="wall-tilt">
-    {cols.map((photos, c) => (
-      <div class:list={['wall-col', { 'wall-col--down': c % 2 === 1 }]} style={`--dur:${speeds[c]}s`}>
-        <div class="wall-track">
-          {[...photos, ...photos].map((src) => (
-            <img src={src} alt="" decoding="async" />
-          ))}
-        </div>
+  {rows.map((photos, r) => (
+    <div class:list={['wall-row', { 'wall-row--right': r % 2 === 1 }]} style={`--dur:${speeds[r]}s`}>
+      <div class="wall-track">
+        {[...photos, ...photos].map((src) => (
+          <img src={src} alt="" decoding="async" />
+        ))}
       </div>
-    ))}
-  </div>
+    </div>
+  ))}
 </div>
 
 <script>
@@ -30,45 +28,40 @@ const speeds = [70, 88, 62, 82, 74];
 
 <style>
   .wall {
+    --gap: 10px;
     position: absolute;
     inset: 0;
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    gap: var(--gap);
+    padding-block: var(--gap);
     overflow: hidden;
     background: var(--ink);
   }
-  .wall-tilt {
-    position: absolute;
-    inset: -30% -20%;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 14px;
-    transform: rotate(-9deg);
-  }
-  .wall-col { overflow: hidden; }
+  .wall-row { overflow: hidden; min-height: 0; }
   .wall-track {
     display: flex;
-    flex-direction: column;
-    gap: 14px;
-    animation: wall-up var(--dur) linear infinite;
+    gap: var(--gap);
+    height: 100%;
+    width: max-content;
+    animation: wall-left var(--dur) linear infinite;
   }
-  .wall-col--down .wall-track { animation-name: wall-down; }
+  .wall-row--right .wall-track { animation-name: wall-right; }
   .wall.is-paused .wall-track { animation-play-state: paused; }
   .wall img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    filter: saturate(0.75) contrast(1.05);
+    height: 100%;
+    width: auto;
+    max-width: none;
+    border-radius: 8px;
+    object-fit: cover;
   }
-  @keyframes wall-up {
-    from { transform: translateY(0); }
-    to { transform: translateY(calc(-50% - 7px)); }
+  @keyframes wall-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-50% - var(--gap) / 2)); }
   }
-  @keyframes wall-down {
-    from { transform: translateY(calc(-50% - 7px)); }
-    to { transform: translateY(0); }
-  }
-  @media (max-width: 760px) {
-    .wall-tilt { grid-template-columns: repeat(3, 1fr); inset: -25% -40%; }
-    .wall-col:nth-child(n + 4) { display: none; }
+  @keyframes wall-right {
+    from { transform: translateX(calc(-50% - var(--gap) / 2)); }
+    to { transform: translateX(0); }
   }
   @media (prefers-reduced-motion: reduce) {
     .wall-track { animation: none; }
