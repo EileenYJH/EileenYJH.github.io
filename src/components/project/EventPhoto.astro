@@ -1,34 +1,26 @@
 ---
-// The photo from the home-page highlight card, shown on the project page too.
+// The highlight card's photo, shown large as the first image on its project page.
 interface Props { src: string; alt: string; caption: string }
 const { src, alt, caption } = Astro.props;
 ---
-<section class="section wrap event-photo" data-reveal>
+<section class="wrap event-photo" data-reveal>
   <figure>
-    <img src={src} alt={alt} loading="lazy" decoding="async" />
+    <img src={src} alt={alt} decoding="async" fetchpriority="high" />
     <figcaption>{caption}</figcaption>
   </figure>
 </section>
 
 <style>
-  .event-photo { padding-block: 0; margin-top: calc(var(--space-section) * -0.7); }
-  .event-photo figure {
-    display: flex;
-    align-items: center;
-    gap: 1.6rem;
-    margin: 0;
-    padding: 1rem;
-    background: var(--paper-raised);
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    width: fit-content;
+  .event-photo { margin-top: calc(var(--space-section) * -0.55); margin-bottom: calc(var(--space-section) * -0.35); }
+  .event-photo figure { margin: 0; }
+  .event-photo img {
+    display: block;
+    width: auto;
     max-width: 100%;
+    max-height: min(78vh, 760px);
+    height: auto;
+    border-radius: 18px;
+    box-shadow: 0 30px 60px -35px rgba(21, 26, 46, 0.45);
   }
-  .event-photo img { width: auto; max-width: min(420px, 100%); max-height: 340px; height: auto; border-radius: 12px; display: block; }
-  .event-photo figcaption { width: 26ch; max-width: 100%; flex: none; padding-right: 0.6rem; color: var(--muted); font-size: 0.98rem; line-height: 1.55; }
-  @media (max-width: 700px) {
-    .event-photo figure { flex-direction: column; align-items: flex-start; width: 100%; }
-    .event-photo img { max-width: 100%; max-height: none; width: 100%; }
-    .event-photo figcaption { width: auto; }
-  }
+  .event-photo figcaption { margin-top: 0.8rem; color: var(--muted); font-size: 0.95rem; max-width: 60ch; }
 </style>

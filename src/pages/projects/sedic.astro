@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import EventPhoto from '../../components/project/EventPhoto.astro';
 import ArchitectureDiagram from '../../components/sedic/ArchitectureDiagram.astro';
 
 const tiers = [
@@ -39,7 +40,6 @@ const shots = [
 
 // Photos from the SEDIC 2026 finale (from Eileen's portfolio Drive folder).
 const dayPhotos = [
-  { src: '/images/sedic/event/prize-ceremony.jpg', shape: 'wide', alt: 'Prize presentation for Track Project Overwatch at SEDIC 2026', cap: 'Prize presentation for Track 1: Project Overwatch.' },
   { src: '/images/sedic/event/track-winner.jpg', shape: 'tall', alt: 'Team NEXA holding the Track Winner cheque on the SEDIC 2026 stage', cap: 'Track Winner, on stage at the closing ceremony.' },
   { src: '/images/sedic/event/grand-finale.jpg', shape: 'tall', alt: 'Team NEXA with the NEXA banner at the SEDIC 26 grand finale pitching', cap: 'Grand finale pitching.' },
   { src: '/images/sedic/event/with-judge.jpg', shape: 'wide', alt: 'Team NEXA with a guest in uniform at the SEDIC 2026 exhibition', cap: 'Team NEXA at the SEDIC 2026 exhibition.' },
@@ -63,8 +63,10 @@ const dayPhotos = [
     </ul>
   </section>
 
+  <EventPhoto src="/images/projects-hero/sedic.jpg" alt="Prize presentation for Track Project Overwatch at SEDIC 2026" caption="Prize presentation for Track 1: Project Overwatch at SEDIC 2026, MITEC, 7 Oct 2026." />
+
   <section class="section wrap sedic-day">
-    <p class="eyebrow" data-reveal>On the day · 7 Oct 2026 · MITEC</p>
+    <p class="eyebrow" data-reveal>More from the day</p>
     <div class="day-grid">
       {dayPhotos.map((d, i) => (
         <figure class:list={['day-photo', `day-photo--${d.shape}`]} data-reveal data-reveal-delay={i * 0.05}>
@@ -264,8 +266,8 @@ const dayPhotos = [
   @media (max-width: 800px) {
     .two-col, .shot-list { grid-template-columns: 1fr; }
   }
-  .sedic-day { padding-top: 0; margin-top: calc(var(--space-section) * -0.5); }
-  .day-grid { columns: 3 260px; column-gap: 1rem; margin-top: 1rem; }
+  .sedic-day { padding-top: calc(var(--space-section) * 0.6); }
+  .day-grid { columns: 4 220px; column-gap: 1rem; margin-top: 1rem; }
   .day-photo { break-inside: avoid; margin: 0 0 1rem; background: var(--paper-raised); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
   .day-photo img { display: block; width: 100%; height: auto; }
   .day-photo figcaption { padding: 0.6rem 0.9rem 0.75rem; font-size: 0.9rem; color: var(--muted); }
