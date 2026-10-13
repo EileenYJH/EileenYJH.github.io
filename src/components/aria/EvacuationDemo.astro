@@ -15,10 +15,9 @@ const rooms = [
       <!-- corridor: the T -->
       <rect x="64" y="122" width="632" height="40" fill="#E2E8F0" />
       <rect x="360" y="162" width="40" height="76" fill="#E2E8F0" />
-      <!-- corridor arrows, one per zone segment -->
-      {[['A', 220], ['B', 380], ['C', 540]].map(([z, x]) => (
-        <text x={x} y="151" text-anchor="middle" font-size="22" font-weight="700" id={`zone-arrow-${z}`} fill="#2E7D4F"></text>
-      ))}
+      <!-- escape routes are drawn here by the script -->
+      <defs><marker id="evac-head" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke" /></marker></defs>
+      <g id="evac-routes"></g>
       <!-- exits -->
       <g class="exit"><rect x="6" y="116" width="58" height="52" rx="8" fill="#E3F0E8" stroke="#2E7D4F" stroke-width="1.5" id="exit-A" />
         <text x="35" y="138" text-anchor="middle" class="ex-t">Exit A</text><text x="35" y="154" text-anchor="middle" class="ex-s" id="exit-s-A">OPEN</text></g>
@@ -37,6 +36,7 @@ const rooms = [
       ))}
     </svg>
     <p class="evac-hint muted">Click any room to start a fire in its zone. Click again to put it out.</p>
+    <ul class="evac-routes" id="evac-route-text"></ul>
   </div>
   <div class="evac-side">
     <p class="evac-title">Exit congestion</p>
@@ -61,6 +61,11 @@ const rooms = [
   .evac-map :global(.ex-s) { font-size: 9px; font-weight: 600; fill: #5A6272; letter-spacing: 0.04em; }
   .evac-map .zone:hover rect { stroke-width: 2.6; }
   .evac-hint { font-size: 0.8rem; margin-top: 0.4rem; }
+  .evac-routes { list-style: none; padding: 0; margin-top: 0.6rem; display: grid; gap: 0.3rem; font-size: 0.85rem; }
+  .evac-routes :global(li) { padding: 0.35rem 0.7rem; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+  .evac-map :global(.route) { fill: none; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 2 14; animation: evac-flow 0.9s linear infinite; }
+  @keyframes evac-flow { to { stroke-dashoffset: -16; } }
+  @media (prefers-reduced-motion: reduce) { .evac-map :global(.route) { animation: none; stroke-dasharray: none; stroke-width: 3; opacity: 0.8; } }
   .evac-title { font-weight: 600; font-size: 0.9rem; }
   .evac-check { display: flex; gap: 0.45rem; align-items: center; font-size: 0.9rem; margin-top: 0.5rem; }
   .evac-check input { accent-color: var(--accent); }
@@ -100,10 +105,31 @@ const rooms = [
     red: '#C03028',
     orange: '#D98E1B',
   };
-  const ARROW: Record<string, string> = { left: '←', right: '→', none: '' };
 
+  // Where each zone is sent, following the hub firmware: a safe zone uses its own exit;
+  // a zone on fire is sent the other way, to the nearest exit whose zone is not burning.
+  const Y = { A: 136, B: 142, C: 148 } as const;
+  const START: Record<ZoneId, number[]> = { A: [151], B: [310, 466], C: [619] };
+  const EXIT_X: Record<string, number> = { A: 64, C: 696 };
+  function target(z: ZoneId): ZoneId {
+    const all = fire.has('A') && fire.has('B') && fire.has('C');
+    if (!fire.has(z) || all) return z;
+    if (z === 'A') return !fire.has('B') ? 'B' : 'C';
+    if (z === 'B') return !fire.has('A') ? 'A' : 'C';
+    return !fire.has('B') ? 'B' : 'A';
+  }
+  function pathFor(z: ZoneId, x0: number, to: ZoneId): string {
+    const y = Y[z];
+    if (to === 'B') return `M${x0},${y} L380,${y} L380,236`;
+    return `M${x0},${y} L${EXIT_X[to]},${y}`;
+  }
+  const NS = 'http://www.w3.org/2000/svg';
   function render() {
     const plan = routeZones(fire, congested);
+    const g = document.getElementById('evac-routes');
+    const list = document.getElementById('evac-route-text');
+    if (g) g.textContent = '';
+    if (list) list.textContent = '';
     for (const z of ZONES) {
       const route = plan[z];
       document.querySelectorAll<SVGRectElement>(`.zr-${z}`).forEach((rect) => {
@@ -111,10 +137,23 @@ const rooms = [
         rect.setAttribute('stroke', STROKE[route.color]);
       });
       document.querySelectorAll<SVGTextElement>(`.fire-${z}`).forEach((t) => (t.textContent = fire.has(z) ? '🔥' : ''));
-      const arrow = document.getElementById(`zone-arrow-${z}`);
-      if (arrow) {
-        arrow.textContent = route.direction === 'none' ? '' : (ARROW[route.direction] + ' ' + ARROW[route.direction]);
-        arrow.setAttribute('fill', STROKE[route.color]);
+      const to = target(z);
+      const colour = fire.has(z) ? STROKE.red : congested.has(to) ? STROKE.orange : STROKE.green;
+      for (const x0 of START[z]) {
+        const path = document.createElementNS(NS, 'path');
+        path.setAttribute('d', pathFor(z, x0, to));
+        path.setAttribute('class', 'route');
+        path.setAttribute('marker-end', 'url(#evac-head)');
+        path.setAttribute('stroke', colour);
+        g?.appendChild(path);
+      }
+      if (list) {
+        const li = document.createElement('li');
+        const b = document.createElement('b');
+        b.textContent = `Zone ${z}: `;
+        li.append(b, fire.has(z) && to !== z ? `fire, move away to Exit ${to}` : fire.has(z) ? `fire, try Exit ${to}` : `proceed to Exit ${to}`);
+        if (congested.has(to)) { const c = document.createElement('span'); c.textContent = ' (congested)'; c.style.color = STROKE.orange; li.append(c); }
+        list.appendChild(li);
       }
       const exit = document.getElementById(`exit-${z}`);
       const label = document.getElementById(`exit-s-${z}`);
