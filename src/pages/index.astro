@@ -12,7 +12,7 @@ const posts = (await getCollection('blog'))
 const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year: 'numeric' });
 
 const now = [
-  { role: 'Study Abroad student', org: 'University of Sheffield, UK · 2026/27' },
+  { role: 'Exchange student', org: 'University of Sheffield, UK · 2026/27' },
   { role: 'Electrical & Electronic Engineering undergraduate', org: 'Universiti Teknologi PETRONAS, Malaysia' },
   { role: 'Project Director', org: 'Electrical & Electronics Engineering Student Society (E3S2)' },
   { role: 'Secretary', org: 'Open Computing Club (OCC)' },
@@ -28,7 +28,7 @@ const recognition = [
 <BaseLayout
   overlayNav
   title="Eileen Yeoh — electrical & electronic engineering"
-  description="Eileen Yeoh is an electrical and electronic engineering student at UTP, studying abroad at the University of Sheffield. Projects across semiconductor fabrication, power electronics, embedded IoT and applied AI."
+  description="Eileen Yeoh is an electrical and electronic engineering student at UTP, currently on student exchange at the University of Sheffield. Projects across semiconductor fabrication, power electronics, embedded IoT and applied AI."
 >
   <section class="hero">
     <PhotoWall />
@@ -44,7 +44,7 @@ const recognition = [
         stack: from a transistor fabricated by hand in a cleanroom to AI that
         picks jammers out of raw radio.
       </p>
-      <p class="hero-where">UTP, Malaysia · Study Abroad at the University of Sheffield, UK</p>
+      <p class="hero-where">UTP, Malaysia · Student exchange at the University of Sheffield, UK</p>
       <div class="hero-actions">
         <a class="btn btn--trace" href="#work">See my projects</a>
         <a class="btn btn--glass" href={LINKEDIN} target="_blank" rel="noopener">Connect on LinkedIn</a>
@@ -62,7 +62,7 @@ const recognition = [
         My work so far spans semiconductor fabrication, power electronics,
         embedded IoT and applied AI, usually as part of a team racing a
         deadline. Outside the lab I run events and write for the engineering
-        societies at UTP, and this year I'm studying in Sheffield.
+        societies at UTP, and this year I'm on student exchange in Sheffield.
       </p>
       <div class="me-lists">
         <div>
