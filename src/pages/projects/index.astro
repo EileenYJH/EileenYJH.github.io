@@ -1,35 +1,19 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ProjectCard from '../../components/ProjectCard.astro';
-import GantryBot from '../../components/bots/GantryBot.astro';
-
-const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+import WorkList from '../../components/home/WorkList.astro';
 ---
-<BaseLayout title="Projects — Eileen Yeoh" description="Engineering projects by Eileen Yeoh — interactive deep-dives into hardware and firmware.">
+<BaseLayout title="Projects — Eileen Yeoh" description="Engineering projects by Eileen Yeoh: semiconductor fabrication, power electronics, embedded IoT and applied AI, each with an interactive deep-dive.">
   <section class="section wrap">
-    <p class="eyebrow" data-reveal>Projects</p>
-    <h1 data-split>Built, broken, rebuilt, explained</h1>
-    <GantryBot />
-    <div class="proj-grid">
-      {projects.map((p, i) => (
-        <ProjectCard
-          title={p.data.title}
-          summary={p.data.summary}
-          tags={p.data.tags}
-          href={p.data.href ?? '#'}
-          index={i}
-        />
-      ))}
-    </div>
+    <h1>Projects</h1>
+    <p class="lede muted">
+      From hand-fabricated transistors to multi-agent AI. Each one has its own
+      page with the design decisions, the results and what went wrong.
+    </p>
+    <WorkList />
   </section>
 </BaseLayout>
 
 <style>
-  .proj-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2.5rem;
-  }
+  h1 { font-size: clamp(3rem, 8vw, 6rem); letter-spacing: -0.04em; }
+  .lede { font-size: 1.2rem; margin-top: 1rem; max-width: 52ch; }
 </style>

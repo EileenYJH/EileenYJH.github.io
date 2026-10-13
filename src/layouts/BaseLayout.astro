@@ -1,6 +1,5 @@
 ---
-import '@fontsource-variable/fraunces';
-import '@fontsource-variable/inter';
+import '@fontsource-variable/bricolage-grotesque';
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -8,12 +7,14 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title: string;
   description?: string;
+  overlayNav?: boolean;
   theme?: 'aria' | 'nexa' | 'aws' | 'sedic' | 'mosfet' | 'psu';
 }
 const {
   title,
   description = 'Portfolio of Eileen Yeoh — electrical & electronics engineering projects, explained visually and interactively.',
   theme,
+  overlayNav = false,
 } = Astro.props;
 ---
 <!doctype html>
@@ -30,7 +31,7 @@ const {
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
-    <Nav />
+    <Nav overlay={overlayNav} />
     <main>
       <slot />
     </main>

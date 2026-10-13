@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content';
+
+// Each project keeps the colour of its own page.
+const projectMeta: Record<string, { color: string; context: string }> = {
+  '/projects/aria': { color: '#B91C1C', context: 'IoT makerthon' },
+  '/projects/nexa': { color: '#0F766E', context: 'Jabil IT ECP Bootcamp 3.0' },
+  '/projects/nexa-aws': { color: '#B45309', context: 'AWS x UTP GenAI Hackathon' },
+  '/projects/sedic': { color: '#6D28D9', context: 'SEDIC 2026, RF track' },
+  '/projects/mosfet': { color: '#A21CAF', context: 'Cleanroom lab, UTP' },
+  '/projects/power-supply': { color: '#15803D', context: 'Electronics lab, UTP' },
+};
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((p) => {
+    const [name, ...rest] = p.data.title.split(' — ');
+    const href = p.data.href ?? '/projects';
+    return { name, what: rest.join(' — '), summary: p.data.summary, tags: p.data.tags, href, ...projectMeta[href] };
+  });
+---
+<ul class="work-list">
+  {projects.map((p) => (
+    <li>
+      <a class="work-row" href={p.href} style={`--c:${p.color}`}>
+        <span class="work-swatch" aria-hidden="true"></span>
+        <span class="work-main">
+          <span class="work-context">{p.context}</span>
+          <span class="work-name">{p.name}</span>
+          <span class="work-what">{p.what}</span>
+        </span>
+        <span class="work-summary">{p.summary}</span>
+        <span class="work-tags">{p.tags.slice(0, 3).join(' / ')}</span>
+      </a>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .work-list { list-style: none; padding: 0; margin-top: 2rem; border-top: 1.5px solid var(--ink); }
+  .work-row {
+    display: grid;
+    grid-template-columns: 10px minmax(0, 1.1fr) minmax(0, 1.4fr) minmax(0, 0.8fr);
+    gap: 1.8rem;
+    align-items: start;
+    padding: 1.8rem 0.5rem 1.8rem 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    transition: background 0.25s ease;
+  }
+  .work-swatch { align-self: stretch; width: 10px; border-radius: 3px; background: var(--c); transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+  .work-row:hover { background: color-mix(in srgb, var(--c) 6%, transparent); }
+  .work-row:hover .work-name { color: var(--c); }
+  .work-main { display: grid; gap: 0.2rem; }
+  .work-context { font-size: 0.85rem; font-weight: 600; color: var(--c); }
+  .work-name { font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; transition: color 0.2s ease; }
+  .work-what { font-size: 0.98rem; color: var(--steel); line-height: 1.4; }
+  .work-summary { font-size: 0.95rem; color: var(--muted); line-height: 1.6; }
+  .work-tags { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+  @media (max-width: 900px) {
+    .work-row { grid-template-columns: 8px 1fr; gap: 0.6rem 1.2rem; }
+    .work-swatch { grid-row: span 3; }
+    .work-summary, .work-tags { grid-column: 2; }
+  }
+</style>

@@ -1,0 +1,79 @@
+---
+import { wallPhotos } from '../../data/wall';
+
+// Spread the photos across columns, rotating the start so neighbouring
+// columns never show the same photo side by side.
+const COLS = 5;
+const cols = Array.from({ length: COLS }, (_, c) =>
+  wallPhotos.map((_, i) => wallPhotos[(i * 2 + c * 3) % wallPhotos.length]),
+);
+const speeds = [74, 92, 66, 86, 78];
+---
+<div class="wall" aria-hidden="true">
+  <div class="wall-tilt">
+    {cols.map((photos, c) => (
+      <div class:list={['wall-col', { 'wall-col--down': c % 2 === 1 }]} style={`--dur:${speeds[c]}s`}>
+        <div class="wall-track">
+          {[...photos, ...photos].map((p) => (
+            <img src={p.src} alt="" loading="eager" decoding="async" />
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+  // Pause the wall when the hero is off screen.
+  const wall = document.querySelector<HTMLElement>('.wall');
+  if (wall && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => wall.classList.toggle('is-paused', !e.isIntersecting)).observe(wall);
+  }
+</script>
+
+<style>
+  .wall {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background: var(--ink);
+  }
+  .wall-tilt {
+    position: absolute;
+    inset: -30% -20%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    transform: rotate(-9deg);
+  }
+  .wall-col { overflow: hidden; }
+  .wall-track {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    animation: wall-up var(--dur) linear infinite;
+  }
+  .wall-col--down .wall-track { animation-name: wall-down; }
+  .wall.is-paused .wall-track { animation-play-state: paused; }
+  .wall img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    filter: saturate(0.75) contrast(1.05);
+  }
+  @keyframes wall-up {
+    from { transform: translateY(0); }
+    to { transform: translateY(calc(-50% - 7px)); }
+  }
+  @keyframes wall-down {
+    from { transform: translateY(calc(-50% - 7px)); }
+    to { transform: translateY(0); }
+  }
+  @media (max-width: 760px) {
+    .wall-tilt { grid-template-columns: repeat(3, 1fr); inset: -25% -40%; }
+    .wall-col:nth-child(n + 4) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .wall-track { animation: none; }
+  }
+</style>

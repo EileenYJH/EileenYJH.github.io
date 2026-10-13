@@ -1,18 +1,19 @@
 :root {
-  --paper: #F6F8FB;
+  --paper: #F4F6F9;
   --paper-raised: #FFFFFF;
-  --ink: #14181F;
-  --muted: #5C6470;
+  --ink: #151A2E;
+  --muted: #5A6272;
   --line: #DDE3EC;
-  --accent: #1D4ED8;
-  --accent-rgb: 29, 78, 216;
-  --accent-soft: #E2EAFB;
+  --accent: #2F5BD3;
+  --accent-rgb: 47, 91, 211;
+  --accent-soft: #E3EAFB;
+  --trace: #F2C14E;
   --steel: #3B4554;
   --safe: #2E7D4F;
   --danger: #C03028;
   --warn: #D98E1B;
-  --font-display: 'Fraunces Variable', Georgia, serif;
-  --font-body: 'Inter Variable', system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque Variable', system-ui, sans-serif;
+  --font-body: 'Bricolage Grotesque Variable', system-ui, sans-serif;
   --content-w: 1100px;
   --space-section: clamp(5rem, 12vh, 9rem);
   --radius: 14px;
@@ -104,9 +105,9 @@ body::after {
 
 h1, h2, h3 {
   font-family: var(--font-display);
-  font-weight: 560;
-  line-height: 1.12;
-  letter-spacing: -0.015em;
+  font-weight: 650;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
   text-wrap: balance;
 }
 
@@ -114,13 +115,7 @@ h1 { font-size: clamp(2.6rem, 7vw, 5rem); letter-spacing: -0.025em; }
 h2 { font-size: clamp(1.9rem, 4vw, 3rem); }
 h3 { font-size: clamp(1.25rem, 2.2vw, 1.6rem); }
 
-/* Italic serif accent for key words inside display headings */
-h1 em, h2 em {
-  font-style: italic;
-  font-weight: 480;
-  color: var(--accent);
-  font-variation-settings: 'SOFT' 60, 'WONK' 1;
-}
+h1 em, h2 em { font-style: normal; }
 
 p { max-width: 65ch; }
 
@@ -138,10 +133,9 @@ img, video { max-width: 100%; height: auto; display: block; }
 }
 
 .eyebrow {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  letter-spacing: 0.01em;
   color: var(--accent);
 }
 .eyebrow::before {

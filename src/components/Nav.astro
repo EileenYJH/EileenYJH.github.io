@@ -5,8 +5,9 @@ const links = [
   { href: '/about', label: 'About' },
 ];
 const path = Astro.url.pathname;
+const { overlay = false } = Astro.props as { overlay?: boolean };
 ---
-<header class="nav-bar">
+<header class:list={['nav-bar', { 'nav-bar--overlay': overlay }]}>
   <div class="wrap nav-inner">
     <a href="/" class="nav-brand">Eileen Yeoh</a>
     <nav aria-label="Main">
@@ -65,6 +66,25 @@ const path = Astro.url.pathname;
     transform: scaleX(1);
     transform-origin: left;
   }
+  /* Home page: transparent over the photo wall, solid once scrolled past it. */
+  .nav-bar--overlay {
+    position: fixed;
+    left: 0;
+    right: 0;
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom-color: transparent;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .nav-bar--overlay:not(.is-solid) .nav-brand,
+  .nav-bar--overlay:not(.is-solid) .nav-link { color: #fff; }
+  .nav-bar--overlay:not(.is-solid) .nav-link::after { background: var(--trace); }
+  .nav-bar--overlay:not(.is-solid) .nav-progress { opacity: 0; }
+  .nav-bar--overlay.is-solid {
+    background: color-mix(in srgb, var(--paper) 90%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom-color: var(--line);
+  }
   .nav-progress {
     position: absolute;
     left: 0;
@@ -85,5 +105,11 @@ const path = Astro.url.pathname;
     };
     addEventListener('scroll', update, { passive: true });
     update();
+  }
+  const overlayBar = document.querySelector<HTMLElement>('.nav-bar--overlay');
+  if (overlayBar) {
+    const solid = () => overlayBar.classList.toggle('is-solid', scrollY > innerHeight * 0.8);
+    addEventListener('scroll', solid, { passive: true });
+    solid();
   }
 </script>
