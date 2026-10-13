@@ -96,9 +96,9 @@ export const timeline: Moment[] = [
   {
     year: 2025,
     date: '15–16 Nov 2025',
-    kind: 'competition',
-    title: 'Secure Nex Hackathon',
-    detail: 'Cybersecurity hackathon by PETRONAS Group Security at NADI@UTP.',
+    kind: 'event',
+    title: 'Secure Nex Hackathon: organising committee (CNP)',
+    detail: 'Served on the CNP committee for this cybersecurity hackathon by PETRONAS Group Security at NADI@UTP.',
     img: '/images/timeline/securenex.jpg',
   },
   {
