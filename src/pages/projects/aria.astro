@@ -38,6 +38,26 @@ const galleryImages = [
     </ul>
   </ProjectHero>
 
+  <section class="section wrap aria-media" id="watch">
+    <p class="eyebrow" data-reveal>Watch and present</p>
+    <h2 data-split>Meet ARIA in two minutes.</h2>
+    <div class="media-grid">
+      <figure class="media-card">
+        <div class="media-frame">
+          <iframe src="https://drive.google.com/file/d/1dJp9ERCrmthkI1YbJp_81ViSMI2Gz31y/preview" title="ARIA introduction video by Team INTERA" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <figcaption><strong>Introduction video</strong><span class="muted">Team INTERA's short video for USM IEEE Makerthon 2026.</span></figcaption>
+      </figure>
+      <figure class="media-card">
+        <div class="media-frame">
+          <iframe src="https://www.canva.com/design/DAHHujOgb00/LF3JcT4Qd77NWflWBTwhPA/view?embed" title="ARIA presentation slides" allow="fullscreen" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <figcaption><strong>Presentation slides</strong><span class="muted">The deck we pitched with. Use the arrows to flip through.</span><a href="https://www.canva.com/design/DAHHujOgb00/LF3JcT4Qd77NWflWBTwhPA/view" target="_blank" rel="noopener">Open in Canva ↗</a></figcaption>
+      </figure>
+    </div>
+  </section>
+
+
   <section class="section wrap">
     <p class="eyebrow" data-reveal>The problem</p>
     <h2 data-split>Smoke detectors cry wolf.</h2>
@@ -155,6 +175,14 @@ const galleryImages = [
 </BaseLayout>
 
 <style>
+  .aria-media h2 { margin-bottom: 1.6rem; }
+  .media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 1.4rem; }
+  .media-card { margin: 0; }
+  .media-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #0B0F1C; box-shadow: 0 24px 50px -30px rgba(var(--accent-rgb), 0.6); }
+  .media-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .media-card figcaption { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.8rem; margin-top: 0.7rem; font-size: 0.92rem; }
+  .media-card figcaption a { margin-left: auto; color: var(--accent); font-weight: 600; text-decoration: none; }
+
   .aria-hero { position: relative; }
   .aria-hero h1 { font-size: clamp(4rem, 14vw, 9rem); }
   .aria-tagline { font-size: 1.3rem; max-width: 38ch; margin-top: 1.2rem; }
