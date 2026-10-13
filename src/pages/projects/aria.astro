@@ -42,11 +42,11 @@ const galleryImages = [
     <p class="eyebrow" data-reveal>Watch and present</p>
     <h2 data-split>See ARIA in action.</h2>
     <div class="media-grid">
-      <figure class="media-card">
-        <div class="media-frame">
-          <iframe src="https://drive.google.com/file/d/1dJp9ERCrmthkI1YbJp_81ViSMI2Gz31y/preview" title="ARIA introduction video by Team INTERA" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
+      <figure class="media-card media-card--short">
+        <div class="media-frame media-frame--short">
+          <iframe src="https://www.youtube-nocookie.com/embed/boeAy7aZ5Lw?rel=0" title="ARIA introduction video by Team INTERA" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
-        <figcaption><strong>Introduction video</strong><span class="muted">Team INTERA's short video for USM IEEE Makerthon 2026.</span></figcaption>
+        <figcaption><strong>Introduction video</strong><span class="muted">Team INTERA's short for USM IEEE Makerthon 2026.</span><a href="https://youtube.com/shorts/boeAy7aZ5Lw" target="_blank" rel="noopener">Watch on YouTube ↗</a></figcaption>
       </figure>
       <figure class="media-card">
         <div class="media-frame">
@@ -176,7 +176,9 @@ const galleryImages = [
 
 <style>
   .aria-media h2 { margin-bottom: 1.6rem; }
-  .media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 1.4rem; }
+  .media-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 2.6fr); gap: 1.6rem; align-items: start; }
+  .media-frame--short { aspect-ratio: 9 / 16; }
+  @media (max-width: 800px) { .media-grid { grid-template-columns: 1fr; } .media-card--short { max-width: 340px; } }
   .media-card { margin: 0; }
   .media-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #0B0F1C; box-shadow: 0 24px 50px -30px rgba(var(--accent-rgb), 0.6); }
   .media-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
