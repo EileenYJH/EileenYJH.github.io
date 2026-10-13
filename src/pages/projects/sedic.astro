@@ -2,12 +2,13 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectHero from '../../components/project/ProjectHero.astro';
 import ArchitectureDiagram from '../../components/sedic/ArchitectureDiagram.astro';
+import '@fontsource-variable/montserrat';
 
 const tiers = [
-  { name: 'Civilian', classes: 'BPSK · QPSK · 16QAM · 64QAM', note: 'Phones, Wi-Fi, data links — must be recognised, not flagged.' },
-  { name: 'Military', classes: 'LFM radar · FHSS', note: 'Tactical emissions — judged, must clear 80% recall.' },
-  { name: 'Hostile', classes: 'Jamming (barrage · tone · sweep)', note: 'Deliberate interference — judged, must clear 80% recall.' },
-  { name: 'Empty', classes: 'Noise floor', note: 'Nothing there — the model must be allowed to say so.' },
+  { tone: 'civ', name: 'Civilian', classes: 'BPSK · QPSK · 16QAM · 64QAM', note: 'Phones, Wi-Fi, data links — must be recognised, not flagged.' },
+  { tone: 'mil', name: 'Military', classes: 'LFM radar · FHSS', note: 'Tactical emissions — judged, must clear 80% recall.' },
+  { tone: 'hos', name: 'Hostile', classes: 'Jamming (barrage · tone · sweep)', note: 'Deliberate interference — judged, must clear 80% recall.' },
+  { tone: 'emp', name: 'Empty', classes: 'Noise floor', note: 'Nothing there — the model must be allowed to say so.' },
 ];
 
 const sources = [
@@ -18,10 +19,10 @@ const sources = [
 ];
 
 const results = [
-  { value: '84.2%', label: 'LFM radar recall', sub: 'judged class · bar is 80%' },
-  { value: '82.9%', label: 'FHSS recall', sub: 'judged class · bar is 80%' },
-  { value: '84.0%', label: 'Jamming recall', sub: 'judged class · bar is 80%' },
-  { value: '99.7%', label: 'Jamming precision', sub: '7 false alarms in 19,260 test windows' },
+  { tone: 'mil', value: '84.2%', label: 'LFM radar recall', sub: 'judged class · bar is 80%' },
+  { tone: 'mil', value: '82.9%', label: 'FHSS recall', sub: 'judged class · bar is 80%' },
+  { tone: 'hos', value: '84.0%', label: 'Jamming recall', sub: 'judged class · bar is 80%' },
+  { tone: 'solid', value: '99.7%', label: 'Jamming precision', sub: '7 false alarms in 19,260 test windows' },
 ];
 
 const limits = [
@@ -127,6 +128,7 @@ const posters = [
     </div>
   </section>
 
+  <div class="nexa-skin">
   <section class="section wrap">
     <p class="eyebrow" data-reveal>The challenge</p>
     <h2 data-split>Eight kinds of signal. Some of them hostile.</h2>
@@ -137,7 +139,7 @@ const posters = [
     </p>
     <div class="tier-grid">
       {tiers.map((t, i) => (
-        <div class="card tier-card" data-reveal data-reveal-delay={i * 0.06}>
+        <div class:list={['card tier-card', `tone-${t.tone}`]} data-reveal data-reveal-delay={i * 0.06}>
           <span class="tier-name">{t.name}</span>
           <h3>{t.classes}</h3>
           <p class="muted">{t.note}</p>
@@ -202,7 +204,7 @@ const posters = [
     <h2 data-split>Every judged class clears the bar.</h2>
     <div class="roi-grid">
       {results.map((r, i) => (
-        <div class="roi-card" data-reveal data-reveal-delay={i * 0.06}>
+        <div class:list={['roi-card', `tone-${r.tone}`]} data-reveal data-reveal-delay={i * 0.06}>
           <span class="roi-value">{r.value}</span>
           <span class="roi-label">{r.label}</span>
           <span class="roi-sub muted">{r.sub}</span>
@@ -256,6 +258,7 @@ const posters = [
       View the source on GitHub →
     </a>
   </section>
+  </div>
   <script>
     // The posters are built for a 1920 × 1080 screen; scale each to fit its frame.
     const frames = document.querySelectorAll<HTMLElement>('[data-poster]');
@@ -266,6 +269,64 @@ const posters = [
 </BaseLayout>
 
 <style>
+  /* Technical write-up in the NEXA poster and brochure palette. */
+  .nexa-skin {
+    --nx-navy: #22306B; --nx-blue: #2E7DB9; --nx-orange: #F0A020; --nx-amber: #C77A00;
+    --nx-red: #B0281A; --nx-green: #457900; --nx-slate: #0E1622; --nx-pill: #F1F1F1;
+    --accent: var(--nx-navy); --accent-rgb: 34, 48, 107; --accent-soft: #E6EFF7;
+    background:
+      radial-gradient(900px 400px at 100% 0%, rgba(46, 125, 185, 0.07), transparent 70%),
+      radial-gradient(700px 360px at 0% 40%, rgba(240, 160, 32, 0.06), transparent 70%);
+    border-top: 6px solid transparent;
+    border-image: linear-gradient(90deg, var(--nx-blue), var(--nx-orange), var(--nx-red), var(--nx-green)) 1;
+  }
+  .nexa-skin :global(h2), .nexa-skin :global(h3), .nexa-skin .roi-value, .nexa-skin .tier-name {
+    font-family: 'Montserrat Variable', var(--font-display);
+  }
+  .nexa-skin :global(h2) { color: var(--nx-navy); font-weight: 800; letter-spacing: -0.02em; }
+  .nexa-skin .eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.35rem 1rem; border-radius: 999px;
+    background: var(--nx-pill); color: var(--nx-navy);
+    font-family: 'Montserrat Variable', sans-serif; font-weight: 800; font-size: 0.78rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .nexa-skin .eyebrow::before { background: var(--nx-red); box-shadow: 0 0 0 3px rgba(176, 40, 26, 0.18); }
+  .nexa-skin .tier-card { border-top: 4px solid var(--tk); }
+  .nexa-skin .tier-name { color: var(--tk); background: var(--tt); padding: 0.2rem 0.65rem; border-radius: 999px; font-weight: 800; letter-spacing: 0.1em; }
+  .tone-civ { --tk: #1F5F91; --tt: #E6EFF7; }
+  .tone-mil { --tk: #8A5600; --tt: #FDF1DD; }
+  .tone-hos { --tk: #8E1F14; --tt: #F6E4E2; }
+  .tone-emp { --tk: #365F00; --tt: #E9F0DF; }
+  .nexa-skin .roi-card { border: 2px solid var(--tk, var(--line)); background: var(--tt, var(--paper-raised)); }
+  .nexa-skin .roi-card .roi-value { color: var(--tk); font-weight: 800; }
+  .nexa-skin .roi-card.tone-solid { background: var(--nx-red); border-color: var(--nx-red); color: #fff; }
+  .nexa-skin .roi-card.tone-solid .roi-value, .nexa-skin .roi-card.tone-solid .roi-label { color: #fff; }
+  .nexa-skin .roi-card.tone-solid .roi-sub { color: rgba(255, 255, 255, 0.85); }
+  .nexa-skin .src-table { border-color: #E3E3E3; }
+  .nexa-skin .src-table th { background: var(--nx-navy); color: #fff; }
+  .nexa-skin .src-table tr:nth-child(even) td { background: #FAFAFA; }
+  .nexa-skin .catch { background: #E6EFF7; border-left: 5px solid var(--nx-blue); }
+  .nexa-skin .gov-grid :global(.card) { border-left: 5px solid var(--nx-orange); }
+  .nexa-skin .gov-grid :global(.card:nth-child(2)) { border-left-color: var(--nx-red); }
+  .nexa-skin .gov-grid :global(.card:nth-child(3)) { border-left-color: var(--nx-blue); }
+  .nexa-skin :global(.arch-branch) { border: 2px solid var(--nx-blue); }
+  .nexa-skin :global(.arch-branch:nth-child(2)) { border-color: var(--nx-orange); }
+  .nexa-skin :global(.arch-branch .arch-label) { color: var(--nx-blue); }
+  .nexa-skin :global(.arch-branch:nth-child(2) .arch-label) { color: var(--nx-amber); }
+  .nexa-skin :global(.arch-step) { border-top: 3px solid var(--nx-green); }
+  .nexa-skin :global(.arch-out) { background: #F6E4E2; border-left: 5px solid var(--nx-red); }
+  .nexa-skin :global(.arch-out code) { color: var(--nx-red); }
+  .nexa-skin .shot { border-color: #E3E3E3; }
+  .nexa-skin .shot figcaption strong { color: var(--nx-navy); }
+  .nexa-skin > section:last-child { background: var(--nx-slate); color: #E8ECF2; margin-top: var(--space-section); max-width: none; width: 100%; padding-inline: max(1.5rem, calc((100% - var(--content-w)) / 2)); }
+  .nexa-skin > section:last-child :global(h2) { color: #fff; }
+  .nexa-skin > section:last-child .eyebrow { background: rgba(255, 255, 255, 0.1); color: #fff; }
+  .nexa-skin > section:last-child .muted, .nexa-skin > section:last-child :global(.muted) { color: rgba(232, 236, 242, 0.75); }
+  .nexa-skin > section:last-child .shot { background: #16202F; border-color: rgba(255, 255, 255, 0.12); }
+  .nexa-skin > section:last-child .shot figcaption strong { color: var(--nx-orange); }
+  .nexa-skin > section:last-child .btn { background: var(--nx-orange); color: #151A2E; border-color: var(--nx-orange); }
+
   .sedic-mat h2 { margin-bottom: 0.5rem; }
   .mat-block { margin-top: 2.4rem; }
   .mat-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 1rem; margin-bottom: 1rem; }
