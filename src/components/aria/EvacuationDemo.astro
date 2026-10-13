@@ -9,12 +9,17 @@ const rooms = [
   { n: 'N5', z: 'A', x: 150, y: 176, w: 96, h: 64 },
   { n: 'N6', z: 'C', x: 514, y: 176, w: 96, h: 64 },
 ];
-// 30 WS2812B LEDs along the corridor, 10 per zone (zone A on the left).
-const leds = Array.from({ length: 30 }, (_, i) => ({ i, x: 74 + i * (612 / 29) }));
+// Hub LED strip 1, 30 WS2812B pixels as wired in the model: zones A and B run straight along the
+// corridor, zone C turns 90 degrees down the branch to Exit C.
+const leds = [
+  ...Array.from({ length: 10 }, (_, i) => ({ i, x: 76 + i * 30, y: 127 })),        // zone A: corridor, left of the junction
+  ...Array.from({ length: 10 }, (_, i) => ({ i: 10 + i, x: 414 + i * 30.4, y: 127 })), // zone B: corridor, right of the junction
+  ...Array.from({ length: 10 }, (_, i) => ({ i: 20 + i, x: 380, y: 168 + i * 7 })),     // zone C: perpendicular, down to Exit C
+];
 ---
 <div class="evac card" data-reveal>
   <div class="evac-map">
-    <svg viewBox="0 0 760 300" role="img" aria-label="T-shaped floor plan from the ARIA dashboard: six nodes in zones A, B and C along one corridor, with Exit A on the left, Exit C on the right and Exit B down the middle. Click a room to start a fire in its zone and see the routing, the hub's LED strip and the exit counters respond.">
+    <svg viewBox="0 0 760 300" role="img" aria-label="T-shaped floor plan from the ARIA dashboard: six nodes in zones A, B and C along one corridor, as built in the ARIA model: Exit A at the left end, Exit B at the right end, and Exit C down the perpendicular branch. Click a room to start a fire in its zone and see the routing, the hub's LED strip and the exit counters respond.">
       <defs>
         <filter id="evac-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="2.4" /></filter>
       </defs>
@@ -23,23 +28,23 @@ const leds = Array.from({ length: 30 }, (_, i) => ({ i, x: 74 + i * (612 / 29) }
       <rect x="360" y="162" width="40" height="76" fill="#E2E8F0" />
       <!-- hub LED strip: 30 pixels, 10 per zone -->
       <g id="evac-leds">
-        {leds.map((l) => <circle cx={l.x} cy="127" r="3.2" class="led" data-led={l.i} />)}
+        {leds.map((l) => <circle cx={l.x} cy={l.y} r="3.2" class="led" data-led={l.i} />)}
       </g>
       <!-- people moving along each escape route -->
       <g id="evac-parts"></g>
       <!-- laser beams across each exit -->
       <g class="beams">
         <line x1="66" y1="122" x2="66" y2="162" class="beam" id="beam-A" />
-        <line x1="694" y1="122" x2="694" y2="162" class="beam" id="beam-C" />
-        <line x1="360" y1="234" x2="400" y2="234" class="beam" id="beam-B" />
+        <line x1="694" y1="122" x2="694" y2="162" class="beam" id="beam-B" />
+        <line x1="360" y1="234" x2="400" y2="234" class="beam" id="beam-C" />
       </g>
       <!-- exits -->
       <g class="exit"><rect x="6" y="116" width="58" height="52" rx="8" fill="#E3F0E8" stroke="#2E7D4F" stroke-width="1.5" id="exit-A" />
         <text x="35" y="138" text-anchor="middle" class="ex-t">Exit A</text><text x="35" y="154" text-anchor="middle" class="ex-s" id="exit-s-A">OPEN</text></g>
-      <g class="exit"><rect x="696" y="116" width="58" height="52" rx="8" fill="#E3F0E8" stroke="#2E7D4F" stroke-width="1.5" id="exit-C" />
-        <text x="725" y="138" text-anchor="middle" class="ex-t">Exit C</text><text x="725" y="154" text-anchor="middle" class="ex-s" id="exit-s-C">OPEN</text></g>
-      <g class="exit"><rect x="344" y="238" width="72" height="50" rx="8" fill="#E3F0E8" stroke="#2E7D4F" stroke-width="1.5" id="exit-B" />
-        <text x="380" y="259" text-anchor="middle" class="ex-t">Exit B</text><text x="380" y="275" text-anchor="middle" class="ex-s" id="exit-s-B">OPEN</text></g>
+      <g class="exit"><rect x="696" y="116" width="58" height="52" rx="8" fill="#E3F0E8" stroke="#2E7D4F" stroke-width="1.5" id="exit-B" />
+        <text x="725" y="138" text-anchor="middle" class="ex-t">Exit B</text><text x="725" y="154" text-anchor="middle" class="ex-s" id="exit-s-B">OPEN</text></g>
+      <g class="exit"><rect x="344" y="238" width="72" height="50" rx="8" fill="#E3F0E8" stroke="#2E7D4F" stroke-width="1.5" id="exit-C" />
+        <text x="380" y="259" text-anchor="middle" class="ex-t">Exit C</text><text x="380" y="275" text-anchor="middle" class="ex-s" id="exit-s-C">OPEN</text></g>
       <!-- rooms: N1 to N4 above the corridor, N5 and N6 below -->
       {rooms.map((r) => (
         <g class="zone" data-zone={r.z} style="cursor: pointer;">
@@ -77,7 +82,7 @@ const leds = Array.from({ length: 30 }, (_, i) => ({ i, x: 74 + i * (612 / 29) }
     <div class="evac-panel">
       <p class="evac-title">What the hub does</p>
       <ul class="evac-routes" id="evac-route-text"></ul>
-      <p class="evac-note muted">The dots along the corridor are the hub's 30-LED strip, 10 per zone. It stays dark until a zone reaches fire level. Then each zone's packet of light chases toward the exit people should use, growing as it nears the exit.</p>
+      <p class="evac-note muted">The small dots are the hub's 30-LED strip as wired in our model: zones A and B run straight along the corridor and zone C turns down the branch to Exit C, 10 LEDs each. It stays dark until a zone reaches fire level. Then each zone's packet of light chases toward the exit people should use, growing as it nears the exit.</p>
       <ul class="evac-legend muted">
         <li><span style="background: #2E7D4F;"></span> safe: follow the light</li>
         <li><span style="background: #C03028;"></span> fire: routing away</li>
@@ -156,11 +161,11 @@ const leds = Array.from({ length: 30 }, (_, i) => ({ i, x: 74 + i * (612 / 29) }
     if (z === 'B') return !fire.has('A') ? 'A' : 'C';
     return !fire.has('B') ? 'B' : 'A';
   }
-  const Y = 142, STUB_X = 380, EXIT_B_Y = 262, EXIT_A_X = 35, EXIT_C_X = 725;
+  const Y = 142, STUB_X = 380, EXIT_C_Y = 262, EXIT_A_X = 35, EXIT_B_X = 725;
   const START: Record<ZoneId, number[]> = { A: [151, 198], B: [307, 453], C: [619, 562] };
   function pathFor(x0: number, to: ZoneId): number[][] {
-    if (to === 'B') return [[x0, Y], [STUB_X, Y], [STUB_X, EXIT_B_Y]];
-    return [[x0, Y], [to === 'A' ? EXIT_A_X : EXIT_C_X, Y]];
+    if (to === 'C') return [[x0, Y], [STUB_X, Y], [STUB_X, EXIT_C_Y]];
+    return [[x0, Y], [to === 'A' ? EXIT_A_X : EXIT_B_X, Y]];
   }
 
   // ---------- particles moving along the routes, like the live dashboard ----------
