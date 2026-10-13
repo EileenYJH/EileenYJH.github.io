@@ -54,7 +54,7 @@ const recognition = [
 
   <section class="section wrap me" id="about-me">
     <div class="me-photo">
-      <img src="/images/eileen.jpg" alt="Eileen Yeoh holding her Student Excellence Award at Universiti Teknologi PETRONAS" width="560" height="560" />
+      <img src="/images/eileen-award.jpg" alt="Eileen Yeoh holding her foundation certificate and Student Excellence Award at Universiti Teknologi PETRONAS" width="800" height="800" />
     </div>
     <div class="me-text">
       <h2>I like building systems end to end, and explaining them so other people can build on them.</h2>
@@ -183,15 +183,13 @@ const recognition = [
   /* ---------- About me ---------- */
   .me {
     display: grid;
-    grid-template-columns: minmax(220px, 0.8fr) 1.6fr;
+    grid-template-columns: minmax(260px, 1fr) 1.4fr;
     gap: clamp(2rem, 5vw, 4.5rem);
     align-items: start;
   }
   .me-photo img {
     width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    object-position: 50% 35%;
+    height: auto;
     border-radius: 18px;
     box-shadow: 0 30px 60px -30px rgba(21, 26, 46, 0.45);
   }
@@ -233,7 +231,7 @@ const recognition = [
 
   @media (max-width: 900px) {
     .me { grid-template-columns: 1fr; }
-    .me-photo { position: static; max-width: 320px; }
+    .me-photo { position: static; max-width: 480px; }
 
   }
   @media (max-width: 600px) {
