@@ -9,15 +9,17 @@ const kindLabel: Record<Kind, string> = {
   now: 'Now',
 };
 
+// Academic journey only; everything else is shown in Highlights.
+const items = timeline.filter((m) => m.academic);
 // Group by year so each year gets one marker on the rail.
-const years = [...new Set(timeline.map((m) => m.year))];
+const years = [...new Set(items.map((m) => m.year))];
 ---
 <ol class="tl">
   {years.map((y) => (
     <li class="tl-year">
       <h3 class="tl-year-label">{y}</h3>
       <ol class="tl-items">
-        {timeline.filter((m) => m.year === y).map((m) => (
+        {items.filter((m) => m.year === y).map((m) => (
           <li class:list={['tl-item', `tl-item--${m.kind}`, { 'tl-item--img': m.img }]}>
             <span class="tl-dot" aria-hidden="true"></span>
             <div class="tl-body">

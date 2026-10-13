@@ -22,6 +22,8 @@ export interface Moment {
   cgpa?: string;
   standing?: string;
   courses?: Course[];
+  /** true = shown on the academic timeline; otherwise it appears under Highlights. */
+  academic?: boolean;
 }
 
 export const timeline: Moment[] = [
@@ -29,6 +31,7 @@ export const timeline: Moment[] = [
     year: 2024,
     date: '2024',
     kind: 'award',
+    academic: true,
     title: 'PETRONAS Education Sponsorship (PESP) scholar',
     detail: 'Awarded the PETRONAS scholarship for Electrical / Instrumentation Engineering.',
     img: '/images/timeline/pesp.jpg',
@@ -37,6 +40,7 @@ export const timeline: Moment[] = [
     year: 2024,
     date: 'Sep 2024 – May 2025',
     kind: 'study',
+    academic: true,
     title: 'Foundation in Electrical & Electronics Engineering, UTP',
     detail: 'Finished the foundation programme with a 4.0 CGPA, on the Dean’s List every semester.',
     chips: ['Dean’s List · Sep 2024', 'Dean’s List · Jan 2025', 'Dean’s List · May 2025'],
@@ -69,6 +73,7 @@ export const timeline: Moment[] = [
     year: 2025,
     date: 'Sep 2025',
     kind: 'study',
+    academic: true,
     title: 'Degree semester 1: Bachelor of Electrical and Electronics Engineering with Honours, UTP',
     detail: 'Started my degree.',
     gpa: '3.97',
@@ -87,6 +92,7 @@ export const timeline: Moment[] = [
     year: 2025,
     date: '1 Oct 2025',
     kind: 'award',
+    academic: true,
     title: 'Student Excellence Award (4.0)',
     detail: 'Foundation Studies Completion Ceremony 2025, UTP.',
     img: '/images/timeline/fscc.jpg',
@@ -111,6 +117,7 @@ export const timeline: Moment[] = [
     year: 2026,
     date: 'Jan 2026',
     kind: 'study',
+    academic: true,
     title: 'Degree semester 2',
     gpa: '4.00',
     cgpa: '3.98',
@@ -128,6 +135,7 @@ export const timeline: Moment[] = [
     year: 2026,
     date: 'May 2026',
     kind: 'study',
+    academic: true,
     title: 'Degree semester 3',
     detail: 'Includes the cleanroom MOSFET fabrication lab in Microelectronic Physics & Devices.',
     gpa: '4.00',
@@ -181,6 +189,7 @@ export const timeline: Moment[] = [
     year: 2026,
     date: 'Sep 2026',
     kind: 'study',
+    academic: true,
     title: 'Student exchange, University of Sheffield, UK',
     detail: 'Exchange year in Sheffield for 2026/27.',
   },

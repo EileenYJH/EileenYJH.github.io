@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PhotoWall from '../components/home/PhotoWall.astro';
 import WorkList from '../components/home/WorkList.astro';
 import Timeline from '../components/home/Timeline.astro';
+import Highlights from '../components/home/Highlights.astro';
 
 const LINKEDIN = 'https://www.linkedin.com/in/eileen-yeoh-jing-han-7ba86a214/';
 
@@ -62,9 +63,15 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
   </section>
 
   <section class="section wrap journey" id="journey">
-    <h2>My journey so far</h2>
-    <p class="muted journey-lede">From my foundation year at UTP to now: studies, results, competitions and the people I built things with.</p>
+    <h2>Academic journey</h2>
+    <p class="muted journey-lede">From my foundation year at UTP to my exchange in Sheffield, semester by semester.</p>
     <Timeline />
+  </section>
+
+  <section class="section wrap highlights" id="highlights">
+    <h2>Awards, competitions and events</h2>
+    <p class="muted journey-lede">Newest first. Linked titles open the full project.</p>
+    <Highlights />
   </section>
 
   <section class="section wrap work" id="work">
@@ -240,6 +247,7 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
 
   /* ---------- Journey ---------- */
   .journey { padding-top: 0; }
+  .highlights { padding-top: 0; }
   .journey-lede { margin-top: 0.6rem; max-width: 56ch; }
 
   /* ---------- Selected work ---------- */
