@@ -29,7 +29,7 @@ const burdenStats = [
       multi-agent AI.
     </p>
     <ul class="nexaaws-tags" data-reveal>
-      {['Amazon Bedrock', 'Multi-Agent Collaboration', 'Serverless', 'DynamoDB', 'WebSocket'].map((t) => <li>{t}</li>)}
+      {['🥈 2nd Place', 'Amazon Bedrock', 'Multi-Agent Collaboration', 'Serverless', 'DynamoDB', 'WebSocket'].map((t) => <li>{t}</li>)}
     </ul>
   </section>
 
@@ -106,6 +106,7 @@ const burdenStats = [
     border: 1px solid var(--line);
     background: var(--paper-raised);
   }
+  .nexaaws-tags li:first-child { background: var(--accent-soft); border-color: transparent; color: var(--accent); font-weight: 650; }
   .stat-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
