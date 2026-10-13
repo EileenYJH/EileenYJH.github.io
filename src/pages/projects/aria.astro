@@ -14,6 +14,9 @@ const sensors = [
   { name: 'DHT11', role: 'Temperature & humidity to separate steam from fire' },
   { name: 'LDR + laser', role: 'Beam-break people counting at every exit for congestion detection' },
 ];
+// Badge colours from the ARIA slide deck (Key Features).
+const sensorColors = ['#D83048', '#F05A2A', '#3A78F0', '#248478', '#6C48D8', '#0F5B55'];
+const sensorTints = ['#FCD3D6', '#FBE1C6', '#D6E5FD', '#D3EBE6', '#E3DBFA', '#D3EBE6'];
 const galleryImages = [
   { src: '/images/aria/dashboard-warden.png', alt: 'ARIA dashboard, warden tab: zone scores, alert pills, live floor map and escape-route canvas' },
   { src: '/images/aria/dashboard-technical.png', alt: 'ARIA dashboard, technical tab: per-node sensor detail and live system log' },
@@ -25,10 +28,10 @@ const galleryImages = [
   title="ARIA: distributed fire detection | Eileen Yeoh"
   description="A 6-node ESP32 wireless sensor network that tells real fires from cooking smoke and routes people to safe exits. Interactive deep-dive."
 >
-  <ProjectHero img="/images/projects-hero/makerthon.jpg" alt="Team INTERA with ARIA at USM IEEE Makerthon 2026" caption="Team INTERA with ARIA at USM IEEE Makerthon 2026, themed around wireless communication and IoT integration." post="https://www.linkedin.com/feed/update/urn:li:activity:7460617463857074176/" event="#3B2F8F">
+  <ProjectHero img="/images/projects-hero/makerthon.jpg" alt="Team INTERA with ARIA at USM IEEE Makerthon 2026" caption="Team INTERA with ARIA at USM IEEE Makerthon 2026, themed around wireless communication and IoT integration." post="https://www.linkedin.com/feed/update/urn:li:activity:7460617463857074176/" event="#F05A2A">
     
     <p class="eyebrow" data-reveal>Project 01 · 2025 to 2026</p>
-    <h1 data-split>ARIA</h1>
+    <h1 class="aria-word"><span class="ab">A</span><span class="ao">R</span><span class="ab">I</span><span class="ao">A</span></h1>
     <p class="aria-tagline" data-reveal>
       Adaptive Room Intelligence &amp; Alert: a wireless sensor
       network that knows the difference between a fire and your breakfast.
@@ -37,6 +40,7 @@ const galleryImages = [
       {['ESP32', 'ESP-NOW', 'multi-sensor fusion', 'embedded C++', 'WebSocket dashboard'].map((t) => <li>{t}</li>)}
     </ul>
   </ProjectHero>
+  <div class="aria-skin">
 
   <section class="section wrap aria-media" id="watch">
     <p class="eyebrow" data-reveal>Watch and present</p>
@@ -126,7 +130,8 @@ const galleryImages = [
     <h2 data-split>Six senses per node.</h2>
     <div class="sensor-grid">
       {sensors.map((s, i) => (
-        <div class="card sensor-card" data-reveal data-reveal-delay={i * 0.06}>
+        <div class="card sensor-card" style={`--sc:${sensorColors[i % sensorColors.length]};--st:${sensorTints[i % sensorTints.length]}`} data-reveal data-reveal-delay={i * 0.06}>
+          <span class="sensor-n">{i + 1}</span>
           <h3>{s.name}</h3>
           <p class="muted sensor-role">{s.role}</p>
         </div>
@@ -172,12 +177,45 @@ const galleryImages = [
       View the full source on GitHub →
     </a>
   </section>
+  </div>
 </BaseLayout>
 
 <style>
+  /* ARIA follows its Makerthon slide deck: deep teal bars, mint panels, dashed diamonds and bright numbered badges. */
+  :global(.ph-title) .aria-word { letter-spacing: -0.03em; }
+  .aria-word .ab { color: #6FA3FF; }
+  .aria-word .ao { color: #FF8A5B; }
+  .aria-skin { --teal: #0B4A47; --teal-2: #248478; --mint: #E6F3F0; --mint-2: #CFE7E1; }
+  .aria-skin > section { position: relative; }
+  .aria-skin > section:nth-of-type(even) { background: var(--mint); max-width: none; width: 100%; padding-inline: max(1.5rem, calc((100% - var(--content-w)) / 2)); }
+  .aria-skin > section:nth-of-type(even)::before,
+  .aria-skin > section:nth-of-type(even)::after {
+    content: ''; position: absolute; width: 70px; height: 70px; transform: rotate(45deg);
+    border: 2px dashed rgba(36, 132, 120, 0.45); pointer-events: none;
+  }
+  .aria-skin > section:nth-of-type(even)::before { top: 28px; right: 38px; }
+  .aria-skin > section:nth-of-type(even)::after { bottom: 28px; left: 34px; width: 44px; height: 44px; background: rgba(36, 132, 120, 0.12); border-style: solid; border-color: transparent; }
+  .aria-skin .eyebrow {
+    display: inline-block; background: var(--teal); color: #fff;
+    padding: 0.4rem 1rem; border-radius: 4px;
+    font-weight: 800; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+    box-shadow: 6px 6px 0 rgba(36, 132, 120, 0.25);
+  }
+  .aria-skin .eyebrow::before { background: #F05A2A; }
+  .aria-skin :global(h2) { color: var(--teal); }
+  .aria-skin .sensor-card { position: relative; border: 0; border-top: 6px solid var(--sc); background: #fff; padding-top: 1.4rem; }
+  .aria-skin .sensor-card h3 { display: inline-block; background: var(--st); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.95rem; letter-spacing: 0.04em; text-transform: uppercase; }
+  .sensor-n { position: absolute; top: -18px; right: 16px; width: 34px; height: 34px; display: grid; place-items: center; color: #fff; font-weight: 800; z-index: 0; }
+  .sensor-n::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--sc); border-radius: 6px; transform: rotate(45deg); }
+  .aria-skin .outcome-grid > div { background: #fff; border-radius: 12px; padding: 1.3rem 1.4rem; border-left: 6px solid var(--teal-2); box-shadow: 0 16px 34px -26px rgba(11, 74, 71, 0.5); }
+  .aria-skin .outcome-grid > div:nth-child(2) { border-left-color: #F05A2A; }
+  .aria-skin .outcome-grid > div:nth-child(3) { border-left-color: #3A78F0; }
+  .aria-skin .gallery-item { background: #fff; border: 2px solid var(--mint-2); }
+  .aria-skin .btn { background: var(--teal); border-color: var(--teal); color: #fff; }
+
   .aria-media h2 { margin-bottom: 1.6rem; }
   .media-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 2.6fr); gap: 1.6rem; align-items: start; }
-  .media-frame--short { aspect-ratio: 9 / 16; }
+  .media-frame.media-frame--short { aspect-ratio: 9 / 16; }
   @media (max-width: 800px) { .media-grid { grid-template-columns: 1fr; } .media-card--short { max-width: 340px; } }
   .media-card { margin: 0; }
   .media-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #0B0F1C; box-shadow: 0 24px 50px -30px rgba(var(--accent-rgb), 0.6); }

@@ -23,12 +23,12 @@
 }
 
 /* Per-project themes, set via <html data-theme> from BaseLayout.
-   ARIA: ember (fire detection). NEXA: teal (trade compliance).
+   ARIA: deep teal, from the team's Makerthon slides. NEXA: teal (trade compliance).
    AWS-IQ: amber (AWS orange). All meet AA contrast on paper. */
 [data-theme='aria'] {
-  --accent: #B91C1C;
-  --accent-rgb: 185, 28, 28;
-  --accent-soft: #FAE3E0;
+  --accent: #0F5B55;
+  --accent-rgb: 15, 91, 85;
+  --accent-soft: #DDEFEB;
 }
 [data-theme='nexa'] {
   --accent: #0F766E;
