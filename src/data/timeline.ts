@@ -97,6 +97,7 @@ export const timeline: Moment[] = [
     date: '21–24 Aug 2025',
     kind: 'event',
     title: '2nd ASEAN + Inter-University Networking Games 2025: liaison officer',
+    img: '/images/timeline/asean-games.jpg',
     post: 'https://www.linkedin.com/feed/update/urn:li:activity:7397117282692448256/',
     detail: 'Looked after the team from China University of Petroleum–Beijing, using my Mandarin to help them settle in and get around Malaysia.',
   },
