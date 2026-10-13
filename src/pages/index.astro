@@ -57,7 +57,9 @@ const recognition = [
   </section>
 
   <section class="section wrap me" id="about-me">
-    <div class="me-photo">
+    <div class="me-photo" id="me-photo">
+      <span class="me-dots" aria-hidden="true"></span>
+      <span class="me-frame" aria-hidden="true"></span>
       <img src="/images/eileen-award.jpg" alt="Eileen Yeoh holding her foundation certificate and Student Excellence Award at Universiti Teknologi PETRONAS" width="800" height="800" />
     </div>
     <div class="me-text">
@@ -124,6 +126,36 @@ const recognition = [
       </div>
     </div>
   </section>
+  <script>
+    // Photo backdrop follows the mouse and the scroll position.
+    const photo = document.getElementById('me-photo');
+    if (photo && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const clamp = (v: number) => Math.max(-1, Math.min(1, v));
+      let frame = 0;
+      const onScroll = () => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+          const r = photo.getBoundingClientRect();
+          const centre = r.top + r.height / 2;
+          photo.style.setProperty('--sp', clamp((centre - innerHeight / 2) / innerHeight).toFixed(3));
+        });
+      };
+      addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+      if (matchMedia('(hover: hover)').matches) {
+        const section = document.getElementById('about-me');
+        section?.addEventListener('pointermove', (e) => {
+          const r = photo.getBoundingClientRect();
+          photo.style.setProperty('--mx', clamp((e.clientX - (r.left + r.width / 2)) / (r.width * 1.2)).toFixed(3));
+          photo.style.setProperty('--my', clamp((e.clientY - (r.top + r.height / 2)) / (r.height * 1.2)).toFixed(3));
+        });
+        section?.addEventListener('pointerleave', () => {
+          photo.style.setProperty('--mx', '0');
+          photo.style.setProperty('--my', '0');
+        });
+      }
+    }
+  </script>
 </BaseLayout>
 
 <style>
@@ -191,13 +223,45 @@ const recognition = [
     gap: clamp(2rem, 5vw, 4.5rem);
     align-items: start;
   }
+  /* Photo with a perfboard dot pad and a trace-yellow frame behind it.
+     --mx/--my follow the mouse (-1..1), --sp follows scroll (-1..1). */
+  .me-photo {
+    --mx: 0;
+    --my: 0;
+    --sp: 0;
+    perspective: 900px;
+    isolation: isolate;
+  }
+  .me-dots, .me-frame {
+    position: absolute;
+    inset: 0;
+    border-radius: 22px;
+    z-index: -1;
+    transition: transform 0.25s ease-out;
+    will-change: transform;
+  }
+  .me-dots {
+    background-image: radial-gradient(circle, rgba(var(--accent-rgb), 0.45) 1.6px, transparent 2px);
+    background-size: 16px 16px;
+    transform: translate(calc(-26px - var(--mx) * 22px), calc(-26px - var(--my) * 22px + var(--sp) * 36px));
+  }
+  .me-frame {
+    border: 2.5px solid var(--trace);
+    transform: translate(calc(22px + var(--mx) * 14px), calc(22px + var(--my) * 14px - var(--sp) * 28px)) rotate(calc(var(--mx) * 1.5deg));
+  }
   .me-photo img {
+    position: relative;
     width: 100%;
     height: auto;
     border-radius: 18px;
+    transform: rotateY(calc(var(--mx) * 7deg)) rotateX(calc(var(--my) * -7deg));
+    transition: transform 0.25s ease-out;
     box-shadow: 0 30px 60px -30px rgba(21, 26, 46, 0.45);
   }
   .me-photo { position: sticky; top: 6rem; }
+  @media (prefers-reduced-motion: reduce) {
+    .me-photo { --mx: 0 !important; --my: 0 !important; --sp: 0 !important; }
+  }
   .me-text h2 { font-size: clamp(1.8rem, 3.4vw, 2.7rem); max-width: 22ch; }
   .me-lede { font-size: 1.15rem; margin-top: 1.3rem; max-width: 56ch; }
   .me-lists { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 2.8rem; }
