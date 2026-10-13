@@ -1,21 +1,42 @@
+---
+// The T-shaped floor plan from the live ARIA dashboard.
+const rooms = [
+  { n: 'N1', z: 'A', x: 76, y: 30, w: 150, h: 84 },
+  { n: 'N2', z: 'B', x: 232, y: 30, w: 150, h: 84 },
+  { n: 'N3', z: 'B', x: 388, y: 30, w: 150, h: 84 },
+  { n: 'N4', z: 'C', x: 544, y: 30, w: 150, h: 84 },
+  { n: 'N5', z: 'A', x: 150, y: 176, w: 96, h: 64 },
+  { n: 'N6', z: 'C', x: 514, y: 176, w: 96, h: 64 },
+];
+---
 <div class="evac card" data-reveal>
   <div class="evac-map">
-    <svg viewBox="0 0 760 240" role="img" aria-label="Interactive floor map with zones A, B, C. Click a zone to simulate fire and see evacuation arrows re-route.">
-      <text x="28" y="126" font-family="Inter Variable, sans-serif" font-size="12" font-weight="600" fill="#5C6470" transform="rotate(-90 28 126)">EXIT A</text>
-      <rect x="40" y="40" width="14" height="160" rx="4" fill="#2E7D4F" id="exit-A" />
-      <text x="732" y="126" font-family="Inter Variable, sans-serif" font-size="12" font-weight="600" fill="#5C6470" transform="rotate(90 732 126)">EXIT C</text>
-      <rect x="706" y="40" width="14" height="160" rx="4" fill="#2E7D4F" id="exit-C" />
-      <rect x="333" y="26" width="94" height="14" rx="4" fill="#2E7D4F" id="exit-B" />
-      <text x="380" y="18" text-anchor="middle" font-family="Inter Variable, sans-serif" font-size="12" font-weight="600" fill="#5C6470">EXIT B</text>
-      {(['A', 'B', 'C'] as const).map((z, i) => (
-        <g class="zone" data-zone={z} style="cursor: pointer;">
-          <rect x={70 + i * 212} y="40" width="196" height="160" rx="10" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1.5" id={`zone-rect-${z}`} />
-          <text x={168 + i * 212} y="78" text-anchor="middle" font-family="Fraunces Variable, serif" font-size="26" fill="#14181F">Zone {z}</text>
-          <text x={168 + i * 212} y="100" text-anchor="middle" font-family="Inter Variable, sans-serif" font-size="11" fill="#5C6470" id={`zone-hint-${z}`}>click to ignite</text>
-          <text x={168 + i * 212} y="160" text-anchor="middle" font-size="34" id={`zone-arrow-${z}`} fill="#2E7D4F"></text>
+    <svg viewBox="0 0 760 300" role="img" aria-label="T-shaped floor plan from the ARIA dashboard: six nodes in zones A, B and C along one corridor, with Exit A on the left, Exit C on the right and Exit B down the middle. Click a room to start a fire in its zone and see the routing change.">
+      <!-- corridor: the T -->
+      <rect x="64" y="122" width="632" height="40" fill="#E2E8F0" />
+      <rect x="360" y="162" width="40" height="76" fill="#E2E8F0" />
+      <!-- corridor arrows, one per zone segment -->
+      {[['A', 220], ['B', 380], ['C', 540]].map(([z, x]) => (
+        <text x={x} y="151" text-anchor="middle" font-size="22" font-weight="700" id={`zone-arrow-${z}`} fill="#2E7D4F"></text>
+      ))}
+      <!-- exits -->
+      <g class="exit"><rect x="6" y="116" width="58" height="52" rx="8" fill="#E3F0E8" stroke="#2E7D4F" stroke-width="1.5" id="exit-A" />
+        <text x="35" y="138" text-anchor="middle" class="ex-t">Exit A</text><text x="35" y="154" text-anchor="middle" class="ex-s" id="exit-s-A">OPEN</text></g>
+      <g class="exit"><rect x="696" y="116" width="58" height="52" rx="8" fill="#E3F0E8" stroke="#2E7D4F" stroke-width="1.5" id="exit-C" />
+        <text x="725" y="138" text-anchor="middle" class="ex-t">Exit C</text><text x="725" y="154" text-anchor="middle" class="ex-s" id="exit-s-C">OPEN</text></g>
+      <g class="exit"><rect x="344" y="238" width="72" height="50" rx="8" fill="#E3F0E8" stroke="#2E7D4F" stroke-width="1.5" id="exit-B" />
+        <text x="380" y="259" text-anchor="middle" class="ex-t">Exit B</text><text x="380" y="275" text-anchor="middle" class="ex-s" id="exit-s-B">OPEN</text></g>
+      <!-- rooms: N1 to N4 above the corridor, N5 and N6 below -->
+      {rooms.map((r) => (
+        <g class="zone" data-zone={r.z} style="cursor: pointer;">
+          <rect x={r.x} y={r.y} width={r.w} height={r.h} rx="8" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1.6" class={`zr zr-${r.z}`} />
+          <text x={r.x + r.w / 2} y={r.y + (r.h > 70 ? 32 : 26)} text-anchor="middle" class="rm-n">{r.n}</text>
+          <text x={r.x + r.w / 2} y={r.y + (r.h > 70 ? 50 : 42)} text-anchor="middle" class="rm-z">Zone {r.z}</text>
+          <text x={r.x + r.w / 2} y={r.y + (r.h > 70 ? 70 : 56)} text-anchor="middle" font-size="16" class={`fire fire-${r.z}`}></text>
         </g>
       ))}
     </svg>
+    <p class="evac-hint muted">Click any room to start a fire in its zone. Click again to put it out.</p>
   </div>
   <div class="evac-side">
     <p class="evac-title">Exit congestion</p>
@@ -33,7 +54,13 @@
 
 <style>
   .evac { display: grid; grid-template-columns: 2.2fr 1fr; gap: 1.5rem; padding: 1.5rem; align-items: center; }
-  .evac-map svg { width: 100%; height: auto; }
+  .evac-map svg { width: 100%; height: auto; font-family: var(--font-body); }
+  .evac-map :global(.rm-n) { font-size: 17px; font-weight: 700; fill: #151A2E; }
+  .evac-map :global(.rm-z) { font-size: 11px; fill: #5A6272; }
+  .evac-map :global(.ex-t) { font-size: 11px; font-weight: 700; fill: #151A2E; }
+  .evac-map :global(.ex-s) { font-size: 9px; font-weight: 600; fill: #5A6272; letter-spacing: 0.04em; }
+  .evac-map .zone:hover rect { stroke-width: 2.6; }
+  .evac-hint { font-size: 0.8rem; margin-top: 0.4rem; }
   .evac-title { font-weight: 600; font-size: 0.9rem; }
   .evac-check { display: flex; gap: 0.45rem; align-items: center; font-size: 0.9rem; margin-top: 0.5rem; }
   .evac-check input { accent-color: var(--accent); }
@@ -78,20 +105,23 @@
   function render() {
     const plan = routeZones(fire, congested);
     for (const z of ZONES) {
-      const rect = document.getElementById(`zone-rect-${z}`);
-      const arrow = document.getElementById(`zone-arrow-${z}`);
-      const hint = document.getElementById(`zone-hint-${z}`);
-      if (!rect || !arrow || !hint) continue;
       const route = plan[z];
-      rect.setAttribute('fill', FILL[route.color]);
-      rect.setAttribute('stroke', STROKE[route.color]);
-      arrow.textContent = fire.has(z) ? '🔥' : ARROW[route.direction];
-      arrow.setAttribute('fill', STROKE[route.color]);
-      hint.textContent = fire.has(z) ? 'click to extinguish' : 'click to ignite';
-    }
-    for (const z of ZONES) {
+      document.querySelectorAll<SVGRectElement>(`.zr-${z}`).forEach((rect) => {
+        rect.setAttribute('fill', FILL[route.color]);
+        rect.setAttribute('stroke', STROKE[route.color]);
+      });
+      document.querySelectorAll<SVGTextElement>(`.fire-${z}`).forEach((t) => (t.textContent = fire.has(z) ? '🔥' : ''));
+      const arrow = document.getElementById(`zone-arrow-${z}`);
+      if (arrow) {
+        arrow.textContent = route.direction === 'none' ? '' : (ARROW[route.direction] + ' ' + ARROW[route.direction]);
+        arrow.setAttribute('fill', STROKE[route.color]);
+      }
       const exit = document.getElementById(`exit-${z}`);
-      if (exit) exit.setAttribute('fill', congested.has(z) ? '#D98E1B' : '#2E7D4F');
+      const label = document.getElementById(`exit-s-${z}`);
+      const busy = congested.has(z);
+      exit?.setAttribute('fill', busy ? '#F9EDDA' : '#E3F0E8');
+      exit?.setAttribute('stroke', busy ? '#D98E1B' : '#2E7D4F');
+      if (label) label.textContent = busy ? 'CONGESTED' : 'OPEN';
     }
   }
 
