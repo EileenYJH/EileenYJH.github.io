@@ -42,8 +42,9 @@ export const timeline: Moment[] = [
     kind: 'study',
     academic: true,
     title: 'Foundation in Electrical & Electronics Engineering, UTP',
-    detail: 'Finished the foundation programme with a 4.0 CGPA, on the Dean’s List every semester.',
-    chips: ['Dean’s List · Sep 2024', 'Dean’s List · Jan 2025', 'Dean’s List · May 2025'],
+    detail: '4.0 CGPA and the Dean’s List every semester, then the Student Excellence Award at the Foundation Studies Completion Ceremony (1 Oct 2025).',
+    chips: ['Dean’s List · Sep 2024', 'Dean’s List · Jan 2025', 'Dean’s List · May 2025', 'Student Excellence Award · Oct 2025'],
+    img: '/images/timeline/fscc.jpg',
   },
   {
     year: 2025,
@@ -87,15 +88,6 @@ export const timeline: Moment[] = [
       { code: 'MPU3152', name: 'Penghayatan Etika & Peradaban', grade: 'A-' },
       { code: 'PFB1012', name: 'Introduction to Oil & Gas Industry and Sustainable Development', grade: 'A' },
     ],
-  },
-  {
-    year: 2025,
-    date: '1 Oct 2025',
-    kind: 'award',
-    academic: true,
-    title: 'Student Excellence Award (4.0)',
-    detail: 'Foundation Studies Completion Ceremony 2025, UTP.',
-    img: '/images/timeline/fscc.jpg',
   },
   {
     year: 2025,
