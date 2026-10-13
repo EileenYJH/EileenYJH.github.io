@@ -27,7 +27,7 @@ const roles = timeline.find((m) => m.kind === 'now')?.chips ?? [];
           <li class:list={['hl-card', `hl-card--${m.kind}`]}>
             {m.img && <img class="hl-img" src={m.img} alt="" loading="lazy" decoding="async" />}
             <div class="hl-body">
-              <p class="hl-meta">{g.kinds.length > 1 && <span class="hl-kind">{m.kind === 'award' ? 'Award' : 'Competition'}</span>}<span class="hl-date">{m.date}</span></p>
+              <p class="hl-meta"><span class="hl-date">{m.date}</span></p>
               <h4 class="hl-title">{m.href ? <a href={m.href}>{m.title}</a> : m.title}</h4>
               {m.detail && <p class="hl-detail">{m.detail}</p>}
             </div>
