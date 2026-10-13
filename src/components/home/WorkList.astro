@@ -20,8 +20,8 @@ const projects = (await getCollection('projects'))
   });
 ---
 <ul class="work-list">
-  {projects.map((p) => (
-    <li>
+  {projects.map((p, i) => (
+    <li data-rise data-rise-x style={`--i:${i % 3}`}>
       <a class="work-row" href={p.href} style={`--c:${p.color}`}>
         <span class="work-swatch" aria-hidden="true"></span>
         <span class="work-main">

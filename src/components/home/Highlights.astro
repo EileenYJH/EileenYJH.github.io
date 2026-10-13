@@ -17,88 +17,141 @@ const groups: { id: string; kinds: Kind[]; title: string }[] = [
 ];
 const roles = timeline.find((m) => m.kind === 'now')?.chips ?? [];
 ---
-{groups.map((g) => {
-  const list = items.filter((m) => g.kinds.includes(m.kind));
-  return list.length > 0 && (
-    <div class:list={['hl-group', `hl-group--${g.id}`]}>
-      <h3 class="hl-group-title">{g.title} <span>{list.length}</span></h3>
-      <ul class="hl">
-        {list.map((m) => (
-          <li class:list={['hl-card', `hl-card--${m.kind}`]}>
-            {m.img && <img class="hl-img" src={m.img} alt="" loading="lazy" decoding="async" />}
-            <div class="hl-body">
-              <p class="hl-meta"><span class="hl-date">{m.date}</span></p>
-              <h4 class="hl-title">{m.href ? <a href={m.href}>{m.title}</a> : m.title}</h4>
-              {m.detail && <p class="hl-detail">{m.detail}</p>}
-              {m.post && <a class="hl-post" href={m.post} target="_blank" rel="noopener">LinkedIn post ↗</a>}
-            </div>
-          </li>
-        ))}
+<div class="hl-track" id="hl-track">
+  {groups.map((g) => {
+    const list = items.filter((m) => g.kinds.includes(m.kind));
+    return list.length > 0 && (<>
+      <div class:list={['hl-label', `hl-group--${g.id}`]}>
+        <span class="hl-label-count">{String(list.length).padStart(2, '0')}</span>
+        <h3>{g.title}</h3>
+        <span class="hl-label-hint">Keep scrolling →</span>
+      </div>
+      {list.map((m, i) => (
+        <article class:list={['hl-card', `hl-card--${m.kind}`]} data-rise style={`--i:${i % 4}`}>
+          {m.img ? <img class="hl-img" src={m.img} alt="" loading="lazy" decoding="async" /> : <div class="hl-img hl-img--none" aria-hidden="true"><span>{m.title.split(/[,:]/)[0]}</span></div>}
+          <div class="hl-body">
+            <p class="hl-meta"><span class="hl-date">{m.date}</span></p>
+            <h4 class="hl-title">{m.href ? <a href={m.href}>{m.title}</a> : m.title}</h4>
+            {m.detail && <p class="hl-detail">{m.detail}</p>}
+            {m.post && <a class="hl-post" href={m.post} target="_blank" rel="noopener">LinkedIn post ↗</a>}
+          </div>
+        </article>
+      ))}
+    </>);
+  })}
+  {roles.length > 0 && (
+    <div class="hl-roles">
+      <h3>Leadership</h3>
+      <ul>
+        {roles.map((r) => {
+          const [role, ...org] = r.split(', ');
+          return <li><strong>{role}</strong><span>{org.join(', ')}</span></li>;
+        })}
       </ul>
     </div>
-  );
-})}
+  )}
+</div>
 
-{roles.length > 0 && (
-  <div class="hl-roles">
-    <h3>Leadership</h3>
-    <ul>
-      {roles.map((r) => {
-        const [role, ...org] = r.split(', ');
-        return <li><strong>{role}</strong><span>{org.join(', ')}</span></li>;
-      })}
-    </ul>
-  </div>
-)}
+<script>
+  // Desktop: the section pins and vertical scrolling slides the cards sideways.
+  const track = document.getElementById('hl-track');
+  const sec = track?.closest<HTMLElement>('.highlights');
+  const wide = matchMedia('(min-width: 900px)');
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  if (track && sec) {
+    let over = 0;
+    const size = () => {
+      if (!wide.matches || still.matches) { sec.classList.remove('hl-pinned'); sec.style.height = ''; track.style.transform = ''; return; }
+      sec.classList.add('hl-pinned');
+      over = Math.max(0, track.scrollWidth - track.clientWidth);
+      sec.style.height = `${innerHeight + over * 0.65}px`;
+      move();
+    };
+    const move = () => {
+      if (!sec.classList.contains('hl-pinned')) return;
+      const p = Math.max(0, Math.min(1, -sec.getBoundingClientRect().top / Math.max(1, over * 0.65)));
+      track.style.transform = `translateX(${-p * over}px)`;
+      sec.style.setProperty('--hlp', p.toFixed(3));
+    };
+    addEventListener('scroll', () => requestAnimationFrame(move), { passive: true });
+    addEventListener('resize', size);
+    addEventListener('load', size);
+    size();
+  }
+</script>
 
 <style>
-  .hl-group { margin-top: 2.5rem; }
-  .hl-group-title {
+  .hl-track {
     display: flex;
-    align-items: baseline;
-    gap: 0.6rem;
-    font-size: 1.4rem;
-    padding-bottom: 0.6rem;
-    border-bottom: 2px solid var(--gk, var(--line));
+    gap: 1.1rem;
+    align-items: stretch;
+    padding: 0.4rem max(1.5rem, calc((100vw - var(--content-w)) / 2)) 1.4rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    will-change: transform;
   }
-  .hl-group-title span { font-size: 0.9rem; font-weight: 600; color: var(--gk, var(--muted)); font-variant-numeric: tabular-nums; }
+  :global(.hl-pinned) .hl-track { overflow: visible; scroll-snap-type: none; }
+  .hl-label, .hl-card, .hl-roles { flex: 0 0 auto; scroll-snap-align: start; }
+  .hl-label {
+    width: 230px;
+    display: flex; flex-direction: column; justify-content: flex-end; gap: 0.4rem;
+    padding: 1.4rem;
+    border-radius: 16px;
+    color: #fff;
+    background: linear-gradient(160deg, var(--gk), color-mix(in srgb, var(--gk) 55%, #151A2E));
+  }
+  .hl-label h3 { color: #fff; font-size: 1.6rem; line-height: 1.1; }
+  .hl-label-count { font-family: var(--font-display); font-size: 4rem; font-weight: 800; line-height: 1; color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.8); }
+  .hl-label-hint { font-size: 0.8rem; opacity: 0.8; margin-top: 0.6rem; }
   .hl-group--award { --gk: #B7791F; }
-  .hl-group--competition { --gk: #6D28D9; }
-  .hl-group--event { --gk: var(--steel); }
-  .hl {
-    list-style: none;
-    padding: 0;
-    margin-top: 1.2rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.2rem;
-  }
+  .hl-group--event { --gk: #3B5B8C; }
   .hl-card {
     --k: var(--steel);
+    width: 290px;
     display: flex;
     flex-direction: column;
     background: var(--paper-raised);
     border: 1px solid var(--line);
-    border-radius: 14px;
+    border-radius: 16px;
     overflow: hidden;
+    transition: box-shadow 0.3s ease, translate 0.3s ease;
   }
+  .hl-card:hover { box-shadow: 0 22px 40px -26px rgba(21, 26, 46, 0.45); }
   .hl-card--award { --k: #B7791F; }
   .hl-card--competition { --k: #6D28D9; }
   .hl-img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
-  .hl-body { padding: 1rem 1.1rem 1.2rem; }
-  .hl-meta { display: flex; flex-wrap: wrap; gap: 0.2rem 0.7rem; font-size: 0.82rem; }
-  .hl-kind { font-weight: 650; color: var(--k); }
+  .hl-img--none {
+    display: flex; align-items: flex-end; padding: 1rem;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--k) 22%, var(--paper)), color-mix(in srgb, var(--k) 8%, var(--paper)));
+  }
+  .hl-img--none { overflow: hidden; }
+  .hl-img--none span { min-width: 0; overflow-wrap: anywhere; font-family: var(--font-display); font-size: 1.4rem; font-weight: 750; line-height: 1.1; color: color-mix(in srgb, var(--k) 70%, var(--ink)); }
+  .hl-body { padding: 0.9rem 1.05rem 1.1rem; }
+  .hl-meta { display: flex; flex-wrap: wrap; gap: 0.2rem 0.7rem; font-size: 0.8rem; }
   .hl-date { color: var(--muted); font-variant-numeric: tabular-nums; }
-  .hl-title { font-family: var(--font-display); font-size: 1.05rem; font-weight: 650; line-height: 1.3; margin-top: 0.2rem; letter-spacing: -0.01em; }
+  .hl-title { font-family: var(--font-display); font-size: 1rem; font-weight: 650; line-height: 1.3; margin-top: 0.2rem; letter-spacing: -0.01em; }
   .hl-title a { text-decoration-color: var(--line); text-underline-offset: 3px; }
   .hl-title a:hover { color: var(--k); text-decoration-color: currentColor; }
-  .hl-detail { font-size: 0.9rem; color: var(--muted); margin-top: 0.3rem; }
-  .hl-roles { margin-top: 3rem; }
-  .hl-roles h3 { font-size: 1.3rem; }
-  .hl-roles ul { list-style: none; padding: 0; margin-top: 0.8rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.8rem 2rem; border-top: 1px solid var(--line); padding-top: 1rem; }
-  .hl-roles li { display: grid; gap: 0.1rem; }
-  .hl-roles strong { font-weight: 650; }
-  .hl-roles span { font-size: 0.92rem; color: var(--muted); }
-  .hl-post { display: inline-block; margin-top: 0.6rem; font-size: 0.85rem; font-weight: 600; color: #0A66C2; text-decoration: none; }
+  .hl-detail { font-size: 0.86rem; color: var(--muted); margin-top: 0.3rem; line-height: 1.5; }
+  .hl-post { display: inline-block; margin-top: 0.5rem; font-size: 0.82rem; font-weight: 600; color: #0A66C2; text-decoration: none; }
   .hl-post:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .hl-roles {
+    width: 560px;
+    padding: 1.4rem 1.5rem;
+    border-radius: 16px;
+    background: var(--ink);
+    color: #fff;
+  }
+  .hl-roles h3 { color: #fff; font-size: 1.4rem; }
+  .hl-roles ul { list-style: none; padding: 0; margin-top: 0.9rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem 1.4rem; }
+  .hl-roles li { display: grid; gap: 0.05rem; }
+  .hl-roles strong { font-weight: 650; font-size: 0.92rem; }
+  .hl-roles span { font-size: 0.82rem; color: rgba(255, 255, 255, 0.7); }
+  @media (max-width: 899px) {
+    .hl-card { width: 78vw; max-width: 300px; }
+    .hl-label { width: 62vw; max-width: 220px; }
+    .hl-roles { width: 88vw; }
+    .hl-roles ul { grid-template-columns: 1fr; }
+  }
 </style>

@@ -20,7 +20,7 @@ import Chapter from '../components/home/Chapter.astro';
   title="Eileen Yeoh — electrical & electronic engineering"
   description="Eileen Yeoh is an electrical and electronic engineering student at UTP, currently on student exchange at the University of Sheffield. Projects across semiconductor fabrication, power electronics, embedded IoT and applied AI."
 >
-  <section class="hero">
+  <section class="hero" id="top" data-dot="Hello">
     <PhotoWall />
     <div class="hero-shade" aria-hidden="true"></div>
     <div class="wrap hero-inner">
@@ -45,7 +45,7 @@ import Chapter from '../components/home/Chapter.astro';
     </div>
   </section>
 
-  <section class="section wrap me" id="about-me" data-sec>
+  <section class="section wrap me" id="about-me" data-sec data-dot="About me">
     <div class="me-photo" id="me-photo">
       <span class="me-dots" aria-hidden="true"></span>
       <span class="me-frame" aria-hidden="true"></span>
@@ -63,19 +63,24 @@ import Chapter from '../components/home/Chapter.astro';
     </div>
   </section>
 
-  <section class="section wrap journey" id="journey" data-sec>
+  <section class="section wrap journey" id="journey" data-sec data-dot="Studies">
     <Chapter num="02" label="Studies" />
     <h2>Academic journey</h2>
     <Timeline />
   </section>
 
-  <section class="section wrap highlights" id="highlights" data-sec>
-    <Chapter num="03" label="Beyond class" />
-    <h2>Awards, competitions and events</h2>
-    <Highlights />
+  <section class="highlights" id="highlights" data-sec data-dot="Beyond class">
+    <div class="hl-stick">
+      <div class="wrap">
+        <Chapter num="03" label="Beyond class" />
+        <h2>Awards, competitions and events</h2>
+      </div>
+      <Highlights />
+      <div class="wrap hl-progress" aria-hidden="true"><i></i></div>
+    </div>
   </section>
 
-  <section class="section wrap work" id="work" data-sec>
+  <section class="section wrap work" id="work" data-sec data-dot="Projects">
     <Chapter num="04" label="Projects" />
     <div class="work-head">
       <h2>Selected work</h2>
@@ -85,12 +90,12 @@ import Chapter from '../components/home/Chapter.astro';
   </section>
 
   {posts.length > 0 && (
-    <section class="section wrap writing" data-sec>
+    <section class="section wrap writing" id="writing" data-sec data-dot="Blog">
       <Chapter num="05" label="Blog" />
       <h2>Writing</h2>
       <div class="post-list">
         {posts.map((post) => (
-          <a class="post-row" href={`/blog/${post.id}`}>
+          <a class="post-row" href={`/blog/${post.id}`} data-rise>
             <span class="muted post-date">{fmt.format(post.data.date)}</span>
             <span class="post-title">{post.data.title}</span>
           </a>
@@ -99,7 +104,8 @@ import Chapter from '../components/home/Chapter.astro';
     </section>
   )}
 
-  <section class="contact">
+  <section class="contact" id="contact" data-dot="Contact">
+    <span class="contact-glow" aria-hidden="true"></span>
     <div class="wrap contact-inner">
       <h2>Working on something in hardware, chips or applied AI? I'd like to hear about it.</h2>
       <div class="contact-actions">
@@ -109,7 +115,48 @@ import Chapter from '../components/home/Chapter.astro';
       </div>
     </div>
   </section>
+  <nav class="dots" aria-label="Sections"></nav>
+
   <script>
+    // Home scroll effects: hero parallax, staggered rises, contact glow and the side section dots.
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const root = document.documentElement;
+    if (!still) {
+      root.classList.add('rise-on');
+      const io = new IntersectionObserver((es) => es.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('is-up'); io.unobserve(e.target); }
+      }), { rootMargin: '0px 0px -10% 0px' });
+      document.querySelectorAll('[data-rise]').forEach((el) => io.observe(el));
+    }
+    const hero = document.querySelector<HTMLElement>('.hero');
+    const contact = document.querySelector<HTMLElement>('.contact');
+    const sections = [...document.querySelectorAll<HTMLElement>('[data-dot]')];
+    const dots = document.querySelector<HTMLElement>('.dots');
+    if (dots) {
+      sections.forEach((s) => {
+        const a = document.createElement('a');
+        a.href = `#${s.id}`;
+        a.innerHTML = `<span>${s.dataset.dot}</span>`;
+        dots.append(a);
+      });
+    }
+    let hraf = 0;
+    const onScroll = () => {
+      hraf = 0;
+      const vh = innerHeight;
+      if (!still && hero) hero.style.setProperty('--hp', Math.min(1, scrollY / vh).toFixed(3));
+      if (!still && contact) {
+        const r = contact.getBoundingClientRect();
+        contact.style.setProperty('--cpx', Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height))).toFixed(3));
+      }
+      let current = 0;
+      sections.forEach((s, i) => { if (s.getBoundingClientRect().top < vh * 0.45) current = i; });
+      dots?.querySelectorAll('a').forEach((a, i) => a.classList.toggle('on', i === current));
+      dots?.classList.toggle('show', scrollY > vh * 0.6);
+    };
+    addEventListener('scroll', () => { if (!hraf) hraf = requestAnimationFrame(onScroll); }, { passive: true });
+    onScroll();
+
     // Section entrances: each section's marker line draws as it scrolls in,
     // then its number, label and heading rise into place.
     const secs = [...document.querySelectorAll<HTMLElement>('[data-sec]')];
@@ -162,6 +209,60 @@ import Chapter from '../components/home/Chapter.astro';
 </BaseLayout>
 
 <style>
+  /* ---------- Home sizing: a little smaller so each section fits a screen ---------- */
+  :global(html) { font-size: 93.75%; scroll-snap-type: y proximity; }
+  :global(:root) { --space-section: clamp(3.5rem, 9vh, 6rem); }
+  .hero, .me, .journey, .work, .writing, .contact { scroll-snap-align: start; scroll-margin-top: 64px; }
+  .highlights { scroll-margin-top: 0; }
+  .hero { scroll-margin-top: 0; }
+
+  /* ---------- Scroll effects ---------- */
+  .hero :global(.wall) { transform: scale(calc(1 + var(--hp, 0) * 0.12)); filter: blur(calc(var(--hp, 0) * 4px)); transform-origin: 30% 60%; }
+  .hero-inner { transform: translateY(calc(var(--hp, 0) * -90px)); opacity: calc(1 - var(--hp, 0) * 1.3); }
+  :global(.rise-on [data-rise]) {
+    opacity: 0;
+    translate: 0 40px;
+    scale: 0.96;
+    rotate: -0.8deg;
+    transition: opacity 0.6s ease calc(var(--i, 0) * 90ms), translate 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i, 0) * 90ms), scale 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i, 0) * 90ms), rotate 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i, 0) * 90ms);
+  }
+  :global(.rise-on [data-rise-x]) { translate: -60px 0; rotate: 0deg; scale: 1; }
+  :global(.rise-on [data-rise].is-up) { opacity: 1; translate: 0 0; scale: 1; rotate: 0deg; }
+
+  /* Side dots: where you are on the page. */
+  .dots {
+    position: fixed; right: 1.1rem; top: 50%; translate: 12px -50%; z-index: 40;
+    display: grid; gap: 0.75rem;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s ease, translate 0.4s ease;
+  }
+  .dots:global(.show) { opacity: 1; translate: 0 -50%; pointer-events: auto; }
+  .dots :global(a) {
+    position: relative; display: block; width: 10px; height: 10px; border-radius: 50%;
+    border: 2px solid var(--accent); background: var(--paper);
+    transition: transform 0.25s ease, background 0.25s ease;
+  }
+  .dots :global(a.on) { background: var(--accent); transform: scale(1.35); }
+  .dots :global(a span) {
+    position: absolute; right: 18px; top: 50%; translate: 0 -50%;
+    white-space: nowrap; font-size: 0.75rem; font-weight: 650; color: var(--ink);
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 999px; padding: 0.2rem 0.6rem;
+    opacity: 0; transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+  .dots :global(a:hover span) { opacity: 1; }
+  @media (max-width: 1100px) { .dots { display: none; } }
+
+  /* Contact: a glow that travels across the band as you scroll. */
+  .contact { position: relative; overflow: hidden; isolation: isolate; }
+  .contact-glow {
+    position: absolute; z-index: -1; width: 60vw; height: 60vw; border-radius: 50%;
+    left: calc(-20vw + var(--cpx, 0.5) * 70vw); top: -20vw;
+    background: radial-gradient(circle, rgba(var(--accent-rgb), 0.55), transparent 62%);
+    filter: blur(10px);
+  }
+  .contact h2 { transform: scale(calc(0.94 + var(--cpx, 1) * 0.06)); transform-origin: left center; }
+
   /* ---------- Hero: me, over a moving wall of photos ---------- */
   .hero {
     position: relative;
@@ -271,7 +372,16 @@ import Chapter from '../components/home/Chapter.astro';
   /* ---------- Journey ---------- */
   .journey { padding-top: 0; }
   .journey > h2 { text-align: center; }
-  .highlights { padding-top: 0; }
+  .highlights { position: relative; padding-block: calc(var(--space-section) * 0.5); }
+  .highlights h2 { margin-bottom: 1.4rem; }
+  .highlights:global(.hl-pinned) { padding-block: 0; }
+  .highlights:global(.hl-pinned) .hl-stick {
+    position: sticky; top: 64px; height: calc(100vh - 64px);
+    display: flex; flex-direction: column; justify-content: center; overflow: hidden;
+  }
+  .hl-progress { height: 3px; background: var(--line); border-radius: 3px; overflow: hidden; display: none; }
+  .highlights:global(.hl-pinned) .hl-progress { display: block; }
+  .hl-progress i { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--trace)); transform: scaleX(var(--hlp, 0)); transform-origin: left; }
   .journey-lede { margin-top: 0.6rem; max-width: 56ch; }
 
   /* ---------- Selected work ---------- */
