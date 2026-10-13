@@ -3,11 +3,11 @@
 // zone routing, the 30-LED corridor strip the hub lights up, and the laser-beam people counters at each exit.
 const rooms = [
   { n: 'N1', z: 'A', x: 76, y: 30, w: 150, h: 84 },
-  { n: 'N2', z: 'B', x: 232, y: 30, w: 150, h: 84 },
-  { n: 'N3', z: 'B', x: 388, y: 30, w: 150, h: 84 },
-  { n: 'N4', z: 'C', x: 544, y: 30, w: 150, h: 84 },
+  { n: 'N2', z: 'C', x: 232, y: 30, w: 150, h: 84 },
+  { n: 'N3', z: 'C', x: 388, y: 30, w: 150, h: 84 },
+  { n: 'N4', z: 'B', x: 544, y: 30, w: 150, h: 84 },
   { n: 'N5', z: 'A', x: 150, y: 176, w: 96, h: 64 },
-  { n: 'N6', z: 'C', x: 514, y: 176, w: 96, h: 64 },
+  { n: 'N6', z: 'B', x: 514, y: 176, w: 96, h: 64 },
 ];
 // Hub LED strip 1, 30 WS2812B pixels as wired in the model: zones A and B run straight along the
 // corridor, zone C turns 90 degrees down the branch to Exit C.
@@ -162,7 +162,7 @@ const leds = [
     return !fire.has('B') ? 'B' : 'A';
   }
   const Y = 142, STUB_X = 380, EXIT_C_Y = 262, EXIT_A_X = 35, EXIT_B_X = 725;
-  const START: Record<ZoneId, number[]> = { A: [151, 198], B: [307, 453], C: [619, 562] };
+  const START: Record<ZoneId, number[]> = { A: [151, 198], B: [619, 562], C: [307, 453] };
   function pathFor(x0: number, to: ZoneId): number[][] {
     if (to === 'C') return [[x0, Y], [STUB_X, Y], [STUB_X, EXIT_C_Y]];
     return [[x0, Y], [to === 'A' ? EXIT_A_X : EXIT_B_X, Y]];
