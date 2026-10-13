@@ -14,9 +14,10 @@ const items = timeline.filter((m) => m.academic);
 // Group by year so each year gets one marker on the rail.
 const years = [...new Set(items.map((m) => m.year))];
 ---
-<ol class="tl">
+<ol class="tl" id="tl">
   {years.map((y) => (
     <li class="tl-year">
+      <span class="tl-ghost" aria-hidden="true">{y}</span>
       <h3 class="tl-year-label">{y}</h3>
       <ol class="tl-items">
         {items.filter((m) => m.year === y).map((m) => (
@@ -64,6 +65,45 @@ const years = [...new Set(items.map((m) => m.year))];
     </li>
   ))}
 </ol>
+
+<script>
+  // Scroll effects: the rail fills as you scroll, each card slides in from
+  // its side, dots light up once passed, and a large year floats behind.
+  const tl = document.getElementById('tl');
+  if (tl && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    tl.classList.add('tl--anim');
+    const items = [...tl.querySelectorAll<HTMLElement>('.tl-item')];
+    const years = [...tl.querySelectorAll<HTMLElement>('.tl-year')];
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+      }, { rootMargin: '0px 0px -12% 0px' });
+      items.forEach((el) => io.observe(el));
+    } else {
+      items.forEach((el) => el.classList.add('is-in'));
+    }
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const r = tl.getBoundingClientRect();
+      const line = innerHeight * 0.6;
+      const p = Math.min(1, Math.max(0, (line - r.top) / r.height));
+      tl.style.setProperty('--tl-p', p.toFixed(4));
+      items.forEach((el) => {
+        const dot = el.getBoundingClientRect().top + 30;
+        el.classList.toggle('is-past', dot < line);
+      });
+      years.forEach((el) => {
+        const yr = el.getBoundingClientRect();
+        const t = (yr.top + yr.height / 2 - innerHeight / 2) / innerHeight;
+        el.style.setProperty('--py', Math.max(-1, Math.min(1, t)).toFixed(3));
+      });
+    };
+    addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
+    addEventListener('resize', update);
+    update();
+  }
+</script>
 
 <style>
   .tl, .tl-items { list-style: none; padding: 0; margin: 0; }
@@ -178,5 +218,50 @@ const years = [...new Set(items.map((m) => m.year))];
     .tl-img { width: 110px; height: 110px; }
     .tl-title { font-size: 1.05rem; }
     .tl-scores dd { font-size: 1.3rem; }
+  }
+
+  /* ---------- Scroll effects ---------- */
+  .tl-year { position: relative; isolation: isolate; }
+  .tl-ghost {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
+    font-size: clamp(7rem, 18vw, 15rem);
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    line-height: 0.8;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(var(--accent-rgb), 0.12);
+    pointer-events: none;
+    user-select: none;
+    transform: translateY(calc(var(--py, 0) * -90px));
+  }
+  .tl::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 0.6rem;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(var(--accent), var(--trace));
+    transform: scaleY(var(--tl-p, 1));
+    transform-origin: top;
+    box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.45);
+  }
+  .tl--anim .tl-item {
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .tl--anim .tl-item:not(.is-in) { opacity: 0; transform: translateX(-28px); }
+  .tl--anim .tl-item--right:not(.is-in) { transform: translateX(28px); }
+  .tl-dot { transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; z-index: 1; }
+  .tl--anim .tl-item.is-past .tl-dot {
+    background: var(--k);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--k) 22%, transparent);
+    transform: scale(1.1);
+  }
+  @media (min-width: 900px) {
+    .tl::after { left: calc(50% - 1px); }
+    .tl-ghost { right: auto; left: 50%; translate: -50% 0; top: -1.5rem; }
   }
 </style>
