@@ -20,7 +20,7 @@ const years = [...new Set(items.map((m) => m.year))];
       <h3 class="tl-year-label">{y}</h3>
       <ol class="tl-items">
         {items.filter((m) => m.year === y).map((m) => (
-          <li class:list={['tl-item', `tl-item--${m.kind}`, { 'tl-item--img': m.img }]}>
+          <li class:list={['tl-item', `tl-item--${m.kind}`, items.indexOf(m) % 2 ? 'tl-item--right' : 'tl-item--left', { 'tl-item--img': m.img }]}>
             <span class="tl-dot" aria-hidden="true"></span>
             <div class="tl-body">
               <p class="tl-meta">
@@ -145,5 +145,38 @@ const years = [...new Set(items.map((m) => m.year))];
     .tl-year-label { padding-left: 1.8rem; }
     .tl-item--img { grid-template-columns: minmax(0, 1fr); }
     .tl-img { width: 100%; height: auto; aspect-ratio: 4 / 3; order: -1; }
+  }
+
+  /* Desktop: rail down the middle, cards alternate left and right. */
+  @media (min-width: 900px) {
+    .tl::before { left: calc(50% - 1px); }
+    .tl-year + .tl-year { margin-top: 1.5rem; }
+    .tl-year-label {
+      padding-left: 0;
+      text-align: center;
+      font-size: 2rem;
+      position: relative;
+      background: var(--paper);
+      width: fit-content;
+      margin-inline: auto;
+      padding: 0.3rem 0.8rem;
+    }
+    .tl-items {
+      margin-top: 0.8rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 4.4rem;
+      row-gap: 1rem;
+      align-items: start;
+    }
+    .tl-item { margin-left: 0; padding: 1rem 1.2rem; }
+    .tl-item--left { grid-column: 1; }
+    .tl-item--right { grid-column: 2; }
+    .tl-item--left .tl-dot { left: auto; right: calc(-2.2rem - 8px); }
+    .tl-item--right .tl-dot { left: calc(-2.2rem - 6px); }
+    .tl-item--img { grid-template-columns: minmax(0, 1fr) 110px; }
+    .tl-img { width: 110px; height: 110px; }
+    .tl-title { font-size: 1.05rem; }
+    .tl-scores dd { font-size: 1.3rem; }
   }
 </style>
