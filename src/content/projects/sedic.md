@@ -1,6 +1,6 @@
 ---
-title: Project Overwatch — AI radio-signal classifier
-summary: A dual-branch deep-learning model that reads raw IQ radio samples and flags civilian, military, and jamming signals — even when several overlap in the same 160 µs window. Every judged class clears the 80% recall bar.
+title: "Project Overwatch: AI radio-signal classifier"
+summary: A dual-branch deep-learning model that reads raw IQ radio samples and flags civilian, military, and jamming signals, even when several overlap in the same 160 µs window. Every judged class clears the 80% recall bar.
 tags: [PyTorch, RF signal processing, multi-label CNN, RadioML]
 flagship: false
 href: /projects/sedic

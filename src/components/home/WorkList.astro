@@ -14,9 +14,9 @@ const projectMeta: Record<string, { color: string; context: string }> = {
 const projects = (await getCollection('projects'))
   .sort((a, b) => a.data.order - b.data.order)
   .map((p) => {
-    const [name, ...rest] = p.data.title.split(' — ');
+    const [name, ...rest] = p.data.title.split(': ');
     const href = p.data.href ?? '/projects';
-    return { name, what: rest.join(' — '), summary: p.data.summary, tags: p.data.tags, href, ...projectMeta[href] };
+    return { name, what: rest.join(': '), summary: p.data.summary, tags: p.data.tags, href, ...projectMeta[href] };
   });
 ---
 <ul class="work-list">

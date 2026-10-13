@@ -7,11 +7,11 @@ import EvacuationDemo from '../../components/aria/EvacuationDemo.astro';
 import NodeExploded from '../../components/aria/NodeExploded.astro';
 
 const sensors = [
-  { name: 'MQ-2', role: 'Smoke, LPG & combustibles — the first hint something is burning' },
-  { name: 'MQ-7', role: 'Carbon monoxide, converted to a ppm estimate — the silent killer check' },
-  { name: 'MQ-135', role: 'Chemical air quality — catches what smoke sensors miss' },
+  { name: 'MQ-2', role: 'Smoke, LPG & combustibles, the first hint something is burning' },
+  { name: 'MQ-7', role: 'Carbon monoxide, converted to a ppm estimate: the silent killer check' },
+  { name: 'MQ-135', role: 'Chemical air quality that catches what smoke sensors miss' },
   { name: 'Flame sensor', role: 'Direct IR flame detection, triple-read to reject sunlight' },
-  { name: 'DHT11', role: 'Temperature & humidity — separates steam from fire' },
+  { name: 'DHT11', role: 'Temperature & humidity to separate steam from fire' },
   { name: 'LDR + laser', role: 'Beam-break people counting at every exit for congestion detection' },
 ];
 const galleryImages = [
@@ -22,15 +22,15 @@ const galleryImages = [
 <BaseLayout
   overlayNav
   theme="aria"
-  title="ARIA — distributed fire detection — Eileen Yeoh"
+  title="ARIA: distributed fire detection | Eileen Yeoh"
   description="A 6-node ESP32 wireless sensor network that tells real fires from cooking smoke and routes people to safe exits. Interactive deep-dive."
 >
   <ProjectHero img="/images/projects-hero/makerthon.jpg" alt="Team INTERA with ARIA at USM IEEE Makerthon 2026" caption="Team INTERA with ARIA at USM IEEE Makerthon 2026, themed around wireless communication and IoT integration." post="https://www.linkedin.com/feed/update/urn:li:activity:7460617463857074176/" event="#3B2F8F">
     
-    <p class="eyebrow" data-reveal>Project 01 · 2025–2026</p>
+    <p class="eyebrow" data-reveal>Project 01 · 2025 to 2026</p>
     <h1 data-split>ARIA</h1>
     <p class="aria-tagline" data-reveal>
-      Adaptive Room Intelligence &amp; Alert — a wireless sensor
+      Adaptive Room Intelligence &amp; Alert: a wireless sensor
       network that knows the difference between a fire and your breakfast.
     </p>
     <ul class="aria-tags" data-reveal>
@@ -44,13 +44,13 @@ const galleryImages = [
     <div class="problem-grid">
       <p data-reveal>
         A single smoke sensor can't tell combustion from cooking. Steam, haze,
-        and a hot wok all push the same reading up — so alarms get ignored,
+        and a hot wok all push the same reading up, so alarms get ignored,
         batteries get pulled, and real fires get a head start.
       </p>
       <p data-reveal>
         ARIA's answer: never trust one sensor. Each node fuses smoke, carbon
         monoxide, air quality, flame, temperature, and humidity into a single
-        0–10 fire score — and evidence <em>against</em> fire subtracts points.
+        0 to 10 fire score, and evidence <em>against</em> fire subtracts points.
       </p>
     </div>
   </section>
@@ -71,7 +71,7 @@ const galleryImages = [
     <p class="eyebrow" data-reveal>Try it · the scoring algorithm</p>
     <h2 data-split>Score the room yourself.</h2>
     <p class="muted" data-reveal>
-      Set the sensors and watch the fire score react — including the
+      Set the sensors and watch the fire score react, including the
       false-alarm patterns that <em>subtract</em> evidence. Try "Burnt toast":
       heavy smoke, but clean CO and air quality means no alarm.
     </p>
@@ -82,7 +82,7 @@ const galleryImages = [
     <p class="eyebrow" data-reveal>Try it · evacuation routing</p>
     <h2 data-split>Set a fire. Watch the exits think.</h2>
     <p class="muted" data-reveal>
-      The hub's LED strips guide people zone by zone — green chases toward a
+      The hub's LED strips guide people zone by zone: green chases toward a
       safe exit, red warns away from fire, orange means the laser-beam
       counters detected a crowded exit. Click zones to start fires; toggle
       congestion and watch the routing adapt. This is ARIA's actual routing
@@ -95,7 +95,7 @@ const galleryImages = [
     <p class="eyebrow" data-reveal>Hardware · node teardown</p>
     <h2 data-split>Anatomy of a node.</h2>
     <p class="muted" data-reveal>
-      Keep scrolling — the case lifts off and every component files out for
+      Keep scrolling: the case lifts off and every component files out for
       inspection. All of it fits in a 90 × 120 × 45 mm ventilated enclosure.
     </p>
     <NodeExploded />
@@ -118,7 +118,7 @@ const galleryImages = [
     <p class="eyebrow" data-reveal>The dashboard</p>
     <h2 data-split>Mission control in a browser.</h2>
     <p class="muted" data-reveal>
-      The hub serves a live dashboard from its own Wi-Fi access point — no
+      The hub serves a live dashboard from its own Wi-Fi access point, no
       internet needed. Fire wardens see zone scores, SOS locations, and a live
       floor map; engineers get per-node telemetry and a real-time system log.
     </p>
@@ -145,7 +145,7 @@ const galleryImages = [
       </div>
       <div data-reveal data-reveal-delay="0.16">
         <h3>Negative evidence matters.</h3>
-        <p class="muted">The fire score improved most when contradictory signals started subtracting points — that's what finally beat the burnt-toast false alarm.</p>
+        <p class="muted">The fire score improved most when contradictory signals started subtracting points. That's what finally beat the burnt-toast false alarm.</p>
       </div>
     </div>
     <a class="btn" href="https://github.com/EileenYJH/ARIA" target="_blank" rel="noopener" data-reveal>

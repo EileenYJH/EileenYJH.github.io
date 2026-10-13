@@ -5,7 +5,7 @@ date: 2026-06-11
 tags: [embedded, sensors, lessons]
 ---
 
-When I started building ARIA, I assumed detecting fire was the easy part —
+When I started building ARIA, I assumed detecting fire was the easy part:
 point an MQ-2 at the air and wait for the number to jump. The number jumped
 all the time. Cooking, haze, a humid afternoon: everything looked like fire.
 

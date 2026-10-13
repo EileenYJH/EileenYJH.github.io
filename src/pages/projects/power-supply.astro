@@ -23,9 +23,9 @@ const flat = `0,${H - 6 - 30} 220,${H - 6 - 30}`;
 
 const stages = [
   { n: '01', t: 'Transformer', part: '8-0-8 V center-tap', d: 'Steps 240 V mains down and isolates the low-voltage side.', measured: '8.37 V rms', wave: sine, zero: true },
-  { n: '02', t: 'Full-wave rectifier', part: '2 × 1N4007', d: 'Each diode conducts on alternate half-cycles — both halves come out positive, at 100 Hz.', measured: '12.0 V pk-pk · 7.03 V mean', wave: rect },
-  { n: '03', t: 'Filter', part: '1000 µF / 16 V', d: 'Charges at each peak, discharges into the load between them — a small 100 Hz sawtooth ripple remains.', measured: '10.85 V DC', wave: smooth },
-  { n: '04', t: 'Regulator', part: 'LM7805', d: 'Holds a flat 5 V as long as its input stays above ~7 V — a 3.8 V margin here.', measured: '5.058 V DC', wave: flat },
+  { n: '02', t: 'Full-wave rectifier', part: '2 × 1N4007', d: 'Each diode conducts on alternate half-cycles, so both halves come out positive, at 100 Hz.', measured: '12.0 V pk-pk · 7.03 V mean', wave: rect },
+  { n: '03', t: 'Filter', part: '1000 µF / 16 V', d: 'Charges at each peak, discharges into the load between them, leaving a small 100 Hz sawtooth ripple.', measured: '10.85 V DC', wave: smooth },
+  { n: '04', t: 'Regulator', part: 'LM7805', d: 'Holds a flat 5 V as long as its input stays above ~7 V, a 3.8 V margin here.', measured: '5.058 V DC', wave: flat },
 ];
 
 const rules = [
@@ -49,7 +49,7 @@ const fab = ['Eagle design + DRC', 'Print 1:1 film artwork', 'CNC drill & scrub 
 ---
 <BaseLayout
   theme="psu"
-  title="5 V DC power supply PCB — Eileen Yeoh"
+  title="5 V DC power supply PCB | Eileen Yeoh"
   description="A regulated 5 V DC power supply from 240 V mains: center-tap full-wave rectifier, filter and LM7805, verified on the oscilloscope and built as a single-layer PCB in Autodesk Eagle."
 >
   <section class="section wrap psu-hero">
@@ -95,8 +95,8 @@ const fab = ['Eagle design + DRC', 'Print 1:1 film artwork', 'CNC drill & scrub 
       <h3>📐 Designed before it was built</h3>
       <p class="muted">
         Ripple was sized on paper first: V<sub>ripple</sub> = I / (f·C) with the
-        doubled 100 Hz rectifier frequency gives about 0.08 V — roughly 0.7%,
-        well under the 5% target — so a single 1000 µF capacitor was enough to
+        doubled 100 Hz rectifier frequency gives about 0.08 V, roughly 0.7%,
+        well under the 5% target, so a single 1000 µF capacitor was enough to
         keep the regulator's input above its 7 V dropout at every trough.
       </p>
     </div>
@@ -106,7 +106,7 @@ const fab = ['Eagle design + DRC', 'Print 1:1 film artwork', 'CNC drill & scrub 
     <p class="eyebrow" data-reveal>PCB design</p>
     <h2 data-split>Rules chosen for a board we'd etch and solder by hand.</h2>
     <p class="muted" data-reveal>
-      All traces were routed on the bottom layer — simpler to etch and drill,
+      All traces were routed on the bottom layer: simpler to etch and drill,
       cheaper to prototype, and it leaves the top side clear for components.
     </p>
     <div class="table-wrap" data-reveal>
@@ -149,7 +149,7 @@ const fab = ['Eagle design + DRC', 'Print 1:1 film artwork', 'CNC drill & scrub 
       </div>
       <div class="card" data-reveal data-reveal-delay="0.08">
         <h3>Ripple grows with load</h3>
-        <p class="muted">A heavier load drains the capacitor faster. If a ripple trough dips below 7 V, regulation fails — so the filter is sized for this load, not any load.</p>
+        <p class="muted">A heavier load drains the capacitor faster. If a ripple trough dips below 7 V, regulation fails, so the filter is sized for this load, not any load.</p>
       </div>
       <div class="card" data-reveal data-reveal-delay="0.16">
         <h3>Next revision</h3>
@@ -162,7 +162,7 @@ const fab = ['Eagle design + DRC', 'Print 1:1 film artwork', 'CNC drill & scrub 
     <p class="eyebrow" data-reveal>Team</p>
     <h2 data-split>Three of us, one board.</h2>
     <p class="muted outcome-note" data-reveal>
-      Designed, built and tested with Kuik Pei Wen and Ch'ng Shu Yun — from
+      Designed, built and tested with Kuik Pei Wen and Ch'ng Shu Yun, from
       breadboard prototype through Eagle schematic and layout to the etched,
       hand-soldered PCB.
     </p>

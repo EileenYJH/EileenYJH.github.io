@@ -5,31 +5,31 @@ import PipelineDiagram from '../../components/nexa/PipelineDiagram.astro';
 import VideoCard from '../../components/nexa/VideoCard.astro';
 
 const demos = [
-  { title: 'AI Chatbot', description: 'Ask the assistant a question about a shipment — it routes by topic, cites every number, and remembers the conversation.', poster: '/images/nexa/poster-ai-chatbot.jpg', src: '/videos/nexa/demo-ai-chatbot.mp4' },
+  { title: 'AI Chatbot', description: 'Ask the assistant a question about a shipment. It routes by topic, cites every number, and remembers the conversation.', poster: '/images/nexa/poster-ai-chatbot.jpg', src: '/videos/nexa/demo-ai-chatbot.mp4' },
   { title: 'Parallel Processing', description: 'Five threads classify, match, and cost multiple shipments concurrently instead of one at a time.', poster: '/images/nexa/poster-parallel-processing.jpg', src: '/videos/nexa/demo-parallel-processing.mp4' },
-  { title: 'Dashboard & Analytics', description: 'Live batch progress, AI confidence distribution, and FTA savings — the analyst’s home screen.', poster: '/images/nexa/poster-dashboard-analytics.png', src: '/videos/nexa/demo-dashboard-analytics.mp4' },
+  { title: 'Dashboard & Analytics', description: 'Live batch progress, AI confidence distribution, and FTA savings: the analyst’s home screen.', poster: '/images/nexa/poster-dashboard-analytics.png', src: '/videos/nexa/demo-dashboard-analytics.mp4' },
   { title: 'Shipment Filter & Lookup', description: 'Search and filter across all shipments by HS code, confidence, or status.', poster: '/images/nexa/poster-shipment-filter.jpg', src: '/videos/nexa/demo-shipment-filter.mp4' },
-  { title: 'Validation Workflow', description: 'Three confidence tiers, three review depths — from one-click bulk approval to full manual escalation.', poster: '/images/nexa/poster-validation-cases.jpg', src: '/videos/nexa/demo-validation-cases.mp4' },
-  { title: 'Audit Trail', description: 'Every AI step and human decision, logged immutably — the documentary proof an Excel sheet can never provide.', poster: '/images/nexa/poster-audit-trail.jpg', src: '/videos/nexa/demo-audit-trail.mp4' },
+  { title: 'Validation Workflow', description: 'Three confidence tiers, three review depths, from one-click bulk approval to full manual escalation.', poster: '/images/nexa/poster-validation-cases.jpg', src: '/videos/nexa/demo-validation-cases.mp4' },
+  { title: 'Audit Trail', description: 'Every AI step and human decision, logged immutably: the documentary proof an Excel sheet can never provide.', poster: '/images/nexa/poster-audit-trail.jpg', src: '/videos/nexa/demo-audit-trail.mp4' },
 ];
 
 const tiers = [
   { range: '>95%', name: 'Scan & Approve', action: 'Reviews the summary line. Can bulk-approve all green items in one click.' },
-  { range: '70–94%', name: 'Individual Review', action: 'Opens the reasoning log, reviews HS chapter notes, approves or overrides with a documented reason.' },
-  { range: '<70% / alert', name: 'Full Manual', action: 'Senior analyst reviews with full context — can override, request supplier clarification, or hold the shipment.' },
+  { range: '70 to 94%', name: 'Individual Review', action: 'Opens the reasoning log, reviews HS chapter notes, approves or overrides with a documented reason.' },
+  { range: '<70% / alert', name: 'Full Manual', action: 'Senior analyst reviews with full context and can override, request supplier clarification, or hold the shipment.' },
 ];
 
 const roi = [
   { value: '98%', label: 'reduction in processing time', sub: '12.5 hrs → ~15 min analyst review per batch' },
   { value: 'RM 64K', label: 'net monthly savings', sub: 'RM 83K saved − RM 18K operating cost' },
-  { value: '85–90%', label: 'AI classification accuracy', sub: 'at 10-digit HTS, hybrid human + AI' },
+  { value: '85 to 90%', label: 'AI classification accuracy', sub: 'at 10-digit HTS, hybrid human + AI' },
   { value: 'Month 8', label: 'breakeven, base case', sub: '5-year NPV positive from Year 1' },
 ];
 ---
 <BaseLayout
   overlayNav
   theme="nexa"
-  title="NEXA — AI-powered tariff automation — Eileen Yeoh"
+  title="NEXA: AI-powered tariff automation | Eileen Yeoh"
   description="A hybrid AI + human-validated system that classifies HS tariff codes, matches FTAs, and calculates landed cost for Jabil's trade compliance team. Champion, Jabil IT ECP Bootcamp 3.0."
 >
   <ProjectHero img="/images/projects-hero/jabil.jpg" alt="Team NEXA at the Jabil IT ECP Bootcamp 3.0 final" caption="Team NEXA at the Jabil IT ECP Bootcamp 3.0: Data & AI Innovation final, where we were named Champion." post="https://www.linkedin.com/feed/update/urn:li:activity:7478788671337410560/" event="#1D4ED8">
@@ -37,10 +37,10 @@ const roi = [
     <h1 data-split>NEXA</h1>
     <p class="nexa-tagline" data-reveal>
       An AI-assisted, human-validated bridge between SAP and global trade
-      compliance — turning a 12.5-hour manual batch into a 15-minute review.
+      compliance, turning a 12.5-hour manual batch into a 15-minute review.
     </p>
     <ul class="nexa-tags" data-reveal>
-      {['🏆 Champion — Use Case 2', 'LangChain', 'Azure OpenAI', 'SAP S/4HANA', 'e2open GTM'].map((t) => <li>{t}</li>)}
+      {['🏆 Champion, Use Case 2', 'LangChain', 'Azure OpenAI', 'SAP S/4HANA', 'e2open GTM'].map((t) => <li>{t}</li>)}
     </ul>
   </ProjectHero>
 
@@ -50,7 +50,7 @@ const roi = [
     <div class="problem-grid">
       <p data-reveal>
         Jabil's trade compliance analysts classify HS codes, match free-trade
-        agreements, and calculate landed cost by hand — an 8-step process
+        agreements, and calculate landed cost by hand: an 8-step process
         costing 12.5 hours per 50-item batch, with roughly $2,500 in
         financial error exposure per batch. At ~100,000 SKUs a year, that's a
         structural bottleneck, not a one-off delay.
@@ -58,7 +58,7 @@ const roi = [
       <p data-reveal>
         SAP and e2open already hold the data, but it stays fragmented across
         platforms, earlier automation lacked explainability, and there was no
-        governance framework to make AI a safe option — until now.
+        governance framework to make AI a safe option, until now.
       </p>
     </div>
   </section>
@@ -69,7 +69,7 @@ const roi = [
     <p class="muted" data-reveal>
       NEXA sits as an intelligent bridge layer between SAP S/4HANA, SAP GTS,
       the regulatory feed, and e2open GTM. It classifies, matches, and costs
-      every shipment — then stops for a human before anything is written
+      every shipment, then stops for a human before anything is written
       back.
     </p>
     <PipelineDiagram />
@@ -79,7 +79,7 @@ const roi = [
     <p class="eyebrow" data-reveal>See it in action</p>
     <h2 data-split>Six views into the system.</h2>
     <p class="muted" data-reveal>
-      Captured from the live prototype — click any card to play.
+      Captured from the live prototype. Click any card to play.
     </p>
     <div class="demo-grid">
       {demos.map((d) => <VideoCard title={d.title} description={d.description} poster={d.poster} src={d.src} />)}
@@ -106,19 +106,19 @@ const roi = [
 
   <section class="section wrap">
     <p class="eyebrow" data-reveal>Governance & security</p>
-    <h2 data-split>What the AI can — and can't — do.</h2>
+    <h2 data-split>What the AI can and can't do.</h2>
     <div class="gov-grid">
       <div class="card" data-reveal>
         <h3>AI can</h3>
         <p class="muted">Classify HS codes and match FTAs with a confidence score. Calculate landed cost and flag uncertain items.</p>
       </div>
       <div class="card" data-reveal data-reveal-delay="0.08">
-        <h3>AI cannot — by design</h3>
+        <h3>AI cannot, by design</h3>
         <p class="muted">Write any figure to SAP unapproved. Change its own confidence thresholds. Act without an audit-trail entry.</p>
       </div>
       <div class="card" data-reveal data-reveal-delay="0.16">
         <h3>Data stays local</h3>
-        <p class="muted">In-region Azure OpenAI — no trade data leaves Jabil's tenancy. Names and financials are stripped before anything reaches the model.</p>
+        <p class="muted">In-region Azure OpenAI, so no trade data leaves Jabil's tenancy. Names and financials are stripped before anything reaches the model.</p>
       </div>
     </div>
   </section>
@@ -137,7 +137,7 @@ const roi = [
     </div>
     <p class="muted outcome-note" data-reveal>
       Built with Eavan Tan, Jessy Pang, Xin Yuan, and Chua Xin Ying for
-      Jabil's IT ECP Bootcamp 3.0 — <strong>Champion, Use Case 2</strong>.
+      Jabil's IT ECP Bootcamp 3.0: <strong>Champion, Use Case 2</strong>.
     </p>
     <a class="btn" href="https://github.com/eavan127/NEXA-AI-Powered-Tariff" target="_blank" rel="noopener" data-reveal>
       View the source on GitHub →

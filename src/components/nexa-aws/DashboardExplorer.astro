@@ -6,7 +6,7 @@ const sections = [
     t: 'Profile card',
     x: 9,
     y: 13,
-    d: 'Photo, role, team, manager, and start date at a glance — the first thing a new hire sees.',
+    d: 'Photo, role, team, manager, and start date at a glance: the first thing a new hire sees.',
     img: '/images/nexa-aws/dashboard-overview.png',
   },
   {
@@ -24,7 +24,7 @@ const sections = [
     t: 'Orchestrator chat',
     x: 58,
     y: 16,
-    d: 'Ask anything — the Orchestrator routes the request to the right specialist agent and streams a cited, role-aware answer back in real time.',
+    d: 'Ask anything. The Orchestrator routes the request to the right specialist agent and streams a cited, role-aware answer back in real time.',
     img: '/images/nexa-aws/orchestrator-chat.png',
   },
   {
@@ -33,14 +33,14 @@ const sections = [
     t: 'Communication log',
     x: 58,
     y: 78,
-    d: 'Every welcome email, Teams post, manager briefing, and milestone notification the Communication agent has sent — one single thread.',
+    d: 'Every welcome email, Teams post, manager briefing, and milestone notification the Communication agent has sent, in one single thread.',
     img: '/images/nexa-aws/communication-thread.png',
   },
   {
     id: 'orgchart',
     n: '05',
     t: 'Interactive org chart',
-    d: "Click any teammate to message them on Teams or send an email — the new hire's reporting line, visualised.",
+    d: "Click any teammate to message them on Teams or send an email. The new hire's reporting line, visualised.",
     img: '/images/nexa-aws/org-chart.png',
   },
   {
@@ -54,7 +54,7 @@ const sections = [
 ---
 <div class="dexplorer" data-reveal>
   <div class="dexplorer-stage">
-    <img src="/images/nexa-aws/dashboard-overview.png" alt="AWS-IQ Onboarding Command Center — full dashboard" class="dexplorer-shot" />
+    <img src="/images/nexa-aws/dashboard-overview.png" alt="AWS-IQ Onboarding Command Center, full dashboard" class="dexplorer-shot" />
     {sections.filter((s) => s.x !== undefined).map((s) => (
       <button class="dexplorer-dot" style={`left:${s.x}%; top:${s.y}%;`} data-target={s.id} aria-label={`View details: ${s.t}`}>{s.n}</button>
     ))}

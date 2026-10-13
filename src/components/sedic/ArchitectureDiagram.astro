@@ -1,12 +1,12 @@
 ---
 const branches = [
-  { n: 'A', t: 'IQ branch', d: 'Dilated 1-D CNN on the raw I/Q samples, full time resolution. Keeps phase — what BPSK, QPSK and QAM are defined by.' },
-  { n: 'B', t: 'STFT branch', d: 'Spectrogram + small 2-D CNN. Makes frequency movement explicit — radar chirps and FHSS hops.' },
+  { n: 'A', t: 'IQ branch', d: 'Dilated 1-D CNN on the raw I/Q samples, full time resolution. Keeps phase, which is what BPSK, QPSK and QAM are defined by.' },
+  { n: 'B', t: 'STFT branch', d: 'Spectrogram + small 2-D CNN. Makes frequency movement explicit for radar chirps and FHSS hops.' },
 ];
 const head = [
   { t: 'Fuse', d: 'Concatenate to 192 channels' },
   { t: 'Energy-gated attention', d: 'Learned pooling over time, also reads raw I²+Q² power' },
-  { t: '8 × sigmoid', d: 'Each class judged independently — any subset can be present' },
+  { t: '8 × sigmoid', d: 'Each class judged independently, so any subset can be present' },
 ];
 ---
 <div class="arch" data-reveal>
@@ -41,7 +41,7 @@ const head = [
     <span class="arch-out-icon" aria-hidden="true">📡</span>
     <div>
       <h3>Output: e.g. <code>{'{QPSK, JAMMING}'}</code></h3>
-      <p class="muted">A jammer overlaid on a civilian link is reported as both — not forced into one winning class.</p>
+      <p class="muted">A jammer overlaid on a civilian link is reported as both, not forced into one winning class.</p>
     </div>
   </div>
 </div>

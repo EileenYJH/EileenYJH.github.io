@@ -4,29 +4,29 @@ import ProjectHero from '../../components/project/ProjectHero.astro';
 import DashboardExplorer from '../../components/nexa-aws/DashboardExplorer.astro';
 
 const problemStats = [
-  { value: '5–8 months', label: 'to full productivity for a typical new hire' },
-  { value: '7+ systems', label: 'VPN, email, SharePoint, Workday, software — provisioned by hand' },
+  { value: '5 to 8 months', label: 'to full productivity for a typical new hire' },
+  { value: '7+ systems', label: 'VPN, email, SharePoint, Workday, software, provisioned by hand' },
   { value: '17.4%', label: 'leave within 90 days, citing poor onboarding' },
-  { value: 'Day one', label: 'chaos — no clear tasks, no answers, no context' },
+  { value: 'Day one', label: 'chaos: no clear tasks, no answers, no context' },
 ];
 
 const burdenStats = [
   { value: '10 hrs', label: 'HR paperwork per hire' },
-  { value: '3+ hrs', label: 'manual work — for 42% of managers' },
+  { value: '3+ hrs', label: 'manual work for 42% of managers' },
   { value: '$1,252', label: 'manager training cost per hire' },
 ];
 ---
 <BaseLayout
   overlayNav
   theme="aws"
-  title="AWS-IQ — agentic AI employee onboarding — Eileen Yeoh"
+  title="AWS-IQ: agentic AI employee onboarding | Eileen Yeoh"
   description="An onboarding platform of six coordinating agents built on Amazon Bedrock Multi-Agent Collaboration, for the AWS x UTP GenAI Hackathon 2026."
 >
   <ProjectHero img="/images/projects-hero/aws.jpg" alt="Team NEXA with the 2nd place cheque at the AWS x UTP GenAI Hackathon 2026" caption="Team NEXA with our 2nd place prize at the AWS x UTP GenAI Hackathon 2026, Chancellor Hall, UTP." focus="50% 72%" post="https://www.linkedin.com/feed/update/urn:li:activity:7477550199008325632/" event="#232F3E">
     <p class="eyebrow" data-reveal>Project 03 · 2026 · AWS x UTP GenAI Hackathon</p>
     <h1 data-split>AWS-IQ</h1>
     <p class="nexaaws-tagline" data-reveal>
-      Agentic AI employee onboarding — from fragmented information to one
+      Agentic AI employee onboarding, from fragmented information to one
       intelligent, personalised journey, powered by Amazon Bedrock
       multi-agent AI.
     </p>
@@ -61,12 +61,12 @@ const burdenStats = [
     <p class="eyebrow" data-reveal>The system</p>
     <h2 data-split>One orchestrator. Five specialist agents.</h2>
     <p class="muted" data-reveal>
-      Serverless, event-driven, multi-agent — a request's journey end to end
+      Serverless, event-driven, multi-agent: a request's journey end to end
       on AWS, from the dashboard through the Orchestrator to whichever
       specialist agent the task needs.
     </p>
     <figure class="arch-shot" data-reveal>
-      <img src="/images/nexa-aws/architecture-diagram.png" alt="AWS-IQ architecture: Web Dashboard sends HTTPS to Amazon API Gateway, which routes to the Orchestrator Agent (Amazon Bedrock Multi-Agent Collaboration), which dispatches to Profile, Setup, Knowledge, Communication, and Daily Task agents, backed by DynamoDB, S3, Bedrock KB, SES, and EventBridge — responses stream back to the dashboard over WebSocket." loading="lazy" />
+      <img src="/images/nexa-aws/architecture-diagram.png" alt="AWS-IQ architecture: Web Dashboard sends HTTPS to Amazon API Gateway, which routes to the Orchestrator Agent (Amazon Bedrock Multi-Agent Collaboration), which dispatches to Profile, Setup, Knowledge, Communication, and Daily Task agents, backed by DynamoDB, S3, Bedrock KB, SES, and EventBridge. Responses stream back to the dashboard over WebSocket." loading="lazy" />
     </figure>
   </section>
 
@@ -74,8 +74,8 @@ const burdenStats = [
     <p class="eyebrow" data-reveal>What the new hire sees</p>
     <h2 data-split>One dashboard, six views in.</h2>
     <p class="muted" data-reveal>
-      This is the actual "Onboarding Command Center" from the live prototype
-      — click a numbered marker or a label to see that section full-size,
+      This is the actual "Onboarding Command Center" from the live prototype.
+      Click a numbered marker or a label to see that section full-size,
       with an explanation.
     </p>
     <DashboardExplorer />
@@ -85,8 +85,8 @@ const burdenStats = [
     <p class="eyebrow" data-reveal>Outcome</p>
     <h2 data-split>A command center instead of 7 disconnected systems.</h2>
     <p class="muted outcome-note" data-reveal>
-      Built with my NEXA teammates for the AWS x UTP GenAI Hackathon 2026 —
-      one Orchestrator agent replaces the scattered VPN, email, SharePoint,
+      Built with my NEXA teammates for the AWS x UTP GenAI Hackathon 2026.
+      One Orchestrator agent replaces the scattered VPN, email, SharePoint,
       Workday, and software-provisioning steps with a single, cited,
       role-aware conversation.
     </p>

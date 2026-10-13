@@ -4,15 +4,15 @@
 // data-until (step numbers, 1-based) on each SVG group.
 const steps = [
   { t: 'Wafer preparation', d: 'P-type wafer labelled, cleaned in BOE for 60 s and spin-dried.' },
-  { t: 'Field oxidation', d: 'Wet oxidation at 1050 °C for 60 min grows the thick field oxide — 495.8 nm on average across 5 points.' },
+  { t: 'Field oxidation', d: 'Wet oxidation at 1050 °C for 60 min grows the thick field oxide, 495.8 nm on average across 5 points.' },
   { t: 'Mask 1 · source/drain', d: 'Photolithography plus a 180 s BOE etch opens the source and drain windows.' },
   { t: 'Source/drain diffusion', d: 'Phosphorus diffuses at 800 °C through the windows, forming the n+ source and drain.' },
   { t: 'Mask 2 · gate', d: 'A second litho cycle opens the gate window in the field oxide.' },
-  { t: 'Gate oxidation', d: 'Dry oxidation at 1000 °C for 90 min grows a thin, dense gate oxide — measured at 19.8 nm.' },
+  { t: 'Gate oxidation', d: 'Dry oxidation at 1000 °C for 90 min grows a thin, dense gate oxide, measured at 19.8 nm.' },
   { t: 'Mask 3 · contacts', d: 'Contact windows are etched through the oxide to expose source and drain.' },
   { t: 'Metallization', d: 'Aluminium is deposited by PVD as a blanket film across the whole wafer.' },
   { t: 'Mask 4 · metal', d: 'A 60 s aluminium etch patterns the metal into separate source, gate and drain pads.' },
-  { t: 'Wafer test', d: 'The finished transistor is probed on a test station to measure its I–V characteristics.' },
+  { t: 'Wafer test', d: 'The finished transistor is probed on a test station to measure its I-V characteristics.' },
 ];
 ---
 <div class="pf" data-reveal>
@@ -40,7 +40,7 @@ const steps = [
       </g>
       <!-- field oxide: full sheet before Mask 1 -->
       <rect data-from="2" data-until="2" x="0" y="122" width="600" height="38" class="l-ox" />
-      <!-- field oxide with S/D windows (Mask 1–4) -->
+      <!-- field oxide with S/D windows (Mask 1 to 4) -->
       <g data-from="3" data-until="4">
         <rect x="0" y="122" width="100" height="38" class="l-ox" />
         <rect x="180" y="122" width="240" height="38" class="l-ox" />

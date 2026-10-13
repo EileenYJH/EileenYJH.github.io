@@ -1,6 +1,6 @@
 ---
-title: 5 V DC power supply — from 240 V mains to a custom PCB
-summary: A regulated 5 V supply built from mains AC — center-tap transformer, full-wave rectifier, 1000 µF filter and LM7805 regulator — prototyped on breadboard, verified stage by stage on the oscilloscope, then laid out and etched as a single-layer PCB.
+title: "5 V DC power supply: from 240 V mains to a custom PCB"
+summary: A regulated 5 V supply built from mains AC (center-tap transformer, full-wave rectifier, 1000 µF filter and LM7805 regulator), prototyped on breadboard, verified stage by stage on the oscilloscope, then laid out and etched as a single-layer PCB.
 tags: [Power electronics, Autodesk Eagle, PCB design, LTspice]
 flagship: false
 href: /projects/power-supply

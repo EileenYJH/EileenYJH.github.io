@@ -9,7 +9,7 @@ const { title, description, poster, src } = Astro.props;
 ---
 <figure class="vcard" data-reveal>
   <button class="vcard-frame" type="button" data-src={src} aria-label={`Play demo: ${title}`}>
-    <img src={poster} alt={`${title} — preview frame`} loading="lazy" width="1280" height="620" />
+    <img src={poster} alt={`${title}, preview frame`} loading="lazy" width="1280" height="620" />
     <span class="vcard-play" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7L8 5z" fill="currentColor" /></svg>
     </span>

@@ -1,4 +1,4 @@
-// Eileen's timeline, oldest first. `img` is optional — leave it out for a text-only entry.
+// Eileen's timeline, oldest first. `img` is optional; leave it out for a text-only entry.
 // kind sets the label colour: study, award, competition, event, now.
 export type Kind = 'study' | 'award' | 'competition' | 'event' | 'now';
 
@@ -49,7 +49,7 @@ export const timeline: Moment[] = [
   },
   {
     year: 2024,
-    date: 'Sep 2024 – May 2025',
+    date: 'Sep 2024 to May 2025',
     kind: 'study',
     academic: true,
     title: 'Foundation in Electrical & Electronics Engineering, UTP',
@@ -67,7 +67,7 @@ export const timeline: Moment[] = [
   },
   {
     year: 2025,
-    date: '17–21 May 2025',
+    date: '17 to 21 May 2025',
     kind: 'event',
     title: '10th Northern Malaysia Mandarin Debate Tournament: adjudication committee',
     post: 'https://www.linkedin.com/feed/update/urn:li:activity:7332580205426868224/',
@@ -94,12 +94,12 @@ export const timeline: Moment[] = [
   },
   {
     year: 2025,
-    date: '21–24 Aug 2025',
+    date: '21 to 24 Aug 2025',
     kind: 'event',
     title: '2nd ASEAN + Inter-University Networking Games 2025: liaison officer',
     img: '/images/timeline/asean-games.jpg',
     post: 'https://www.linkedin.com/feed/update/urn:li:activity:7397117282692448256/',
-    detail: 'Looked after the team from China University of Petroleum–Beijing, using my Mandarin to help them settle in and get around Malaysia.',
+    detail: 'Looked after the team from China University of Petroleum-Beijing, using my Mandarin to help them settle in and get around Malaysia.',
   },
   {
     year: 2025,
@@ -130,7 +130,7 @@ export const timeline: Moment[] = [
   },
   {
     year: 2025,
-    date: '15–16 Nov 2025',
+    date: '15 to 16 Nov 2025',
     kind: 'event',
     title: 'Secure Nex Hackathon 2025: Ceremony & Protocol (CNP) committee',
     post: 'https://www.linkedin.com/feed/update/urn:li:activity:7397483444286492672/',

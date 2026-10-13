@@ -1,7 +1,7 @@
 ---
-title: NMOS fabrication — a transistor built by hand in a cleanroom
-summary: An n-channel MOSFET fabricated from a bare p-type wafer through a four-mask process — oxidation, photolithography, phosphorus diffusion, aluminium PVD — then probed and debugged against a theoretical I–V model.
-tags: [Semiconductor fabrication, photolithography, device physics, I–V characterisation]
+title: "NMOS fabrication: a transistor built by hand in a cleanroom"
+summary: An n-channel MOSFET fabricated from a bare p-type wafer through a four-mask process (oxidation, photolithography, phosphorus diffusion, aluminium PVD), then probed and debugged against a theoretical I-V model.
+tags: [Semiconductor fabrication, photolithography, device physics, I-V characterisation]
 flagship: false
 href: /projects/mosfet
 order: 5

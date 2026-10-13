@@ -14,7 +14,7 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'long', year:
 const words = post.body ? post.body.split(/\s+/).length : 0;
 const minutes = Math.max(1, Math.round(words / 220));
 ---
-<BaseLayout title={`${post.data.title} — Eileen Yeoh`} description={post.data.description}>
+<BaseLayout title={`${post.data.title} | Eileen Yeoh`} description={post.data.description}>
   <article class="section wrap post">
     <p class="eyebrow" data-reveal>{fmt.format(post.data.date)} · {minutes} min read</p>
     <h1 data-split>{post.data.title}</h1>

@@ -5,10 +5,10 @@ import ArchitectureDiagram from '../../components/sedic/ArchitectureDiagram.astr
 import '@fontsource-variable/montserrat';
 
 const tiers = [
-  { tone: 'civ', name: 'Civilian', classes: 'BPSK · QPSK · 16QAM · 64QAM', note: 'Phones, Wi-Fi, data links — must be recognised, not flagged.' },
-  { tone: 'mil', name: 'Military', classes: 'LFM radar · FHSS', note: 'Tactical emissions — judged, must clear 80% recall.' },
-  { tone: 'hos', name: 'Hostile', classes: 'Jamming (barrage · tone · sweep)', note: 'Deliberate interference — judged, must clear 80% recall.' },
-  { tone: 'emp', name: 'Empty', classes: 'Noise floor', note: 'Nothing there — the model must be allowed to say so.' },
+  { tone: 'civ', name: 'Civilian', classes: 'BPSK · QPSK · 16QAM · 64QAM', note: 'Phones, Wi-Fi, data links: must be recognised, not flagged.' },
+  { tone: 'mil', name: 'Military', classes: 'LFM radar · FHSS', note: 'Tactical emissions: judged, must clear 80% recall.' },
+  { tone: 'hos', name: 'Hostile', classes: 'Jamming (barrage · tone · sweep)', note: 'Deliberate interference: judged, must clear 80% recall.' },
+  { tone: 'emp', name: 'Empty', classes: 'Noise floor', note: 'Nothing there, and the model must be allowed to say so.' },
 ];
 
 const sources = [
@@ -27,15 +27,15 @@ const results = [
 
 const limits = [
   { t: 'Low SNR is hard', d: 'Recall drops well below the bar at −10 dB. The headline numbers are a test-set average across −10 to +10 dB, not a per-condition guarantee.' },
-  { t: 'Synthetic data can fool you', d: 'Nobody gave us FHSS or jamming data, so we generated it. On an independent jamming dataset we never trained on, recall fell to 57.6% — the model had learned some of our generator’s signature.' },
-  { t: 'Dense QAM blurs together', d: '16QAM and 64QAM are hard to separate below 0 dB — consistent with the literature, and it does not affect the judged classes.' },
+  { t: 'Synthetic data can fool you', d: 'Nobody gave us FHSS or jamming data, so we generated it. On an independent jamming dataset we never trained on, recall fell to 57.6%. The model had learned some of our generator’s signature.' },
+  { t: 'Dense QAM blurs together', d: '16QAM and 64QAM are hard to separate below 0 dB, consistent with the literature, and it does not affect the judged classes.' },
 ];
 
 const shots = [
   { img: '/images/sedic/console-replay.jpg', title: 'RF Replay', d: 'Spectrogram, per-class detections, and threat tier on one shared time axis. Dashed boxes mark the true answer; analysts can drag to correct the model.' },
-  { img: '/images/sedic/console-verdict.jpg', title: 'Verdict', d: 'Grouped detections, worst tier first — e.g. BPSK + QPSK + JAMMING overlapping in one burst.' },
+  { img: '/images/sedic/console-verdict.jpg', title: 'Verdict', d: 'Grouped detections, worst tier first, e.g. BPSK + QPSK + JAMMING overlapping in one burst.' },
   { img: '/images/sedic/console-signal.jpg', title: 'Signal Analysis', d: 'One 160 µs window exactly as the model sees it, with its attention weights drawn over the measured amplitude.' },
-  { img: '/images/sedic/console-assistant.jpg', title: 'Assistant', d: 'Ask “which uploads had jamming?” — it only answers from saved captures and never invents a result.' },
+  { img: '/images/sedic/console-assistant.jpg', title: 'Assistant', d: 'Ask “which uploads had jamming?” It only answers from saved captures and never invents a result.' },
   { img: '/images/sedic/console-report.jpg', title: 'Report builder', d: 'Export captures, human corrections and audit trail as PDF, Excel, CSV, JSON or a SigMF bundle.' },
 ];
 
@@ -55,14 +55,14 @@ const posters = [
 <BaseLayout
   overlayNav
   theme="sedic"
-  title="Project Overwatch — AI radio-signal classifier — Eileen Yeoh"
+  title="Project Overwatch: AI radio-signal classifier | Eileen Yeoh"
   description="Team NEXA's track-winning SEDIC 2026 entry for Project Overwatch (Track 1): a dual-branch CNN that classifies civilian, military and jamming signals from raw IQ data, including overlapping signals."
 >
   <ProjectHero img="/images/projects-hero/sedic.jpg" alt="Team NEXA holding the Track Winner cheque on the SEDIC 2026 stage" caption="Team NEXA, Track Winner of Project Overwatch at the SEDIC 2026 closing ceremony, MITEC, 7 Oct 2026." focus="50% 70%" event="#22D3EE">
     <p class="eyebrow" data-reveal>Project 04 · 2026 · SEDIC 2026 · Track 1</p>
     <h1 data-split>Project Overwatch</h1>
     <p class="sedic-tagline" data-reveal>
-      Teaching a neural network to listen to raw radio — and tell a phone
+      Teaching a neural network to listen to raw radio and tell a phone
       call from a radar pulse from a jammer, even when they arrive at once.
     </p>
     <ul class="sedic-tags" data-reveal>
@@ -134,7 +134,7 @@ const posters = [
     <h2 data-split>Eight kinds of signal. Some of them hostile.</h2>
     <p class="muted" data-reveal>
       The brief: build an AI model that classifies radio signals straight from
-      raw IQ samples — across clean and noisy conditions — and catch at least
+      raw IQ samples, across clean and noisy conditions, and catch at least
       80% of every military and jamming emission.
     </p>
     <div class="tier-grid">
@@ -156,12 +156,12 @@ const posters = [
         Raw IQ keeps phase, which is what civilian modulations are made of. A
         spectrogram makes frequency movement obvious, which is what radar
         chirps and frequency hops are made of. Neither view does both jobs
-        well — so both run over the same window and get fused.
+        well, so both run over the same window and get fused.
       </p>
       <p data-reveal>
         The output is <strong>multi-label</strong>: an independent sigmoid per
         class instead of one winner. That is what lets a single window read as
-        “QPSK <em>and</em> jamming” — the situation that matters most in a
+        “QPSK <em>and</em> jamming”, the situation that matters most in a
         contested spectrum. Five models are averaged as an ensemble, and every
         threshold is calibrated on validation data only.
       </p>
@@ -170,11 +170,11 @@ const posters = [
   </section>
 
   <section class="section wrap">
-    <p class="eyebrow" data-reveal>My part — the data</p>
+    <p class="eyebrow" data-reveal>My part: the data</p>
     <h2 data-split>58,800 windows, four sources, one format.</h2>
     <p class="muted" data-reveal>
       I owned the civilian classes and the data pipeline that assembles the
-      training set — loading, windowing, noise injection, normalisation and
+      training set: loading, windowing, noise injection, normalisation and
       augmentation, all standardised to 512 samples at 3.2 MHz and swept from
       −10 to +10 dB SNR.
     </p>
@@ -193,7 +193,7 @@ const posters = [
       <p class="muted">
         RadioML 2018's shipped class-index file doesn't match the data it
         describes. I caught the mismatch while building the loader and fixed
-        the mapping, so our civilian labels are right — a silent mislabelling
+        the mapping, so our civilian labels are right. A silent mislabelling
         here would have poisoned every downstream number.
       </p>
     </div>
@@ -214,7 +214,7 @@ const posters = [
     <p class="muted outcome-note" data-reveal>
       5-model ensemble on a held-out test split of 19,260 windows. All five
       unjudged classes also clear 80% recall. Radar and FHSS deliberately
-      trade precision for recall — against this benchmark, a missed emission
+      trade precision for recall. Against this benchmark, a missed emission
       costs more than a false alarm.
     </p>
   </section>
@@ -243,7 +243,7 @@ const posters = [
     <div class="shot-list">
       {shots.map((s, i) => (
         <figure class:list={['shot', { 'shot--wide': i === 0 }]} data-reveal>
-          <img src={s.img} alt={`OMNI console — ${s.title}`} loading="lazy" />
+          <img src={s.img} alt={`OMNI console: ${s.title}`} loading="lazy" />
           <figcaption><strong>{s.title}.</strong> <span class="muted">{s.d}</span></figcaption>
         </figure>
       ))}

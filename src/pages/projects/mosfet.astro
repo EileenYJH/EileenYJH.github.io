@@ -6,14 +6,14 @@ const stats = [
   { value: '4', label: 'photomasks', sub: 'source/drain · gate · contacts · metal' },
   { value: '495.8 nm', label: 'field oxide', sub: 'wet oxidation, 1050 °C · 60 min' },
   { value: '19.8 nm', label: 'gate oxide', sub: 'dry oxidation, 1000 °C · 90 min' },
-  { value: '6', label: 'dies probed', sub: 'drain-current sweeps at 5–10 V gate bias' },
+  { value: '6', label: 'dies probed', sub: 'drain-current sweeps at 5 to 10 V gate bias' },
 ];
 
 const litho = [
   ['Coat', 'Positive photoresist spun on'],
   ['Soft bake', '90 °C · 90 s'],
   ['Expose', 'UV through the mask · 110 s, yellow room'],
-  ['Develop', '30 s — exposed resist dissolves'],
+  ['Develop', '30 s: exposed resist dissolves'],
   ['Hard bake', '90 °C · 60 s'],
   ['Etch', 'BOE 180 s (Al etch 60 s for Mask 4)'],
   ['Strip', 'Acetone, ready for the next step'],
@@ -21,20 +21,20 @@ const litho = [
 
 const causes = [
   { t: 'Gate oxide thickness', d: 'A thin oxide raises Cₒₓ = εₒₓ/tₒₓ and strengthens gate control. Grow it thicker than intended and the threshold rises while drive current falls.' },
-  { t: 'Doping & diffusion', d: 'Too little drive-in time or temperature gives shallow junctions and higher sheet resistance — parasitic series resistance that throttles current.' },
-  { t: 'Contacts & metallization', d: 'Uneven aluminium or poor annealing can form a Schottky barrier instead of an ohmic contact — a plausible driver of the ~3.9× spread between dies tested at the same bias.' },
+  { t: 'Doping & diffusion', d: 'Too little drive-in time or temperature gives shallow junctions and higher sheet resistance: parasitic series resistance that throttles current.' },
+  { t: 'Contacts & metallization', d: 'Uneven aluminium or poor annealing can form a Schottky barrier instead of an ohmic contact, a plausible driver of the ~3.9× spread between dies tested at the same bias.' },
 ];
 ---
 <BaseLayout
   theme="mosfet"
-  title="NMOS fabrication — Eileen Yeoh"
+  title="NMOS fabrication | Eileen Yeoh"
   description="An n-channel enhancement-mode MOSFET fabricated by hand through a four-mask cleanroom process, then characterised and debugged against theory."
 >
   <section class="section wrap mos-hero">
     <p class="eyebrow" data-reveal>Project 05 · 2026 · EFB1074 Microelectronic Physics &amp; Devices, UTP</p>
     <h1 data-split>Building a transistor from bare silicon</h1>
     <p class="mos-tagline" data-reveal>
-      A whole n-channel MOSFET — grown, patterned, doped and wired by hand in a
+      A whole n-channel MOSFET, grown, patterned, doped and wired by hand in a
       cleanroom, then probed to see whether it actually switches.
     </p>
     <ul class="mos-tags" data-reveal>
@@ -80,7 +80,7 @@ const causes = [
       <p class="muted">
         On Mask 1 the BOE bath wasn't agitated enough, so the oxide under-etched.
         A second dip over-corrected and over-etched the source/drain windows past
-        their dimensions — and the wafer had to be started again from scratch.
+        their dimensions, and the wafer had to be started again from scratch.
         A lesson in how unforgiving wet etching is.
       </p>
     </div>
@@ -88,14 +88,14 @@ const causes = [
 
   <section class="section wrap">
     <p class="eyebrow" data-reveal>Results</p>
-    <h2 data-split>The curve that looked right — and wasn't.</h2>
+    <h2 data-split>The curve that looked right, and wasn't.</h2>
     <div class="two-col">
       <div data-reveal>
         <h3>What theory predicts</h3>
         <p class="muted">
           From the measured oxide thickness, a square-law model gives the
           textbook family of curves: current starts at zero, rises through the
-          triode region, then flattens in saturation — about 40.7 mA at
+          triode region, then flattens in saturation at about 40.7 mA at
           V<sub>GS</sub> = 10 V.
         </p>
       </div>
@@ -104,8 +104,8 @@ const causes = [
         <p class="muted">
           The raw (negative) data seemed to show the same triode-to-saturation
           shape. Taking absolute values revealed the truth: current peaked at
-          V<sub>DS</sub> = 0 V (up to 63.8 mA) and decayed across the sweep —
-          physically impossible for a correctly wired device.
+          V<sub>DS</sub> = 0 V (up to 63.8 mA) and decayed across the sweep,
+          which is physically impossible for a correctly wired device.
         </p>
       </div>
     </div>
@@ -114,8 +114,8 @@ const causes = [
       <p class="muted">
         Swapped probe connections shifted the effective gate bias during each
         sweep, so the "saturation" curve was a sign-convention illusion. Even
-        so, five of six dies carried tens of milliamps — far above any leakage
-        floor — so the transistors themselves work. The one outlier at
+        so, five of six dies carried tens of milliamps, far above any leakage
+        floor, so the transistors themselves work. The one outlier at
         V<sub>GS</sub> = 5 V loosely bounds the threshold between 5 and 8 V.
       </p>
     </div>
@@ -123,7 +123,7 @@ const causes = [
 
   <section class="section wrap">
     <p class="eyebrow" data-reveal>Fabrication → electrical behaviour</p>
-    <h2 data-split>Every cleanroom choice shows up in the I–V curve.</h2>
+    <h2 data-split>Every cleanroom choice shows up in the I-V curve.</h2>
     <div class="cause-grid">
       {causes.map((c, i) => (
         <div class="card" data-reveal data-reveal-delay={i * 0.08}>
@@ -140,7 +140,7 @@ const causes = [
     <p class="muted outcome-note" data-reveal>
       Fabricated with Nicholas Tan Hong Junn, Muhammad Aqeef Qaer Bin Karim and
       Siew Hui. We ran the cleanroom process as a group; in the report I wrote
-      the introduction and the semiconductor-physics background and theory —
+      the introduction and the semiconductor-physics background and theory:
       inversion, the three operating regions, and the square-law model the
       results are measured against.
     </p>

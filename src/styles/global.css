@@ -22,7 +22,7 @@
   --shadow-card-hover: 0 2px 4px rgba(20, 30, 60, 0.05), 0 18px 44px rgba(var(--accent-rgb), 0.13);
 }
 
-/* Per-project themes — set via <html data-theme> from BaseLayout.
+/* Per-project themes, set via <html data-theme> from BaseLayout.
    ARIA: ember (fire detection). NEXA: teal (trade compliance).
    AWS-IQ: amber (AWS orange). All meet AA contrast on paper. */
 [data-theme='aria'] {
