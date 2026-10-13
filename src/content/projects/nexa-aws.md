@@ -1,6 +1,6 @@
 ---
 title: AWS-IQ — agentic AI employee onboarding
-summary: A five-agent onboarding assistant on Amazon Bedrock — one orchestrator routes new hires to Profile, Setup, Knowledge, Communication, and Daily Task agents, replacing weeks of fragmented manual onboarding with one live dashboard.
+summary: Six coordinating agents on Amazon Bedrock, where one orchestrator routes new hires to Profile, Setup, Knowledge, Communication, and Daily Task agents, replacing weeks of fragmented manual onboarding with one live dashboard.
 tags: [Amazon Bedrock, multi-agent AI, serverless, DynamoDB]
 flagship: false
 href: /projects/nexa-aws
@@ -12,6 +12,7 @@ the AWS x UTP GenAI Hackathon 2026. An Orchestrator agent (Amazon Bedrock
 Multi-Agent Collaboration, supervisor pattern) routes each new hire's
 requests to five specialist agents — Profile, Setup, Knowledge,
 Communication, and Daily Task — and streams every response back to a single
-live dashboard.
+live dashboard. We designed and built it spec-first with Kiro in a three-hour
+build window.
 
 Built with my NEXA teammates for the AWS x UTP GenAI Hackathon 2026.
