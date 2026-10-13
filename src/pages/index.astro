@@ -5,6 +5,7 @@ import PhotoWall from '../components/home/PhotoWall.astro';
 import WorkList from '../components/home/WorkList.astro';
 import Timeline from '../components/home/Timeline.astro';
 import Highlights from '../components/home/Highlights.astro';
+import Leadership from '../components/home/Leadership.astro';
 
 const LINKEDIN = 'https://www.linkedin.com/in/eileen-yeoh-jing-han-7ba86a214/';
 
@@ -80,8 +81,14 @@ import Chapter from '../components/home/Chapter.astro';
     </div>
   </section>
 
+  <section class="section wrap leadership" id="leadership" data-sec data-dot="Leadership">
+    <Chapter num="04" label="Leadership" />
+    <h2>Leading and organising</h2>
+    <Leadership />
+  </section>
+
   <section class="section wrap work" id="work" data-sec data-dot="Projects">
-    <Chapter num="04" label="Projects" />
+    <Chapter num="05" label="Projects" />
     <div class="work-head">
       <h2>Selected work</h2>
       <p class="muted">Six projects, each with its own page you can explore.</p>
@@ -91,7 +98,7 @@ import Chapter from '../components/home/Chapter.astro';
 
   {posts.length > 0 && (
     <section class="section wrap writing" id="writing" data-sec data-dot="Blog">
-      <Chapter num="05" label="Blog" />
+      <Chapter num="06" label="Blog" />
       <h2>Writing</h2>
       <div class="post-list">
         {posts.map((post) => (
@@ -212,7 +219,7 @@ import Chapter from '../components/home/Chapter.astro';
   /* ---------- Home sizing: a little smaller so each section fits a screen ---------- */
   :global(html) { font-size: 93.75%; scroll-snap-type: y proximity; }
   :global(:root) { --space-section: clamp(3.5rem, 9vh, 6rem); }
-  .hero, .me, .journey, .work, .writing, .contact { scroll-snap-align: start; scroll-margin-top: 64px; }
+  .hero, .me, .journey, .leadership, .work, .writing, .contact { scroll-snap-align: start; scroll-margin-top: 64px; }
   .highlights { scroll-margin-top: 0; }
   .hero { scroll-margin-top: 0; }
 

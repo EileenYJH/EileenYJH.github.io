@@ -1,0 +1,41 @@
+---
+import { timeline } from '../../data/timeline';
+
+// Roles come from the "now" entry in the timeline data.
+const roles = (timeline.find((m) => m.kind === 'now')?.chips ?? []).map((r) => {
+  const [role, ...org] = r.split(', ');
+  return { role, org: org.join(', ') };
+});
+---
+<ul class="lead">
+  {roles.map((r, i) => (
+    <li class="lead-item" data-rise style={`--i:${i % 3}`}>
+      <span class="lead-n">{String(i + 1).padStart(2, '0')}</span>
+      <strong>{r.role}</strong>
+      <span class="lead-org">{r.org}</span>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .lead {
+    list-style: none;
+    padding: 0;
+    margin-top: 1.6rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.9rem;
+  }
+  .lead-item {
+    display: grid;
+    gap: 0.15rem;
+    padding: 1rem 1.15rem 1.1rem;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 12px;
+  }
+  .lead-n { font-family: var(--font-display); font-size: 0.8rem; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; }
+  .lead-item strong { font-weight: 650; font-size: 1rem; }
+  .lead-org { font-size: 0.88rem; color: var(--muted); line-height: 1.45; }
+</style>

@@ -15,7 +15,6 @@ const groups: { id: string; kinds: Kind[]; title: string }[] = [
   { id: 'award', kinds: ['award', 'competition'], title: 'Competitions & awards' },
   { id: 'event', kinds: ['event'], title: 'Events' },
 ];
-const roles = timeline.find((m) => m.kind === 'now')?.chips ?? [];
 ---
 <div class="hl-track" id="hl-track">
   {groups.map((g) => {
@@ -39,17 +38,6 @@ const roles = timeline.find((m) => m.kind === 'now')?.chips ?? [];
       ))}
     </>);
   })}
-  {roles.length > 0 && (
-    <div class="hl-roles">
-      <h3>Leadership</h3>
-      <ul>
-        {roles.map((r) => {
-          const [role, ...org] = r.split(', ');
-          return <li><strong>{role}</strong><span>{org.join(', ')}</span></li>;
-        })}
-      </ul>
-    </div>
-  )}
 </div>
 
 <script>
@@ -91,8 +79,9 @@ const roles = timeline.find((m) => m.kind === 'now')?.chips ?? [];
     scrollbar-width: thin;
     will-change: transform;
   }
+  .hl-track::after { content: ''; flex: 0 0 max(0.4rem, calc((100vw - var(--content-w)) / 2 - 1.1rem)); }
   :global(.hl-pinned) .hl-track { overflow: visible; scroll-snap-type: none; }
-  .hl-label, .hl-card, .hl-roles { flex: 0 0 auto; scroll-snap-align: start; }
+  .hl-label, .hl-card { flex: 0 0 auto; scroll-snap-align: start; }
   .hl-label {
     width: 230px;
     display: flex; flex-direction: column; justify-content: flex-end; gap: 0.4rem;
@@ -136,22 +125,8 @@ const roles = timeline.find((m) => m.kind === 'now')?.chips ?? [];
   .hl-detail { font-size: 0.86rem; color: var(--muted); margin-top: 0.3rem; line-height: 1.5; }
   .hl-post { display: inline-block; margin-top: 0.5rem; font-size: 0.82rem; font-weight: 600; color: #0A66C2; text-decoration: none; }
   .hl-post:hover { text-decoration: underline; text-underline-offset: 3px; }
-  .hl-roles {
-    width: 560px;
-    padding: 1.4rem 1.5rem;
-    border-radius: 16px;
-    background: var(--ink);
-    color: #fff;
-  }
-  .hl-roles h3 { color: #fff; font-size: 1.4rem; }
-  .hl-roles ul { list-style: none; padding: 0; margin-top: 0.9rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem 1.4rem; }
-  .hl-roles li { display: grid; gap: 0.05rem; }
-  .hl-roles strong { font-weight: 650; font-size: 0.92rem; }
-  .hl-roles span { font-size: 0.82rem; color: rgba(255, 255, 255, 0.7); }
   @media (max-width: 899px) {
     .hl-card { width: 78vw; max-width: 300px; }
     .hl-label { width: 62vw; max-width: 220px; }
-    .hl-roles { width: 88vw; }
-    .hl-roles ul { grid-template-columns: 1fr; }
   }
 </style>
