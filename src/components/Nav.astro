@@ -116,7 +116,10 @@ const { overlay = false } = Astro.props as { overlay?: boolean };
   }
   const overlayBar = document.querySelector<HTMLElement>('.nav-bar--overlay');
   if (overlayBar) {
-    const solid = () => overlayBar.classList.toggle('is-solid', scrollY > innerHeight * 0.8);
+    const end = document.querySelector<HTMLElement>('[data-nav-solid-after]');
+    // Over a project photo hero, stay see-through until the hero has scrolled past.
+    const limit = () => (end ? end.offsetTop + end.offsetHeight - innerHeight - 10 : innerHeight * 0.8);
+    const solid = () => overlayBar.classList.toggle('is-solid', scrollY > limit());
     addEventListener('scroll', solid, { passive: true });
     solid();
   }

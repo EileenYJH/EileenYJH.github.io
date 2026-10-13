@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import EventPhoto from '../../components/project/EventPhoto.astro';
+import ProjectHero from '../../components/project/ProjectHero.astro';
 import PipelineDiagram from '../../components/nexa/PipelineDiagram.astro';
 import VideoCard from '../../components/nexa/VideoCard.astro';
 
@@ -27,11 +27,12 @@ const roi = [
 ];
 ---
 <BaseLayout
+  overlayNav
   theme="nexa"
   title="NEXA — AI-powered tariff automation — Eileen Yeoh"
   description="A hybrid AI + human-validated system that classifies HS tariff codes, matches FTAs, and calculates landed cost for Jabil's trade compliance team. Champion, Jabil IT ECP Bootcamp 3.0."
 >
-  <section class="section wrap nexa-hero">
+  <ProjectHero img="/images/projects-hero/jabil.jpg" alt="Team NEXA at the Jabil IT ECP Bootcamp 3.0 final" caption="Team NEXA at the Jabil IT ECP Bootcamp 3.0: Data & AI Innovation final, where we were named Champion." post="https://www.linkedin.com/feed/update/urn:li:activity:7478788671337410560/" event="#1D4ED8">
     <p class="eyebrow" data-reveal>Project 02 · 2026 · Jabil IT ECP Bootcamp 3.0</p>
     <h1 data-split>NEXA</h1>
     <p class="nexa-tagline" data-reveal>
@@ -41,9 +42,7 @@ const roi = [
     <ul class="nexa-tags" data-reveal>
       {['🏆 Champion — Use Case 2', 'LangChain', 'Azure OpenAI', 'SAP S/4HANA', 'e2open GTM'].map((t) => <li>{t}</li>)}
     </ul>
-  </section>
-
-  <EventPhoto src="/images/projects-hero/jabil.jpg" alt="Team NEXA at the Jabil IT ECP Bootcamp 3.0 final" caption="Team NEXA at the Jabil IT ECP Bootcamp 3.0: Data & AI Innovation final, where we were named Champion." post="https://www.linkedin.com/feed/update/urn:li:activity:7478788671337410560/" />
+  </ProjectHero>
 
   <section class="section wrap">
     <p class="eyebrow" data-reveal>The problem</p>

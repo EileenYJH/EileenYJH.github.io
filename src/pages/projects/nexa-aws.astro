@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import EventPhoto from '../../components/project/EventPhoto.astro';
+import ProjectHero from '../../components/project/ProjectHero.astro';
 import DashboardExplorer from '../../components/nexa-aws/DashboardExplorer.astro';
 
 const problemStats = [
@@ -17,11 +17,12 @@ const burdenStats = [
 ];
 ---
 <BaseLayout
+  overlayNav
   theme="aws"
   title="AWS-IQ — agentic AI employee onboarding — Eileen Yeoh"
   description="An onboarding platform of six coordinating agents built on Amazon Bedrock Multi-Agent Collaboration, for the AWS x UTP GenAI Hackathon 2026."
 >
-  <section class="section wrap nexaaws-hero">
+  <ProjectHero img="/images/projects-hero/aws.jpg" alt="Team NEXA with the 2nd place cheque at the AWS x UTP GenAI Hackathon 2026" caption="Team NEXA with our 2nd place prize at the AWS x UTP GenAI Hackathon 2026, Chancellor Hall, UTP." focus="50% 72%" post="https://www.linkedin.com/feed/update/urn:li:activity:7477550199008325632/" event="#232F3E">
     <p class="eyebrow" data-reveal>Project 03 · 2026 · AWS x UTP GenAI Hackathon</p>
     <h1 data-split>AWS-IQ</h1>
     <p class="nexaaws-tagline" data-reveal>
@@ -32,9 +33,7 @@ const burdenStats = [
     <ul class="nexaaws-tags" data-reveal>
       {['🥈 2nd Place', 'Amazon Bedrock', 'Multi-Agent Collaboration', 'Serverless', 'DynamoDB', 'WebSocket'].map((t) => <li>{t}</li>)}
     </ul>
-  </section>
-
-  <EventPhoto src="/images/projects-hero/aws.jpg" alt="Eileen with the AWS x UTP GenAI Hackathon 2nd place prize" caption="Collecting 2nd place for team NEXA at the AWS x UTP GenAI Hackathon 2026." post="https://www.linkedin.com/feed/update/urn:li:activity:7477550199008325632/" />
+  </ProjectHero>
 
   <section class="section wrap">
     <p class="eyebrow" data-reveal>The problem</p>

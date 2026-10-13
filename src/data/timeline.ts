@@ -225,7 +225,7 @@ export const timeline: Moment[] = [
     title: '2nd Place, AWS x UTP GenAI Hackathon 2026',
     post: 'https://www.linkedin.com/feed/update/urn:li:activity:7477550199008325632/',
     detail: 'Team NEXA. AWS-IQ, an onboarding platform of six coordinating agents on Amazon Bedrock, designed and built in a three-hour window.',
-    img: '/images/timeline/aws.jpg',
+    img: '/images/timeline/aws-team.jpg',
     href: '/projects/nexa-aws',
   },
   {
@@ -252,7 +252,7 @@ export const timeline: Moment[] = [
     kind: 'award',
     title: 'Track Winner, Project Overwatch (Track 1), SEDIC 2026',
     detail: 'Team NEXA. An offline AI system that classifies civilian comms, military radar and jamming from raw IQ data, even when they overlap. Presented at MITEC alongside CyberDSA.',
-    img: '/images/timeline/sedic-ceremony.jpg',
+    img: '/images/timeline/sedic-team.jpg',
     href: '/projects/sedic',
   },
   {

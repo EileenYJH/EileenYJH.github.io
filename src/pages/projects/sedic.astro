@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import EventPhoto from '../../components/project/EventPhoto.astro';
+import ProjectHero from '../../components/project/ProjectHero.astro';
 import ArchitectureDiagram from '../../components/sedic/ArchitectureDiagram.astro';
 
 const tiers = [
@@ -40,18 +40,19 @@ const shots = [
 
 // Photos from the SEDIC 2026 finale (from Eileen's portfolio Drive folder).
 const dayPhotos = [
-  { src: '/images/sedic/event/track-winner.jpg', shape: 'tall', alt: 'Team NEXA holding the Track Winner cheque on the SEDIC 2026 stage', cap: 'Track Winner, on stage at the closing ceremony.' },
+  { src: '/images/sedic/event/prize-ceremony.jpg', shape: 'wide', alt: 'Prize presentation for Track Project Overwatch at SEDIC 2026', cap: 'Prize presentation for Track 1: Project Overwatch.' },
   { src: '/images/sedic/event/grand-finale.jpg', shape: 'tall', alt: 'Team NEXA with the NEXA banner at the SEDIC 26 grand finale pitching', cap: 'Grand finale pitching.' },
   { src: '/images/sedic/event/with-judge.jpg', shape: 'wide', alt: 'Team NEXA with a guest in uniform at the SEDIC 2026 exhibition', cap: 'Team NEXA at the SEDIC 2026 exhibition.' },
   { src: '/images/sedic/event/cyberdsa.jpg', shape: 'tall', alt: 'Team NEXA in front of the CyberDSA 2026 sign with the Track Winner cheque', cap: 'At CyberDSA 2026, MITEC.' },
 ];
 ---
 <BaseLayout
+  overlayNav
   theme="sedic"
   title="Project Overwatch — AI radio-signal classifier — Eileen Yeoh"
   description="Team NEXA's track-winning SEDIC 2026 entry for Project Overwatch (Track 1): a dual-branch CNN that classifies civilian, military and jamming signals from raw IQ data, including overlapping signals."
 >
-  <section class="section wrap sedic-hero">
+  <ProjectHero img="/images/projects-hero/sedic.jpg" alt="Team NEXA holding the Track Winner cheque on the SEDIC 2026 stage" caption="Team NEXA, Track Winner of Project Overwatch at the SEDIC 2026 closing ceremony, MITEC, 7 Oct 2026." focus="50% 70%" event="#22D3EE">
     <p class="eyebrow" data-reveal>Project 04 · 2026 · SEDIC 2026 · Track 1</p>
     <h1 data-split>Project Overwatch</h1>
     <p class="sedic-tagline" data-reveal>
@@ -61,9 +62,7 @@ const dayPhotos = [
     <ul class="sedic-tags" data-reveal>
       {['🏆 Track Winner, Track 1', 'All judged classes > 80% recall', 'PyTorch', 'Dual-branch CNN', 'Multi-label', 'RadioML'].map((t) => <li>{t}</li>)}
     </ul>
-  </section>
-
-  <EventPhoto src="/images/projects-hero/sedic.jpg" alt="Prize presentation for Track Project Overwatch at SEDIC 2026" caption="Prize presentation for Track 1: Project Overwatch at SEDIC 2026, MITEC, 7 Oct 2026." />
+  </ProjectHero>
 
   <section class="section wrap sedic-day">
     <p class="eyebrow" data-reveal>More from the day</p>

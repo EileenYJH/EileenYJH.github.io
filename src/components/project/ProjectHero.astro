@@ -1,0 +1,122 @@
+---
+// Project page opening: the event photo fills the screen first, then the
+// title rises over it as you scroll. Colours come from the page's theme
+// (--accent) plus the event's own colour (--event), like the home hero.
+interface Props { img: string; alt: string; caption: string; post?: string; event: string; focus?: string }
+const { img, alt, caption, post, event, focus = 'center' } = Astro.props;
+---
+<section class="ph" style={`--event:${event}`} data-nav-solid-after>
+  <div class="ph-sticky">
+    <img class="ph-img" style={`object-position:${focus}`} src={img} alt={alt} decoding="async" fetchpriority="high" />
+    <div class="ph-shade" aria-hidden="true"></div>
+    <div class="ph-grid" aria-hidden="true"></div>
+    <div class="wrap ph-inner">
+      <div class="ph-title">
+        <slot />
+      </div>
+      <p class="ph-cap">
+        {caption}
+        {post && <> <a href={post} target="_blank" rel="noopener">Read my LinkedIn post ↗</a></>}
+      </p>
+    </div>
+    <span class="ph-hint" aria-hidden="true">Scroll</span>
+  </div>
+</section>
+
+<script>
+  const hero = document.querySelector<HTMLElement>('.ph');
+  if (hero) {
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let raf = 0;
+    const tick = () => {
+      raf = 0;
+      const span = hero.offsetHeight - innerHeight;
+      const p = still ? 1 : Math.max(0, Math.min(1, -hero.getBoundingClientRect().top / (span * 0.7)));
+      hero.style.setProperty('--p', p.toFixed(3));
+    };
+    addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(tick); }, { passive: true });
+    addEventListener('resize', tick);
+    tick();
+  }
+</script>
+
+<style>
+  .ph { --p: 0; position: relative; height: 190vh; background: #0B0F1C; }
+  .ph-sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+  .ph-img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover;
+    transform: scale(calc(1.02 + var(--p) * 0.08));
+    filter: saturate(calc(1 - var(--p) * 0.25));
+  }
+  /* Starts almost clear so the photo reads first, then darkens in the event + theme colours. */
+  .ph-shade {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(11, 15, 28, 0.35) 0%, rgba(11, 15, 28, 0) 22%),
+      linear-gradient(200deg, color-mix(in srgb, var(--event) 55%, transparent) 0%, transparent 55%),
+      linear-gradient(0deg, color-mix(in srgb, var(--accent) 70%, #0B0F1C) 0%, rgba(11, 15, 28, 0.55) 55%, rgba(11, 15, 28, 0.2) 100%);
+    opacity: calc(0.12 + var(--p) * 0.88);
+  }
+  .ph-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 56px 56px;
+    opacity: var(--p);
+    mask-image: linear-gradient(0deg, #000, transparent 70%);
+  }
+  .ph-inner { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: clamp(2rem, 7vh, 4.5rem); }
+  .ph-title {
+    color: #fff;
+    opacity: calc(var(--p) * 1.6 - 0.25);
+    transform: translateY(calc((1 - var(--p)) * 18vh));
+  }
+  .ph-title :global(h1) {
+    color: #fff;
+    font-size: clamp(3.4rem, 11vw, 8.5rem);
+    line-height: 0.95;
+    text-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  }
+  .ph-title :global(h1)::after {
+    content: '';
+    display: block;
+    width: clamp(120px, 22vw, 260px);
+    height: 6px;
+    margin-top: 1rem;
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--event), var(--trace));
+    transform: scaleX(var(--p));
+    transform-origin: left;
+  }
+  .ph-title :global(.eyebrow) { color: #fff; opacity: 0.9; }
+  .ph-title :global(.eyebrow)::before { background: var(--trace); }
+  .ph-title :global(p:not(.eyebrow)) { color: rgba(255, 255, 255, 0.9); max-width: 46ch; }
+  .ph-title :global(ul li) {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    color: #fff !important;
+    backdrop-filter: blur(6px);
+  }
+  .ph-title :global(ul li:first-child) { background: var(--trace) !important; border-color: var(--trace) !important; color: #151A2E !important; }
+  .ph-title :global([data-reveal]), .ph-title :global([data-split]) { opacity: 1 !important; transform: none !important; }
+  .ph-cap {
+    margin-top: 1.4rem;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.75);
+    opacity: calc(var(--p) * 2 - 1);
+    max-width: 70ch;
+  }
+  .ph-cap a { color: #fff; font-weight: 600; text-decoration-color: var(--trace); text-underline-offset: 3px; }
+  .ph-hint {
+    position: absolute; left: 50%; bottom: 1.6rem; translate: -50% 0;
+    color: #fff; font-size: 0.75rem; font-weight: 650; letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 0.45rem 0.9rem; border-radius: 999px; background: rgba(11, 15, 28, 0.45); backdrop-filter: blur(6px);
+    opacity: calc(1 - var(--p) * 4);
+    animation: ph-bob 1.8s ease-in-out infinite;
+  }
+  @keyframes ph-bob { 50% { transform: translateY(6px); } }
+  @media (prefers-reduced-motion: reduce) {
+    .ph { height: 100vh; }
+    .ph-hint { display: none; }
+  }
+</style>

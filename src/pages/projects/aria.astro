@@ -1,10 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import EventPhoto from '../../components/project/EventPhoto.astro';
+import ProjectHero from '../../components/project/ProjectHero.astro';
 import ArchitectureDiagram from '../../components/aria/ArchitectureDiagram.astro';
 import FireScoreSimulator from '../../components/aria/FireScoreSimulator.astro';
 import EvacuationDemo from '../../components/aria/EvacuationDemo.astro';
-import ScannerDrone from '../../components/bots/ScannerDrone.astro';
 import NodeExploded from '../../components/aria/NodeExploded.astro';
 
 const sensors = [
@@ -21,12 +20,13 @@ const galleryImages = [
 ];
 ---
 <BaseLayout
+  overlayNav
   theme="aria"
   title="ARIA — distributed fire detection — Eileen Yeoh"
   description="A 6-node ESP32 wireless sensor network that tells real fires from cooking smoke and routes people to safe exits. Interactive deep-dive."
 >
-  <section class="section wrap aria-hero">
-    <ScannerDrone />
+  <ProjectHero img="/images/projects-hero/makerthon.jpg" alt="Team INTERA with ARIA at USM IEEE Makerthon 2026" caption="Team INTERA with ARIA at USM IEEE Makerthon 2026, themed around wireless communication and IoT integration." post="https://www.linkedin.com/feed/update/urn:li:activity:7460617463857074176/" event="#3B2F8F">
+    
     <p class="eyebrow" data-reveal>Project 01 · 2025–2026</p>
     <h1 data-split>ARIA</h1>
     <p class="aria-tagline" data-reveal>
@@ -36,9 +36,7 @@ const galleryImages = [
     <ul class="aria-tags" data-reveal>
       {['ESP32', 'ESP-NOW', 'multi-sensor fusion', 'embedded C++', 'WebSocket dashboard'].map((t) => <li>{t}</li>)}
     </ul>
-  </section>
-
-  <EventPhoto src="/images/projects-hero/makerthon.jpg" alt="Team INTERA with ARIA at USM IEEE Makerthon 2026" caption="Team INTERA with ARIA at USM IEEE Makerthon 2026, themed around wireless communication and IoT integration." post="https://www.linkedin.com/feed/update/urn:li:activity:7460617463857074176/" />
+  </ProjectHero>
 
   <section class="section wrap">
     <p class="eyebrow" data-reveal>The problem</p>
