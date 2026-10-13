@@ -1,21 +1,18 @@
 ---
 import { wallPhotos } from '../../data/wall';
 
-// Spread the photos across columns, rotating the start so neighbouring
-// columns never show the same photo side by side.
+// Deal the photos round-robin into columns so each column shows a different set.
 const COLS = 5;
-const cols = Array.from({ length: COLS }, (_, c) =>
-  wallPhotos.map((_, i) => wallPhotos[(i * 2 + c * 3) % wallPhotos.length]),
-);
-const speeds = [74, 92, 66, 86, 78];
+const cols = Array.from({ length: COLS }, (_, c) => wallPhotos.filter((_, i) => i % COLS === c));
+const speeds = [70, 88, 62, 82, 74];
 ---
 <div class="wall" aria-hidden="true">
   <div class="wall-tilt">
     {cols.map((photos, c) => (
       <div class:list={['wall-col', { 'wall-col--down': c % 2 === 1 }]} style={`--dur:${speeds[c]}s`}>
         <div class="wall-track">
-          {[...photos, ...photos].map((p) => (
-            <img src={p.src} alt="" loading="eager" decoding="async" />
+          {[...photos, ...photos].map((src) => (
+            <img src={src} alt="" decoding="async" />
           ))}
         </div>
       </div>

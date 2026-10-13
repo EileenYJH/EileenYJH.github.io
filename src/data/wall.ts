@@ -1,19 +1,43 @@
-// Photos for the scrolling wall behind the home-page hero.
-// Add a photo: drop a JPG (~520px wide) into public/images/wall/ and list it here.
-export interface WallPhoto {
-  src: string;
-  alt: string;
-}
-
-export const wallPhotos: WallPhoto[] = [
-  { src: '/images/wall/eileen-award.jpg', alt: 'Eileen holding her Student Excellence Award at UTP' },
-  { src: '/images/wall/aria-node.jpg', alt: 'ARIA sensor node on perfboard' },
-  { src: '/images/wall/sedic-team.jpg', alt: 'Team NEXA at SEDIC 2026' },
-  { src: '/images/wall/nexa-dashboard.jpg', alt: 'NEXA tariff dashboard' },
-  { src: '/images/wall/sedic-replay.jpg', alt: 'OMNI console spectrogram replay' },
-  { src: '/images/wall/aws-setup.jpg', alt: 'AWS-IQ onboarding setup tracker' },
-  { src: '/images/wall/aria-exploded.jpg', alt: 'ARIA node exploded view' },
-  { src: '/images/wall/aws-dashboard.jpg', alt: 'AWS-IQ onboarding dashboard' },
-  { src: '/images/wall/sedic-signal.jpg', alt: 'Signal analysis view of one radio window' },
-  { src: '/images/wall/nexa-chatbot.jpg', alt: 'NEXA AI chatbot' },
+// Photos for the scrolling wall behind the home-page hero (decorative, so no alt text).
+// Add a photo: drop a JPG (~420px wide) into public/images/wall/ and list it here.
+export const wallPhotos: string[] = [
+  '/images/wall/eileen-award.jpg',
+  '/images/wall/eileen-01.jpg',
+  '/images/wall/eileen-02.jpg',
+  '/images/wall/eileen-03.jpg',
+  '/images/wall/eileen-04.jpg',
+  '/images/wall/eileen-05.jpg',
+  '/images/wall/eileen-06.jpg',
+  '/images/wall/eileen-07.jpg',
+  '/images/wall/eileen-08.jpg',
+  '/images/wall/eileen-09.jpg',
+  '/images/wall/eileen-10.jpg',
+  '/images/wall/eileen-11.jpg',
+  '/images/wall/eileen-12.jpg',
+  '/images/wall/eileen-13.jpg',
+  '/images/wall/eileen-14.jpg',
+  '/images/wall/eileen-15.jpg',
+  '/images/wall/eileen-16.jpg',
+  '/images/wall/eileen-17.jpg',
+  '/images/wall/eileen-18.jpg',
+  '/images/wall/eileen-19.jpg',
+  '/images/wall/eileen-20.jpg',
+  '/images/wall/eileen-21.jpg',
+  '/images/wall/eileen-22.jpg',
+  '/images/wall/eileen-23.jpg',
+  '/images/wall/eileen-24.jpg',
+  '/images/wall/eileen-25.jpg',
+  '/images/wall/eileen-26.jpg',
+  '/images/wall/eileen-27.jpg',
+  '/images/wall/eileen-28.jpg',
+  '/images/wall/eileen-29.jpg',
+  '/images/wall/eileen-30.jpg',
+  '/images/wall/eileen-31.jpg',
+  '/images/wall/eileen-32.jpg',
+  '/images/wall/eileen-33.jpg',
+  '/images/wall/eileen-34.jpg',
+  '/images/wall/eileen-35.jpg',
+  '/images/wall/eileen-36.jpg',
+  '/images/wall/eileen-37.jpg',
+  '/images/wall/eileen-38.jpg',
 ];
