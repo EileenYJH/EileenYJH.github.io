@@ -9,10 +9,10 @@ const { overlay = false } = Astro.props as { overlay?: boolean };
 ---
 <header class:list={['nav-bar', { 'nav-bar--overlay': overlay }]}>
   <div class="wrap nav-inner">
-    <a href="/" class="nav-brand">Eileen Yeoh</a>
+    <a href="/" class="nav-brand">Eileen Yeoh Jing Han</a>
     <nav aria-label="Main">
       {links.map((l) => (
-        <a href={l.href} class:list={['nav-link', { active: path.startsWith(l.href) }]}>{l.label}</a>
+        <a href={l.href} class:list={['nav-link', `nav-link--${l.label.toLowerCase()}`, { active: path.startsWith(l.href) }]}>{l.label}</a>
       ))}
     </nav>
   </div>
@@ -41,6 +41,14 @@ const { overlay = false } = Astro.props as { overlay?: boolean };
     transition: color 0.2s ease;
   }
   .nav-brand:hover { color: var(--accent); }
+  .nav-brand { white-space: nowrap; }
+  @media (max-width: 480px) {
+    .nav-inner { gap: 0.8rem; }
+    .nav-brand { font-size: 0.92rem; }
+    .nav-link { margin-left: 0.8rem; font-size: 0.85rem; }
+    /* The blog is still reachable from the home page's Writing section. */
+    .nav-link--blog { display: none; }
+  }
   .nav-link {
     position: relative;
     margin-left: 1.6rem;
