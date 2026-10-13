@@ -22,6 +22,8 @@ export interface Moment {
   cgpa?: string;
   standing?: string;
   courses?: Course[];
+  /** Eileen's own LinkedIn post about this, if she wrote one. */
+  post?: string;
   /** true = shown on the academic timeline; otherwise it appears under Highlights. */
   academic?: boolean;
 }
@@ -51,6 +53,7 @@ export const timeline: Moment[] = [
     kind: 'study',
     academic: true,
     title: 'Foundation in Electrical & Electronics Engineering, UTP',
+    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7379504396746805248/',
     detail: '4.0 CGPA and the Dean’s List every semester, then the Student Excellence Award at the Foundation Studies Completion Ceremony (1 Oct 2025).',
     chips: ['Dean’s List · Sep 2024', 'Dean’s List · Jan 2025', 'Dean’s List · May 2025', 'Student Excellence Award · Oct 2025'],
     img: '/images/timeline/fscc.jpg',
@@ -67,6 +70,7 @@ export const timeline: Moment[] = [
     date: '17–21 May 2025',
     kind: 'event',
     title: '10th Northern Malaysia Mandarin Debate Tournament: adjudication committee',
+    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7332580205426868224/',
     detail: 'Invited and assigned judges, ran adjudication briefings and managed scoring data for this national tournament hosted at UTP.',
     img: '/images/timeline/debate.jpg',
   },
@@ -75,6 +79,7 @@ export const timeline: Moment[] = [
     date: '25 Jul 2025',
     kind: 'award',
     title: 'Best Integrated Concept, InPhyChem District',
+    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7354877127487361025/',
     detail: '“Towards Sustainable Cities” project showcase, Chancellor Hall, UTP.',
     img: '/images/timeline/inphychem.jpg',
   },
@@ -83,6 +88,7 @@ export const timeline: Moment[] = [
     date: '30 Jul 2025',
     kind: 'award',
     title: 'Story.AI Award Ceremony',
+    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7356315769674063872/',
     detail: 'Data storytelling with AI for Mathematics II (FCM0035), recognised at the award ceremony.',
     img: '/images/timeline/storyai.jpg',
   },
@@ -91,6 +97,7 @@ export const timeline: Moment[] = [
     date: '21–24 Aug 2025',
     kind: 'event',
     title: '2nd ASEAN + Inter-University Networking Games 2025: liaison officer',
+    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7397117282692448256/',
     detail: 'Looked after the team from China University of Petroleum–Beijing, using my Mandarin to help them settle in and get around Malaysia.',
   },
   {
@@ -116,6 +123,7 @@ export const timeline: Moment[] = [
     date: 'Nov 2025',
     kind: 'event',
     title: 'DevFest Singapore 2025, Google Asia-Pacific HQ',
+    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7398554337892995072/',
     detail: 'Workshops on AI agents with Google ADK, Firebase with Gemini, and GKE-hosted image generation. Joined with the UTP Open Computing Club.',
     img: '/images/timeline/devfest-sg.jpg',
   },
@@ -124,6 +132,7 @@ export const timeline: Moment[] = [
     date: '15–16 Nov 2025',
     kind: 'event',
     title: 'Secure Nex Hackathon 2025: Ceremony & Protocol (CNP) committee',
+    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7397483444286492672/',
     detail: 'Slide Master for the opening and closing ceremonies, cueing music, live slide changes and screen switches with the control room. Organised by PETRONAS Group Security, UTP Department of Computing, CeRDaS and UTP SYNTECH.',
     img: '/images/timeline/securenex.jpg',
   },
@@ -132,6 +141,7 @@ export const timeline: Moment[] = [
     date: '29 Nov 2025',
     kind: 'event',
     title: 'Semiconductor Hackathon 2025',
+    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7400773036355936256/',
     detail: 'Industry forums with Intel, MSIA, Keysight, PSDC and USM, plus Coffee Connect sessions with IC design, test and process engineers. Organised by HEYA Inc at Penang Science Cluster.',
     img: '/images/timeline/semicon.jpg',
   },
@@ -184,6 +194,7 @@ export const timeline: Moment[] = [
     date: 'Jun 2026',
     kind: 'competition',
     title: 'USM IEEE Makerthon 2026: ARIA',
+    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7460617463857074176/',
     detail: 'Team INTERA. ARIA (Adaptive Room Intelligence & Alert) fuses five sensors to tell cooking smoke from a real fire, links ESP32 nodes over ESP-NOW and reroutes LED evacuation paths around fire and crowds.',
     img: '/images/timeline/makerthon.jpg',
     href: '/projects/aria',
@@ -193,6 +204,7 @@ export const timeline: Moment[] = [
     date: '9 Jun 2026',
     kind: 'event',
     title: 'Penang Career Discovery Day 2026: Assistant Project Director',
+    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7470078965467058176/',
     detail: 'Brought 80 UTP students to meet 19 semiconductor and engineering companies at St. Giles Wembley, Penang.',
     img: '/images/timeline/penang.jpg',
   },
@@ -201,6 +213,7 @@ export const timeline: Moment[] = [
     date: 'Jun 2026',
     kind: 'award',
     title: 'Champion, Jabil IT ECP Bootcamp 3.0: Data & AI Innovation',
+    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7478788671337410560/',
     detail: 'Team NEXA, one of 11 teams shortlisted from 50+. Our AI tariff calculation engine for Jabil’s trade compliance team (Use Case 2) was judged by Jabil senior management.',
     img: '/images/timeline/jabil.jpg',
     href: '/projects/nexa',
@@ -210,6 +223,7 @@ export const timeline: Moment[] = [
     date: '28 Jun 2026',
     kind: 'award',
     title: '2nd Place, AWS x UTP GenAI Hackathon 2026',
+    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7477550199008325632/',
     detail: 'Team NEXA. AWS-IQ, an onboarding platform of six coordinating agents on Amazon Bedrock, designed and built in a three-hour window.',
     img: '/images/timeline/aws.jpg',
     href: '/projects/nexa-aws',
@@ -219,6 +233,7 @@ export const timeline: Moment[] = [
     date: 'Jul 2026',
     kind: 'event',
     title: 'EMAX 2026 industrial visit: Project Director',
+    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7486668541983789056/',
     detail: 'Led the E3S2 visit to Malaysia’s largest electronics and semiconductor manufacturing expo, six hours of booth-to-booth conversations on automation and precision equipment.',
     img: '/images/timeline/emax.jpg',
   },
@@ -228,6 +243,7 @@ export const timeline: Moment[] = [
     kind: 'study',
     academic: true,
     title: 'Student exchange, University of Sheffield, UK',
+    post: 'https://www.linkedin.com/feed/update/urn:li:activity:7513341285953359872/',
     detail: 'Semester exchange at the University of Sheffield, from September 2026.',
   },
   {

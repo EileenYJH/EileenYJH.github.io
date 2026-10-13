@@ -30,6 +30,7 @@ const roles = timeline.find((m) => m.kind === 'now')?.chips ?? [];
               <p class="hl-meta"><span class="hl-date">{m.date}</span></p>
               <h4 class="hl-title">{m.href ? <a href={m.href}>{m.title}</a> : m.title}</h4>
               {m.detail && <p class="hl-detail">{m.detail}</p>}
+              {m.post && <a class="hl-post" href={m.post} target="_blank" rel="noopener">LinkedIn post ↗</a>}
             </div>
           </li>
         ))}
@@ -98,4 +99,6 @@ const roles = timeline.find((m) => m.kind === 'now')?.chips ?? [];
   .hl-roles li { display: grid; gap: 0.1rem; }
   .hl-roles strong { font-weight: 650; }
   .hl-roles span { font-size: 0.92rem; color: var(--muted); }
+  .hl-post { display: inline-block; margin-top: 0.6rem; font-size: 0.85rem; font-weight: 600; color: #0A66C2; text-decoration: none; }
+  .hl-post:hover { text-decoration: underline; text-underline-offset: 3px; }
 </style>

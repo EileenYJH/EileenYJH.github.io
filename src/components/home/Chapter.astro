@@ -1,0 +1,41 @@
+---
+// Section marker: a number, a label and a line that draws itself as the section scrolls in.
+interface Props { num: string; label: string }
+const { num, label } = Astro.props;
+---
+<div class="chapter" aria-hidden="true">
+  <span class="ch-num">{num}</span>
+  <span class="ch-label">{label}</span>
+  <span class="ch-line"><i></i></span>
+</div>
+
+<style>
+  .chapter {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.4rem;
+    color: var(--accent);
+  }
+  .ch-num {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--accent);
+  }
+  .ch-label { font-size: 0.82rem; font-weight: 650; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap; }
+  .ch-line { flex: 1; height: 2px; background: var(--line); position: relative; overflow: hidden; border-radius: 2px; }
+  .ch-line i {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, var(--accent), var(--trace));
+    transform: scaleX(var(--cp, 1));
+    transform-origin: left;
+  }
+  :global(.sec-anim) .ch-num, :global(.sec-anim) .ch-label { transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  :global(.sec-anim:not(.sec-in)) .ch-num { opacity: 0; transform: translateY(24px); }
+  :global(.sec-anim:not(.sec-in)) .ch-label { opacity: 0; transform: translateX(-16px); }
+  :global(.sec-anim) .ch-label { transition-delay: 0.12s; }
+</style>

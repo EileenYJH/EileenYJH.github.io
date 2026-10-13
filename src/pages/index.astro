@@ -13,6 +13,7 @@ const posts = (await getCollection('blog'))
   .slice(0, 3);
 const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year: 'numeric' });
 
+import Chapter from '../components/home/Chapter.astro';
 ---
 <BaseLayout
   overlayNav
@@ -44,13 +45,14 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
     </div>
   </section>
 
-  <section class="section wrap me" id="about-me">
+  <section class="section wrap me" id="about-me" data-sec>
     <div class="me-photo" id="me-photo">
       <span class="me-dots" aria-hidden="true"></span>
       <span class="me-frame" aria-hidden="true"></span>
       <img src="/images/eileen-award.jpg" alt="Eileen Yeoh holding her foundation certificate and Student Excellence Award at Universiti Teknologi PETRONAS" width="800" height="800" />
     </div>
     <div class="me-text">
+      <Chapter num="01" label="About me" />
       <h2>I love exploring new ideas, building them into real things, and explaining them so others can build on them too.</h2>
       <p class="me-lede">
         My work so far spans semiconductor fabrication, power electronics,
@@ -61,17 +63,20 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
     </div>
   </section>
 
-  <section class="section wrap journey" id="journey">
+  <section class="section wrap journey" id="journey" data-sec>
+    <Chapter num="02" label="Studies" />
     <h2>Academic journey</h2>
     <Timeline />
   </section>
 
-  <section class="section wrap highlights" id="highlights">
+  <section class="section wrap highlights" id="highlights" data-sec>
+    <Chapter num="03" label="Beyond class" />
     <h2>Awards, competitions and events</h2>
     <Highlights />
   </section>
 
-  <section class="section wrap work" id="work">
+  <section class="section wrap work" id="work" data-sec>
+    <Chapter num="04" label="Projects" />
     <div class="work-head">
       <h2>Selected work</h2>
       <p class="muted">Six projects, each with its own page you can explore.</p>
@@ -80,7 +85,8 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
   </section>
 
   {posts.length > 0 && (
-    <section class="section wrap writing">
+    <section class="section wrap writing" data-sec>
+      <Chapter num="05" label="Blog" />
       <h2>Writing</h2>
       <div class="post-list">
         {posts.map((post) => (
@@ -104,6 +110,26 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
     </div>
   </section>
   <script>
+    // Section entrances: each section's marker line draws as it scrolls in,
+    // then its number, label and heading rise into place.
+    const secs = [...document.querySelectorAll<HTMLElement>('[data-sec]')];
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      secs.forEach((s) => s.classList.add('sec-anim'));
+      let raf = 0;
+      const tick = () => {
+        raf = 0;
+        secs.forEach((s) => {
+          const top = s.getBoundingClientRect().top;
+          const p = Math.max(0, Math.min(1, (innerHeight - top) / (innerHeight * 0.6)));
+          s.style.setProperty('--cp', p.toFixed(3));
+          if (p > 0.15) s.classList.add('sec-in');
+        });
+      };
+      addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(tick); }, { passive: true });
+      addEventListener('resize', tick);
+      tick();
+    }
+
     // Photo backdrop follows the mouse and the scroll position.
     const photo = document.getElementById('me-photo');
     if (photo && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -264,6 +290,15 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
   .post-row:hover .post-title { color: var(--accent); }
   .post-title { font-size: 1.2rem; font-weight: 600; transition: color 0.2s ease; }
   .post-date { font-size: 0.88rem; }
+
+  /* ---------- Section entrances ---------- */
+  :global(.sec-anim) > h2, :global(.sec-anim) .me-text > h2, :global(.sec-anim) .work-head > h2 {
+    transition: opacity 0.7s ease 0.15s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s, clip-path 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s;
+  }
+  :global(.sec-anim:not(.sec-in)) > h2, :global(.sec-anim:not(.sec-in)) .me-text > h2, :global(.sec-anim:not(.sec-in)) .work-head > h2 {
+    opacity: 0; transform: translateY(28px); clip-path: inset(0 0 100% 0);
+  }
+  :global(.sec-anim.sec-in) > h2, :global(.sec-anim.sec-in) .me-text > h2, :global(.sec-anim.sec-in) .work-head > h2 { clip-path: inset(0 0 -10% 0); }
 
   /* ---------- Contact ---------- */
   .contact { background: var(--ink); color: #fff; padding-block: clamp(4rem, 10vh, 7rem); margin-top: var(--space-section); }

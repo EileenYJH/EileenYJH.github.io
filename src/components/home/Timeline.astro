@@ -57,6 +57,7 @@ function placed(y: number) {
                 {m.href ? <a href={m.href}>{m.title}</a> : m.title}
               </h4>
               {m.detail && <p class="tl-detail">{m.detail}</p>}
+              {m.post && <a class="tl-post" href={m.post} target="_blank" rel="noopener">LinkedIn post ↗</a>}
               {m.gpa && (
                 <dl class="tl-scores">
                   <div><dt>GPA</dt><dd>{m.gpa}</dd></div>
@@ -209,6 +210,8 @@ function placed(y: number) {
   .tl-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 650; line-height: 1.3; margin-top: 0.2rem; letter-spacing: -0.01em; }
   .tl-title a { text-decoration-color: var(--line); text-underline-offset: 3px; }
   .tl-title a:hover { color: var(--k); text-decoration-color: currentColor; }
+  .tl-post { display: inline-block; margin-top: 0.5rem; font-size: 0.85rem; font-weight: 600; color: #0A66C2; text-decoration: none; }
+  .tl-post:hover { text-decoration: underline; text-underline-offset: 3px; }
   .tl-detail { font-size: 0.95rem; color: var(--muted); margin-top: 0.3rem; }
   .tl-scores { display: flex; flex-wrap: wrap; gap: 0.5rem 1.6rem; margin: 0.8rem 0 0; }
   .tl-scores div { display: grid; }
