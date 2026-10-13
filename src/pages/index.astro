@@ -13,7 +13,7 @@ const fmt = new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year
 
 const now = [
   { role: 'Exchange student', org: 'University of Sheffield, UK · 2026/27' },
-  { role: 'Electrical & Electronic Engineering undergraduate', org: 'Universiti Teknologi PETRONAS, Malaysia' },
+  { role: 'Bachelor of Electrical and Electronics Engineering with Honours', org: 'Universiti Teknologi PETRONAS (UTP), Malaysia' },
   { role: 'Project Director', org: 'Electrical & Electronics Engineering Student Society (E3S2)' },
   { role: 'Secretary', org: 'Open Computing Club (OCC)' },
   { role: 'Newsletter Editor', org: 'IEEE UTP Student Branch' },
@@ -44,7 +44,11 @@ const recognition = [
         stack: from a transistor fabricated by hand in a cleanroom to AI that
         picks jammers out of raw radio.
       </p>
-      <p class="hero-where">UTP, Malaysia · Student exchange at the University of Sheffield, UK</p>
+      <p class="hero-where">
+        Bachelor of Electrical and Electronics Engineering with Honours<br />
+        Universiti Teknologi PETRONAS (UTP), Malaysia<br />
+        Student exchange at the University of Sheffield, UK
+      </p>
       <div class="hero-actions">
         <a class="btn btn--trace" href="#work">See my projects</a>
         <a class="btn btn--glass" href={LINKEDIN} target="_blank" rel="noopener">Connect on LinkedIn</a>
@@ -172,7 +176,7 @@ const recognition = [
   }
   @keyframes trace-draw { to { stroke-dashoffset: 0; } }
   .hero-lede { font-size: clamp(1.15rem, 1.8vw, 1.45rem); line-height: 1.5; max-width: 40ch; color: #EEF1F7; }
-  .hero-where { margin-top: 1rem; font-size: 0.98rem; color: rgba(255, 255, 255, 0.72); }
+  .hero-where { margin-top: 1rem; font-size: 0.98rem; line-height: 1.6; max-width: 62ch; color: rgba(255, 255, 255, 0.8); }
   .hero-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
 
   .btn--trace { background: var(--trace); border-color: var(--trace); color: var(--ink); font-weight: 650; }
