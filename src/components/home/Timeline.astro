@@ -27,6 +27,7 @@ const years = [...new Set(items.map((m) => m.year))];
           <li class:list={['tl-item', `tl-item--${m.kind}`, i % 2 ? 'tl-item--right' : 'tl-item--left', { 'tl-item--img': m.img }]}>
             <span class="tl-dot" aria-hidden="true"></span>
             <div class="tl-body">
+              {m.img && <img class="tl-img" src={m.img} alt="" loading="lazy" decoding="async" />}
               <p class="tl-meta">
                 <span class="tl-kind">{kindLabel[m.kind]}</span>
                 <span class="tl-date">{m.date}</span>
@@ -55,13 +56,12 @@ const years = [...new Set(items.map((m) => m.year))];
                   </table>
                 </details>
               )}
+              {m.chips && (
+                <ul class="tl-chips">
+                  {m.chips.map((c) => <li class:list={{ 'tl-chip--dean': c.startsWith('Dean'), 'tl-chip--award': c.includes('Award') }}>{c}</li>)}
+                </ul>
+              )}
             </div>
-            {m.img && <img class="tl-img" src={m.img} alt="" loading="lazy" decoding="async" />}
-            {m.chips && (
-              <ul class="tl-chips">
-                {m.chips.map((c) => <li class:list={{ 'tl-chip--dean': c.startsWith('Dean'), 'tl-chip--award': c.includes('Award') }}>{c}</li>)}
-              </ul>
-            )}
           </li>
         ))}
       </ol>
@@ -152,7 +152,6 @@ const years = [...new Set(items.map((m) => m.year))];
     border: 1px solid var(--line);
     border-radius: 14px;
   }
-  .tl-item--img { grid-template-columns: minmax(0, 1fr) 190px; }
   .tl-item--award { --k: #B7791F; }
   .tl-item--competition { --k: #6D28D9; }
   .tl-item--event { --k: var(--steel); }
@@ -168,7 +167,7 @@ const years = [...new Set(items.map((m) => m.year))];
     border: 3px solid var(--k);
   }
   .tl-item--award .tl-dot { background: var(--trace); border-color: #B7791F; }
-  .tl-body { min-width: 0; }
+  .tl-body { min-width: 0; display: flow-root; }
   .tl-meta { display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; align-items: baseline; font-size: 0.85rem; }
   .tl-kind { font-weight: 650; color: var(--k); }
   .tl-date { color: var(--muted); font-variant-numeric: tabular-nums; }
@@ -189,9 +188,9 @@ const years = [...new Set(items.map((m) => m.year))];
   .tl-courses td { padding: 0.4rem 0.5rem 0.4rem 0; border-bottom: 1px solid var(--line); vertical-align: top; }
   .tl-code { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
   .tl-grade { font-weight: 700; text-align: center; width: 3.5rem; }
-  .tl-chips { grid-column: 1 / -1; list-style: none; padding: 0; margin-top: -0.4rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tl-chips { list-style: none; padding: 0; margin-top: 0.9rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
   .tl-chips li { font-size: 0.82rem; font-weight: 550; padding: 0.25rem 0.7rem; border-radius: 999px; background: color-mix(in srgb, var(--k) 10%, transparent); color: var(--ink); }
-  .tl-img { width: 190px; height: auto; max-height: 260px; object-fit: cover; border-radius: 10px; align-self: start; }
+  .tl-img { float: right; width: 190px; height: auto; max-height: 260px; object-fit: cover; border-radius: 10px; margin: 0.2rem 0 0.7rem 1.1rem; }
   /* Dean's List uses the same green as the degree semesters' standing. */
   .tl-chips li.tl-chip--dean { background: #DCF2E3; color: #15803D; font-weight: 650; }
   .tl-chips li.tl-chip--award { background: #FBEFD5; color: #8A5A0B; font-weight: 650; }
@@ -200,8 +199,7 @@ const years = [...new Set(items.map((m) => m.year))];
     .tl-item { margin-left: 1.8rem; padding: 1rem; }
     .tl-dot { left: calc(-1.8rem + 1px); }
     .tl-year-label { padding-left: 1.8rem; }
-    .tl-item--img { grid-template-columns: minmax(0, 1fr); }
-    .tl-img { width: 100%; height: auto; aspect-ratio: 4 / 3; order: -1; }
+    .tl-img { float: none; display: block; width: 100%; max-height: none; height: auto; aspect-ratio: 4 / 3; margin: 0 0 0.9rem; }
   }
 
   /* Desktop: rail down the middle, cards alternate left and right. */
@@ -232,8 +230,7 @@ const years = [...new Set(items.map((m) => m.year))];
     .tl-item--right { grid-column: 2; }
     .tl-item--left .tl-dot { left: auto; right: calc(-2.2rem - 8px); }
     .tl-item--right .tl-dot { left: calc(-2.2rem - 6px); }
-    .tl-item--img { grid-template-columns: minmax(0, 1fr) 190px; }
-    .tl-img { width: 190px; height: auto; max-height: 260px; object-fit: cover; }
+    .tl-img { float: right; width: 190px; height: auto; max-height: 260px; object-fit: cover; margin: 0.2rem 0 0.7rem 1.1rem; aspect-ratio: auto; }
     .tl-title { font-size: 1.05rem; }
     .tl-scores dd { font-size: 1.3rem; }
   }
