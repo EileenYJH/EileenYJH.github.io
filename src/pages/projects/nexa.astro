@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import EventPhoto from '../../components/project/EventPhoto.astro';
 import PipelineDiagram from '../../components/nexa/PipelineDiagram.astro';
 import VideoCard from '../../components/nexa/VideoCard.astro';
 
@@ -41,6 +42,8 @@ const roi = [
       {['🏆 Champion — Use Case 2', 'LangChain', 'Azure OpenAI', 'SAP S/4HANA', 'e2open GTM'].map((t) => <li>{t}</li>)}
     </ul>
   </section>
+
+  <EventPhoto src="/images/timeline/jabil.jpg" alt="Team NEXA at the Jabil IT ECP Bootcamp 3.0 final" caption="Team NEXA at the Jabil IT ECP Bootcamp 3.0: Data & AI Innovation final, where we were named Champion." />
 
   <section class="section wrap">
     <p class="eyebrow" data-reveal>The problem</p>

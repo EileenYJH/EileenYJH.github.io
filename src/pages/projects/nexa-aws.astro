@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import EventPhoto from '../../components/project/EventPhoto.astro';
 import DashboardExplorer from '../../components/nexa-aws/DashboardExplorer.astro';
 
 const problemStats = [
@@ -32,6 +33,8 @@ const burdenStats = [
       {['🥈 2nd Place', 'Amazon Bedrock', 'Multi-Agent Collaboration', 'Serverless', 'DynamoDB', 'WebSocket'].map((t) => <li>{t}</li>)}
     </ul>
   </section>
+
+  <EventPhoto src="/images/timeline/aws.jpg" alt="Eileen with the AWS x UTP GenAI Hackathon 2nd place prize" caption="Collecting 2nd place for team NEXA at the AWS x UTP GenAI Hackathon 2026." />
 
   <section class="section wrap">
     <p class="eyebrow" data-reveal>The problem</p>

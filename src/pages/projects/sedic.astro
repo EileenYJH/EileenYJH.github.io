@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import EventPhoto from '../../components/project/EventPhoto.astro';
 import ArchitectureDiagram from '../../components/sedic/ArchitectureDiagram.astro';
 
 const tiers = [
@@ -53,6 +54,8 @@ const shots = [
       {['🏆 Track Winner, Track 1', 'All judged classes > 80% recall', 'PyTorch', 'Dual-branch CNN', 'Multi-label', 'RadioML'].map((t) => <li>{t}</li>)}
     </ul>
   </section>
+
+  <EventPhoto src="/images/timeline/sedic.jpg" alt="Team NEXA at SEDIC 2026" caption="Team NEXA at SEDIC 2026, held at MITEC alongside CyberDSA, after winning Track 1: Project Overwatch." />
 
   <section class="section wrap">
     <p class="eyebrow" data-reveal>The challenge</p>

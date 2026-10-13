@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import EventPhoto from '../../components/project/EventPhoto.astro';
 import ArchitectureDiagram from '../../components/aria/ArchitectureDiagram.astro';
 import FireScoreSimulator from '../../components/aria/FireScoreSimulator.astro';
 import EvacuationDemo from '../../components/aria/EvacuationDemo.astro';
@@ -29,13 +30,15 @@ const galleryImages = [
     <p class="eyebrow" data-reveal>Project 01 · 2025–2026</p>
     <h1 data-split>ARIA</h1>
     <p class="aria-tagline" data-reveal>
-      Autonomous Response &amp; Intelligence Architecture — a wireless sensor
+      Adaptive Room Intelligence &amp; Alert — a wireless sensor
       network that knows the difference between a fire and your breakfast.
     </p>
     <ul class="aria-tags" data-reveal>
       {['ESP32', 'ESP-NOW', 'multi-sensor fusion', 'embedded C++', 'WebSocket dashboard'].map((t) => <li>{t}</li>)}
     </ul>
   </section>
+
+  <EventPhoto src="/images/timeline/makerthon.jpg" alt="Team INTERA with ARIA at USM IEEE Makerthon 2026" caption="Team INTERA with ARIA at USM IEEE Makerthon 2026, themed around wireless communication and IoT integration." />
 
   <section class="section wrap">
     <p class="eyebrow" data-reveal>The problem</p>
