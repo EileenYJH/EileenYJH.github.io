@@ -26,9 +26,13 @@ export interface Moment {
   academic?: boolean;
 }
 
-/** Short note shown under a year marker on the academic timeline. */
-export const yearNotes: Record<number, string> = {
-  2025: 'Started the Bachelor of Electrical and Electronics Engineering with Honours, UTP',
+/** Milestone shown under a year marker on the academic timeline. */
+export const yearNotes: Record<number, { label: string; title: string; place: string }> = {
+  2025: {
+    label: 'Degree begins · Sep 2025',
+    title: 'Bachelor of Electrical and Electronics Engineering with Honours',
+    place: 'Universiti Teknologi PETRONAS (UTP)',
+  },
 };
 
 export const timeline: Moment[] = [
