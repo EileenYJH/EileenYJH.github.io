@@ -54,6 +54,15 @@ const causes = [
     </div>
   </section>
 
+  <section class="section wrap" id="montage">
+    <p class="eyebrow" data-reveal>Inside the cleanroom</p>
+    <h2 data-split>The montage.</h2>
+    <div class="mos-video" data-reveal>
+      <iframe src="https://www.youtube-nocookie.com/embed/ZzR8kaybJIM?rel=0" title="MOSFET fabrication cleanroom montage, Session 1 Group 1" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    <p class="muted mos-video-cap" data-reveal>Our two days at ADTEC Taiping, from gowning up to probing the finished dies. <a href="https://youtu.be/ZzR8kaybJIM" target="_blank" rel="noopener">Watch on YouTube ↗</a></p>
+  </section>
+
   <section class="section wrap">
     <p class="eyebrow" data-reveal>The process</p>
     <h2 data-split>Ten steps from wafer to working device.</h2>
@@ -144,13 +153,17 @@ const causes = [
       inversion, the three operating regions, and the square-law model the
       results are measured against.
     </p>
-    <a class="btn" href="https://youtu.be/ZzR8kaybJIM" target="_blank" rel="noopener" data-reveal>
-      Watch the cleanroom montage →
+    <a class="btn" href="#montage" data-reveal>
+      Watch the cleanroom montage ↑
     </a>
   </section>
 </BaseLayout>
 
 <style>
+  .mos-video { position: relative; aspect-ratio: 16 / 9; margin-top: 2rem; border-radius: 16px; overflow: hidden; background: #111; box-shadow: 0 30px 60px -36px rgba(var(--accent-rgb), 0.7); }
+  .mos-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .mos-video-cap { margin-top: 0.9rem; font-size: 0.92rem; }
+  .mos-video-cap a { color: var(--accent); font-weight: 650; margin-left: 0.3rem; }
   .mos-hero h1 { font-size: clamp(2.6rem, 8vw, 5.6rem); max-width: 16ch; }
   .mos-tagline { font-size: 1.3rem; max-width: 44ch; margin-top: 1.2rem; }
   .mos-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
