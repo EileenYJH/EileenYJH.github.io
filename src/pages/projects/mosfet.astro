@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProcessFlow from '../../components/mosfet/ProcessFlow.astro';
+import ProjectHero from '../../components/project/ProjectHero.astro';
 
 const stats = [
   { value: '4', label: 'photomasks', sub: 'source/drain · gate · contacts · metal' },
@@ -26,17 +27,16 @@ const causes = [
 ];
 ---
 <BaseLayout
+  overlayNav
   theme="mosfet"
   title="NMOS fabrication | Eileen Yeoh"
   description="An n-channel enhancement-mode MOSFET fabricated by hand through a four-mask cleanroom process, then characterised and debugged against theory."
 >
   <link slot="head" rel="preconnect" href="https://fonts.googleapis.com" />
   <link slot="head" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Lato:wght@400;700;900&display=swap" />
-  <div class="mos-skin">
-  <svg class="mos-wave mos-wave--tr" viewBox="0 0 400 400" aria-hidden="true">{Array.from({ length: 16 }, (_, i) => <ellipse cx="300" cy="80" rx={60 + i * 14} ry={34 + i * 9} transform={`rotate(${-18 + i * 1.5} 300 80)`} />)}</svg>
-  <section class="section wrap mos-hero">
+  <ProjectHero img="/images/projects-hero/mosfet.jpg" alt="Our four person team in cleanroom suits at ADTEC Taiping" caption="Session 1 Group 1 suited up in the ADTEC Taiping cleanroom for two days of fabrication." event="#5EF0A8" focus="50% 45%">
     <p class="eyebrow" data-reveal>Project 05 · 2026 · EFB1074 Microelectronic Physics and Devices (MPD), UTP</p>
-    <h1 data-split>MOSFET Fabrication &amp; Electrical Characterization</h1>
+    <h1 class="ph-h1--long">MOSFET Fabrication &amp; Electrical Characterization</h1>
     <p class="mos-sub" data-reveal>Building a transistor from bare silicon</p>
     <p class="mos-tagline" data-reveal>
       A whole n-channel MOSFET, grown, patterned, doped and wired by hand in a
@@ -45,7 +45,10 @@ const causes = [
     <ul class="mos-tags" data-reveal>
       {['Cleanroom · ADTEC Taiping', 'Thermal oxidation', 'Photolithography', 'Phosphorus diffusion', 'Al PVD'].map((t) => <li>{t}</li>)}
     </ul>
-  </section>
+  </ProjectHero>
+
+  <div class="mos-skin">
+  <svg class="mos-wave mos-wave--tr" viewBox="0 0 400 400" aria-hidden="true">{Array.from({ length: 16 }, (_, i) => <ellipse cx="300" cy="80" rx={60 + i * 14} ry={34 + i * 9} transform={`rotate(${-18 + i * 1.5} 300 80)`} />)}</svg>
 
   <section class="section wrap">
     <div class="stat-grid">
@@ -63,7 +66,7 @@ const causes = [
     <p class="eyebrow" data-reveal>Inside the cleanroom</p>
     <h2 data-split>The montage.</h2>
     <div class="mos-video" data-reveal>
-      <iframe src="https://www.youtube-nocookie.com/embed/ZzR8kaybJIM?rel=0" title="MOSFET fabrication cleanroom montage, Session 1 Group 1" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <iframe data-autoplay src="https://www.youtube-nocookie.com/embed/ZzR8kaybJIM?rel=0&playsinline=1" title="MOSFET fabrication cleanroom montage, Session 1 Group 1" allow="autoplay; accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
     </div>
     <p class="muted mos-video-cap" data-reveal>Our two days at ADTEC Taiping, from gowning up to probing the finished dies. <a href="https://youtu.be/ZzR8kaybJIM" target="_blank" rel="noopener">Watch on YouTube ↗</a></p>
   </section>
@@ -186,6 +189,17 @@ const causes = [
   </div>
 </BaseLayout>
 
+<script>
+  // Start the montage muted as soon as it scrolls into view, so it plays right on the page.
+  const yt = document.querySelector<HTMLIFrameElement>('iframe[data-autoplay]');
+  if (yt && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { yt.src = yt.src + '&autoplay=1&mute=1'; io.disconnect(); }
+    }, { threshold: 0.5 });
+    io.observe(yt);
+  }
+</script>
+
 <style>
   /* MOSFET skin: the S1G1 presentation. White slides with sky line-art waves,
      heavy wide uppercase titles on a mint band, teal section labels, teal to
@@ -201,22 +215,25 @@ const causes = [
   .mos-skin > section { position: relative; z-index: 1; }
   .mos-skin :global(.eyebrow) { font-family: 'Lato', sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: 0.02em; color: var(--teal); font-size: 0.9rem; }
   .mos-skin :global(.eyebrow)::before { display: none; }
-  .mos-skin :global(h1), .mos-skin :global(h2) {
+  .mos-skin :global(h2) {
     font-family: 'Dela Gothic One', 'Arial Black', sans-serif; font-weight: 400; text-transform: uppercase; color: var(--ink); letter-spacing: 0.02em;
     display: inline-block; position: relative; padding: 0.15em 0.4em 0.15em 0.35em; margin-left: -0.35em;
     background: linear-gradient(90deg, var(--mint) 0%, rgba(94, 240, 168, 0.55) 45%, rgba(94, 240, 168, 0) 100%);
   }
-  .mos-skin :global(h2)::after, .mos-skin :global(h1)::after { content: ''; position: absolute; left: 0; bottom: -10px; width: 14px; height: 14px; border-left: 3px solid var(--green); border-bottom: 3px solid var(--green); }
-  .mos-skin :global(h2) { font-size: clamp(1.5rem, 3.4vw, 2.4rem); line-height: 1.2; }
+  .mos-skin :global(h2)::after { content: ''; position: absolute; left: 0; bottom: -10px; width: 14px; height: 14px; border-left: 3px solid var(--green); border-bottom: 3px solid var(--green); }
+  .mos-skin :global(h2) { font-size: clamp(1.5rem, 3.4vw, 2.4rem); line-height: 1.35; }
+  .mos-skin :global(h2 .split-line) { overflow: visible !important; padding-bottom: 0.08em; }
   .mos-skin h3 { font-family: 'Lato', sans-serif; font-weight: 900; color: var(--ink); }
   .mos-skin strong { color: var(--green); }
   .mos-skin .muted { color: #555; }
-  .mos-hero h1 { font-size: clamp(1.7rem, 4.2vw, 3.3rem); line-height: 1.25; max-width: 100%; margin-top: 0.6rem; overflow-wrap: anywhere; }
-  .mos-sub { font-family: 'Lato', sans-serif; font-weight: 700; color: var(--navy); font-size: 1.35rem; margin-top: 1.6rem; }
-  .mos-tagline { font-size: 1.2rem; max-width: 46ch; margin-top: 0.6rem; }
+  h1 { font-family: 'Dela Gothic One', 'Arial Black', sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1.2 !important; }
+  .mos-sub { font-family: 'Lato', sans-serif; font-weight: 700; color: #5ef0a8 !important; font-size: 1.35rem; margin-top: 1.2rem; }
+  .mos-tagline { font-size: 1.2rem; max-width: none; margin-top: 0.6rem; }
   .mos-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
-  .mos-tags li { font-size: 0.8rem; font-weight: 700; padding: 0.35rem 0.9rem; border-radius: 4px; color: #fff; background: linear-gradient(90deg, var(--teal-l), var(--teal)); }
-  .mos-tags li:first-child { background: var(--navy); }
+  .mos-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.6rem; }
+  .mos-tags li { font-size: 0.8rem; font-weight: 700; padding: 0.35rem 0.9rem; border-radius: 4px; color: #fff; background: linear-gradient(90deg, #5fd1c8, #138a8a) !important; border: 0 !important; }
+  .mos-tags li:first-child { background: #0d3557 !important; color: #fff !important; }
+  .mos-tagline { font-size: 1.2rem; margin-top: 0.6rem; }
 
   /* stats: chevron headers like the process flow slide */
   .stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; }
@@ -267,7 +284,7 @@ const causes = [
   .cause h3 { font-size: 1rem; }
   .cause p { font-size: 0.9rem; padding: 0.9rem 1.1rem; background: linear-gradient(90deg, #eef8f8, #fff); border-left: 5px solid var(--green); border-radius: 3px; }
 
-  .outcome-note { margin-top: 1.5rem; max-width: 62ch; }
+  .outcome-note { margin-top: 1.5rem; max-width: none; }
   .btn { display: inline-flex; margin-top: 1.5rem; background: var(--navy); color: #fff; font-weight: 900; padding: 0.7rem 1.3rem; border-radius: 4px; text-decoration: none; }
   .btn:hover { background: var(--teal); }
 

@@ -92,7 +92,7 @@ const { img, alt, caption, post, demo, event, focus = 'center' } = Astro.props;
   }
   .ph-title :global(.eyebrow) { color: #fff; opacity: 0.9; }
   .ph-title :global(.eyebrow)::before { background: var(--trace); }
-  .ph-title :global(p:not(.eyebrow)) { color: rgba(255, 255, 255, 0.9); max-width: 46ch; }
+  .ph-title :global(p:not(.eyebrow)) { color: rgba(255, 255, 255, 0.9); max-width: none; }
   .ph-title :global(ul li) {
     background: rgba(255, 255, 255, 0.12) !important;
     border-color: rgba(255, 255, 255, 0.3) !important;
@@ -106,7 +106,7 @@ const { img, alt, caption, post, demo, event, focus = 'center' } = Astro.props;
     font-size: 0.88rem;
     color: rgba(255, 255, 255, 0.75);
     opacity: calc(var(--p) * 2 - 1);
-    max-width: 70ch;
+    max-width: none;
   }
   .ph-demo { display: inline-flex; align-items: center; gap: 0.55rem; margin-top: 1.4rem; padding: 0.7rem 1.2rem; border-radius: 999px; background: #fff; color: #151A2E; font-weight: 700; text-decoration: none; box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.6); transition: transform 0.2s; }
   .ph-demo:hover { transform: translateY(-2px); }

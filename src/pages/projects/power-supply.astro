@@ -173,8 +173,8 @@ const fab = ['Eagle design + DRC', 'Print 1:1 film artwork', 'CNC drill & scrub 
 </BaseLayout>
 
 <style>
-  .psu-hero h1 { font-size: clamp(2.6rem, 8vw, 5.6rem); max-width: 15ch; }
-  .psu-tagline { font-size: 1.3rem; max-width: 46ch; margin-top: 1.2rem; }
+  .psu-hero h1 { font-size: clamp(2.6rem, 8vw, 5.6rem); max-width: none; }
+  .psu-tagline { font-size: 1.3rem; max-width: none; margin-top: 1.2rem; }
   .psu-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
   .psu-tags li {
     font-size: 0.8rem;
@@ -221,7 +221,7 @@ const fab = ['Eagle design + DRC', 'Print 1:1 film artwork', 'CNC drill & scrub 
   .fab-num { font-size: 0.72rem; font-weight: 650; color: var(--accent); }
   .lim-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; margin-top: 2.5rem; }
   .lim-grid p { font-size: 0.9rem; margin-top: 0.4rem; }
-  .outcome-note { margin-top: 1.5rem; max-width: 62ch; }
+  .outcome-note { margin-top: 1.5rem; max-width: none; }
   .outcome .btn { margin-top: 1.5rem; }
   @media (max-width: 900px) {
     .fab { grid-template-columns: repeat(2, 1fr); }

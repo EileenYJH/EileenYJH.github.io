@@ -318,8 +318,8 @@ import Chapter from '../components/home/Chapter.astro';
     animation: trace-draw 2.4s cubic-bezier(0.45, 0, 0.2, 1) 0.3s forwards;
   }
   @keyframes trace-draw { to { stroke-dashoffset: 0; } }
-  .hero-lede { font-size: clamp(1.15rem, 1.8vw, 1.45rem); line-height: 1.5; max-width: 40ch; color: #EEF1F7; }
-  .hero-where { margin-top: 1rem; font-size: 0.98rem; line-height: 1.6; max-width: 62ch; color: rgba(255, 255, 255, 0.8); }
+  .hero-lede { font-size: clamp(1.15rem, 1.8vw, 1.45rem); line-height: 1.5; max-width: none; color: #EEF1F7; }
+  .hero-where { margin-top: 1rem; font-size: 0.98rem; line-height: 1.6; max-width: none; color: rgba(255, 255, 255, 0.8); }
   .hero-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
 
   .btn--trace { background: var(--trace); border-color: var(--trace); color: var(--ink); font-weight: 650; }
@@ -373,8 +373,8 @@ import Chapter from '../components/home/Chapter.astro';
   @media (prefers-reduced-motion: reduce) {
     .me-photo { --mx: 0 !important; --my: 0 !important; --sp: 0 !important; }
   }
-  .me-text h2 { font-size: clamp(1.8rem, 3.4vw, 2.7rem); max-width: 22ch; }
-  .me-lede { font-size: 1.15rem; margin-top: 1.3rem; max-width: 56ch; }
+  .me-text h2 { font-size: clamp(1.8rem, 3.4vw, 2.7rem); max-width: none; }
+  .me-lede { font-size: 1.15rem; margin-top: 1.3rem; max-width: none; }
 
   /* ---------- Journey ---------- */
   .journey { padding-top: 0; }
@@ -389,7 +389,7 @@ import Chapter from '../components/home/Chapter.astro';
   .hl-progress { height: 3px; background: var(--line); border-radius: 3px; overflow: hidden; display: none; }
   .highlights:global(.hl-pinned) .hl-progress { display: block; }
   .hl-progress i { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--trace)); transform: scaleX(var(--hlp, 0)); transform-origin: left; }
-  .journey-lede { margin-top: 0.6rem; max-width: 56ch; }
+  .journey-lede { margin-top: 0.6rem; max-width: none; }
 
   /* ---------- Selected work ---------- */
   .work-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }

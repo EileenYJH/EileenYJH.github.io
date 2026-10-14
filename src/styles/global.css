@@ -127,7 +127,7 @@ h3 { font-size: clamp(1.25rem, 2.2vw, 1.6rem); }
 
 h1 em, h2 em { font-style: normal; }
 
-p { max-width: 65ch; }
+p { max-width: none; }
 
 a { color: inherit; }
 
