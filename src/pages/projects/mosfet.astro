@@ -30,9 +30,14 @@ const causes = [
   title="NMOS fabrication | Eileen Yeoh"
   description="An n-channel enhancement-mode MOSFET fabricated by hand through a four-mask cleanroom process, then characterised and debugged against theory."
 >
+  <link slot="head" rel="preconnect" href="https://fonts.googleapis.com" />
+  <link slot="head" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Lato:wght@400;700;900&display=swap" />
+  <div class="mos-skin">
+  <svg class="mos-wave mos-wave--tr" viewBox="0 0 400 400" aria-hidden="true">{Array.from({ length: 16 }, (_, i) => <ellipse cx="300" cy="80" rx={60 + i * 14} ry={34 + i * 9} transform={`rotate(${-18 + i * 1.5} 300 80)`} />)}</svg>
   <section class="section wrap mos-hero">
-    <p class="eyebrow" data-reveal>Project 05 · 2026 · EFB1074 Microelectronic Physics &amp; Devices, UTP</p>
-    <h1 data-split>Building a transistor from bare silicon</h1>
+    <p class="eyebrow" data-reveal>Project 05 · 2026 · EFB1074 Microelectronic Physics and Devices (MPD), UTP</p>
+    <h1 data-split>MOSFET Fabrication &amp; Electrical Characterization</h1>
+    <p class="mos-sub" data-reveal>Building a transistor from bare silicon</p>
     <p class="mos-tagline" data-reveal>
       A whole n-channel MOSFET, grown, patterned, doped and wired by hand in a
       cleanroom, then probed to see whether it actually switches.
@@ -152,11 +157,12 @@ const causes = [
   <section class="section wrap">
     <p class="eyebrow" data-reveal>Fabrication → electrical behaviour</p>
     <h2 data-split>Every cleanroom choice shows up in the I-V curve.</h2>
-    <div class="cause-grid">
+    <div class="cause-list">
       {causes.map((c, i) => (
-        <div class="card" data-reveal data-reveal-delay={i * 0.08}>
+        <div class="cause" data-reveal data-reveal-delay={i * 0.08}>
+          <span class="cause-n">{String(i + 1).padStart(2, '0')}</span>
           <h3>{c.t}</h3>
-          <p class="muted">{c.d}</p>
+          <p>{c.d}</p>
         </div>
       ))}
     </div>
@@ -176,80 +182,106 @@ const causes = [
       Watch the cleanroom montage ↑
     </a>
   </section>
+  <svg class="mos-wave mos-wave--bl" viewBox="0 0 400 400" aria-hidden="true">{Array.from({ length: 16 }, (_, i) => <ellipse cx="90" cy="330" rx={60 + i * 14} ry={34 + i * 9} transform={`rotate(${12 - i * 1.5} 90 330)`} />)}</svg>
+  </div>
 </BaseLayout>
 
 <style>
-  .mos-video { position: relative; aspect-ratio: 16 / 9; margin-top: 2rem; border-radius: 16px; overflow: hidden; background: #111; box-shadow: 0 30px 60px -36px rgba(var(--accent-rgb), 0.7); }
+  /* MOSFET skin: the S1G1 presentation. White slides with sky line-art waves,
+     heavy wide uppercase titles on a mint band, teal section labels, teal to
+     navy chevrons, green emphasis. */
+  .mos-skin {
+    --teal: #138a8a; --teal-l: #5fd1c8; --navy: #0d3557; --mint: #5ef0a8; --green: #1a9e48; --sky: #5ec8f0;
+    --ink: #111; --body: #333; --line: #e3eef0;
+    position: relative; overflow: hidden; background: #fff; color: var(--body); font-family: 'Lato', system-ui, sans-serif;
+  }
+  .mos-wave { position: absolute; width: 520px; height: 520px; pointer-events: none; fill: none; stroke: var(--sky); stroke-width: 1; opacity: 0.55; z-index: 0; }
+  .mos-wave--tr { top: -120px; right: -160px; }
+  .mos-wave--bl { bottom: -180px; left: -170px; }
+  .mos-skin > section { position: relative; z-index: 1; }
+  .mos-skin :global(.eyebrow) { font-family: 'Lato', sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: 0.02em; color: var(--teal); font-size: 0.9rem; }
+  .mos-skin :global(.eyebrow)::before { display: none; }
+  .mos-skin :global(h1), .mos-skin :global(h2) {
+    font-family: 'Dela Gothic One', 'Arial Black', sans-serif; font-weight: 400; text-transform: uppercase; color: var(--ink); letter-spacing: 0.02em;
+    display: inline-block; position: relative; padding: 0.15em 0.4em 0.15em 0.35em; margin-left: -0.35em;
+    background: linear-gradient(90deg, var(--mint) 0%, rgba(94, 240, 168, 0.55) 45%, rgba(94, 240, 168, 0) 100%);
+  }
+  .mos-skin :global(h2)::after, .mos-skin :global(h1)::after { content: ''; position: absolute; left: 0; bottom: -10px; width: 14px; height: 14px; border-left: 3px solid var(--green); border-bottom: 3px solid var(--green); }
+  .mos-skin :global(h2) { font-size: clamp(1.5rem, 3.4vw, 2.4rem); line-height: 1.2; }
+  .mos-skin h3 { font-family: 'Lato', sans-serif; font-weight: 900; color: var(--ink); }
+  .mos-skin strong { color: var(--green); }
+  .mos-skin .muted { color: #555; }
+  .mos-hero h1 { font-size: clamp(1.7rem, 4.2vw, 3.3rem); line-height: 1.25; max-width: 100%; margin-top: 0.6rem; overflow-wrap: anywhere; }
+  .mos-sub { font-family: 'Lato', sans-serif; font-weight: 700; color: var(--navy); font-size: 1.35rem; margin-top: 1.6rem; }
+  .mos-tagline { font-size: 1.2rem; max-width: 46ch; margin-top: 0.6rem; }
+  .mos-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
+  .mos-tags li { font-size: 0.8rem; font-weight: 700; padding: 0.35rem 0.9rem; border-radius: 4px; color: #fff; background: linear-gradient(90deg, var(--teal-l), var(--teal)); }
+  .mos-tags li:first-child { background: var(--navy); }
+
+  /* stats: chevron headers like the process flow slide */
+  .stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; }
+  .stat-card { display: flex; flex-direction: column; gap: 0.4rem; }
+  .stat-label { order: -1; color: #fff; font-weight: 900; font-size: 0.85rem; text-transform: uppercase; padding: 0.7rem 1.6rem 0.7rem 1rem; clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%, 16px 50%); background: var(--c); }
+  .stat-card:first-child .stat-label { clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%); }
+  .stat-card:nth-child(1) { --c: #7fe0d0; } .stat-card:nth-child(2) { --c: #3fb3b0; } .stat-card:nth-child(3) { --c: #1d7f90; } .stat-card:nth-child(4) { --c: var(--navy); }
+  .stat-value { font-family: 'Dela Gothic One', sans-serif; font-size: 1.9rem; color: var(--teal); padding: 0.4rem 0.6rem 0; }
+  .stat-sub { font-size: 0.84rem; padding: 0 0.6rem; }
+
+  .mos-video { position: relative; aspect-ratio: 16 / 9; margin-top: 2rem; border-radius: 6px; overflow: hidden; background: #111; box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--mint), 0 30px 60px -36px rgba(13, 53, 87, 0.7); }
   .mos-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-  .mos-video-cap { margin-top: 0.9rem; font-size: 0.92rem; }
+  .mos-video-cap { margin-top: 1rem; font-size: 0.92rem; }
+  .mos-video-cap a { color: var(--teal); font-weight: 900; margin-left: 0.3rem; }
   .mos-media { display: grid; grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr); gap: 1.6rem; align-items: start; margin-top: 0.5rem; }
   .mos-slides { margin: 0; }
-  .mos-report { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 2rem; text-decoration: none; color: inherit; border-top: 5px solid var(--accent); transition: transform 0.2s; }
+  .mos-report { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 2rem; padding: 1.4rem; text-decoration: none; color: inherit; background: linear-gradient(90deg, #eafbf3, #fff); border-left: 6px solid var(--green); border-radius: 4px; box-shadow: 0 0 0 1px var(--line); transition: transform 0.2s; }
   .mos-report:hover { transform: translateY(-3px); }
-  .mos-report-tag { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
-  .mos-report strong { font-size: 1.1rem; }
-  .mos-report-cta { margin-top: 0.4rem; font-weight: 650; color: var(--accent); }
-  @media (max-width: 800px) { .mos-media { grid-template-columns: 1fr; } }
-  .mos-video-cap a { color: var(--accent); font-weight: 650; margin-left: 0.3rem; }
-  .mos-hero h1 { font-size: clamp(2.6rem, 8vw, 5.6rem); max-width: 16ch; }
-  .mos-tagline { font-size: 1.3rem; max-width: 44ch; margin-top: 1.2rem; }
-  .mos-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
-  .mos-tags li {
-    font-size: 0.8rem;
-    font-weight: 550;
-    padding: 0.3rem 0.85rem;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: var(--paper-raised);
-  }
-  .mos-tags li:first-child { background: var(--accent-soft); border-color: transparent; color: var(--accent); font-weight: 650; }
-  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
-  .stat-card {
-    background: var(--paper-raised);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-  .stat-value { font-family: var(--font-display); font-size: 2.1rem; color: var(--accent); }
-  .stat-label { font-weight: 600; }
-  .stat-sub { font-size: 0.82rem; }
-  .litho {
-    list-style: none;
-    padding: 0;
-    margin-top: 2.5rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 0.8rem;
-  }
-  .litho li {
-    background: var(--paper-raised);
-    border: 1px solid var(--line);
-    border-radius: calc(var(--radius) - 4px);
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    font-size: 0.85rem;
-  }
-  .litho-num { font-size: 0.72rem; font-weight: 650; color: var(--accent); }
-  .litho strong { font-size: 0.98rem; }
-  .note, .diagnosis { margin-top: 1.5rem; background: var(--accent-soft); border-color: transparent; }
+  .mos-report-tag { font-size: 0.78rem; font-weight: 900; text-transform: uppercase; color: var(--teal); }
+  .mos-report strong { font-size: 1.1rem; color: var(--ink); }
+  .mos-report-cta { margin-top: 0.4rem; font-weight: 900; color: var(--green); }
+
+  /* lithography: chevron row */
+  .litho { list-style: none; padding: 0; margin-top: 2.5rem; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0.3rem; }
+  .litho li { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem; }
+  .litho li strong { order: -1; color: #fff; font-size: 0.92rem; padding: 0.75rem 1.3rem 0.75rem 1.2rem; clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%, 14px 50%); background: var(--c); }
+  .litho li:first-child strong { clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%); }
+  .litho-num { font-family: 'Dela Gothic One', sans-serif; font-size: 0.8rem; color: var(--teal); padding: 0 0.5rem; }
+  .litho li .muted { padding: 0 0.5rem; }
+  .litho li:nth-child(1) { --c: #8fe6d6; } .litho li:nth-child(2) { --c: #6dd2c7; } .litho li:nth-child(3) { --c: #4bbdb8; } .litho li:nth-child(4) { --c: #2fa3a7; }
+  .litho li:nth-child(5) { --c: #1d8796; } .litho li:nth-child(6) { --c: #15677f; } .litho li:nth-child(7) { --c: var(--navy); }
+
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 4px; padding: 1.3rem 1.4rem; }
+  .note, .diagnosis { margin-top: 1.5rem; background: linear-gradient(90deg, #eafbf3, #fff); border: 0; border-left: 6px solid var(--green); box-shadow: 0 0 0 1px var(--line); }
+  .diagnosis { border-left-color: var(--teal); background: linear-gradient(90deg, #e6f6f7, #fff); }
   .note p, .diagnosis p { font-size: 0.93rem; margin-top: 0.4rem; }
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 2rem; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 2rem; }
+  .two-col > div { padding: 1.2rem 1.3rem; border-radius: 4px; box-shadow: 0 0 0 1px var(--line); }
+  .two-col > div h3 { display: inline-block; color: #fff; font-size: 0.9rem; text-transform: uppercase; padding: 0.45rem 1.4rem 0.45rem 0.8rem; margin: -1.2rem 0 0.4rem -1.3rem; clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%); background: var(--teal); }
+  .two-col > div:last-child h3 { background: var(--navy); }
   .two-col p { margin-top: 0.4rem; }
-  .cause-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.2rem;
-    margin-top: 2.5rem;
-  }
-  .cause-grid p { font-size: 0.9rem; margin-top: 0.4rem; }
+
+  /* causes: numbered chevrons, as on the fabrication-parameters slide */
+  .cause-list { display: grid; gap: 0.9rem; margin-top: 2.2rem; }
+  .cause { display: grid; grid-template-columns: 110px minmax(0, 1fr) minmax(0, 1.6fr); align-items: center; gap: 1.2rem; }
+  .cause-n { display: grid; place-items: center; height: 84px; font-family: 'Dela Gothic One', sans-serif; font-size: 1.6rem; color: #fff; clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 50%, calc(100% - 26px) 100%, 0 100%); background: var(--c); }
+  .cause:nth-child(1) { --c: #4fc9c0; } .cause:nth-child(2) { --c: #2a9aa6; } .cause:nth-child(3) { --c: #1a6a86; }
+  .cause h3 { font-size: 1rem; }
+  .cause p { font-size: 0.9rem; padding: 0.9rem 1.1rem; background: linear-gradient(90deg, #eef8f8, #fff); border-left: 5px solid var(--green); border-radius: 3px; }
+
   .outcome-note { margin-top: 1.5rem; max-width: 62ch; }
-  .outcome .btn { margin-top: 1.5rem; }
-  @media (max-width: 800px) {
-    .two-col { grid-template-columns: 1fr; }
+  .btn { display: inline-flex; margin-top: 1.5rem; background: var(--navy); color: #fff; font-weight: 900; padding: 0.7rem 1.3rem; border-radius: 4px; text-decoration: none; }
+  .btn:hover { background: var(--teal); }
+
+  /* process flow cross-section in the slide colours */
+  .mos-skin :global(.l-ox), .mos-skin :global(.l-gox) { fill: #c9f7e0; stroke: var(--teal); }
+  .mos-skin :global(.sw-ox) { background: #c9f7e0; border-color: var(--teal); }
+
+  @media (max-width: 900px) {
+    .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1.2rem; }
+    .stat-card .stat-label { clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%); }
+    .litho { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1rem; }
+    .litho li strong { clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%); }
+    .mos-media, .two-col { grid-template-columns: 1fr; }
+    .cause { grid-template-columns: 80px 1fr; }
+    .cause p { grid-column: 1 / -1; }
   }
 </style>
