@@ -7,7 +7,7 @@ const problemStats = [
   { value: '5 to 8 months', label: 'to full productivity for a typical new hire' },
   { value: '7+ systems', label: 'VPN, email, SharePoint, Workday, software, provisioned by hand' },
   { value: '17.4%', label: 'leave within 90 days, citing poor onboarding' },
-  { value: 'Day one', label: 'chaos: no clear tasks, no answers, no context' },
+  { value: 'Day one chaos', label: 'no clear tasks, no answers, no context' },
 ];
 
 const burdenStats = [
@@ -22,7 +22,7 @@ const burdenStats = [
   title="AWS-IQ: agentic AI employee onboarding | Eileen Yeoh"
   description="An onboarding platform of six coordinating agents built on Amazon Bedrock Multi-Agent Collaboration, for the AWS x UTP GenAI Hackathon 2026."
 >
-  <ProjectHero img="/images/projects-hero/aws.jpg" alt="Team NEXA with the 2nd place cheque at the AWS x UTP GenAI Hackathon 2026" caption="Team NEXA with our 2nd place prize at the AWS x UTP GenAI Hackathon 2026, Chancellor Hall, UTP." focus="50% 72%" post="https://www.linkedin.com/feed/update/urn:li:activity:7477550199008325632/" event="#232F3E">
+  <ProjectHero img="/images/projects-hero/aws.jpg" alt="Team NEXA with the 2nd place cheque at the AWS x UTP GenAI Hackathon 2026" caption="Team NEXA with our 2nd place prize at the AWS x UTP GenAI Hackathon 2026, Chancellor Hall, UTP." focus="50% 72%" post="https://www.linkedin.com/feed/update/urn:li:activity:7477550199008325632/" event="#F39C12">
     <p class="eyebrow" data-reveal>Project 03 · 2026 · AWS x UTP GenAI Hackathon</p>
     <h1 data-split>AWS-IQ</h1>
     <p class="nexaaws-tagline" data-reveal>
@@ -35,109 +35,182 @@ const burdenStats = [
     </ul>
   </ProjectHero>
 
+  <link slot="head" rel="preconnect" href="https://fonts.googleapis.com" />
+  <link slot="head" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&family=Source+Serif+4:opsz,wght@8..60,700;8..60,800&display=swap" />
+
+  <div class="aws-skin">
+
+  <section class="ax-cover" id="slides">
+    <div class="ax-streaks" aria-hidden="true"></div>
+    <div class="wrap">
+      <p class="ax-eyebrow" data-reveal>AWS x UTP GenAI Hackathon 2026</p>
+      <h2 class="ax-title" data-reveal>Agentic AI Employee Onboarding</h2>
+      <span class="ax-rule" aria-hidden="true"></span>
+      <p class="ax-lede" data-reveal>From fragmented information to an <span class="ax-or">intelligent, personalised</span> onboarding journey powered by Amazon Bedrock multi-agent AI.</p>
+      <ul class="ax-pills" data-reveal>
+        {['Orchestrator', 'Profile', 'Setup', 'Knowledge', 'Communication', 'Daily Task'].map((t) => <li>{t}</li>)}
+      </ul>
+      <figure class="ax-slides" data-reveal>
+        <div class="ax-frame">
+          <iframe src="https://www.canva.com/design/DAHN0UVq6f8/RwjsiaPqSTHR5JQ4vtvU9Q/view?embed" title="AWS-IQ presentation slides, AWS x UTP GenAI Hackathon 2026" allow="fullscreen" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <figcaption>
+          <span>The deck we pitched with. Use the arrows to flip through all 21 slides.</span>
+          <a href="https://www.canva.com/design/DAHN0UVq6f8/RwjsiaPqSTHR5JQ4vtvU9Q/view" target="_blank" rel="noopener">Open in Canva ↗</a>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
   <section class="section wrap">
-    <p class="eyebrow" data-reveal>The problem</p>
-    <h2 data-split>Onboarding is slow, costly, and fragmented.</h2>
-    <div class="stat-grid">
+    <p class="ax-eyebrow" data-reveal>The problem</p>
+    <h2 data-split>Onboarding is <span class="ax-red">slow</span>, <span class="ax-red">costly</span>, and <span class="ax-red">fragmented</span></h2>
+    <div class="ax-stats">
       {problemStats.map((s, i) => (
-        <div class="stat-card" data-reveal data-reveal-delay={i * 0.05}>
-          <span class="stat-value">{s.value}</span>
-          <span class="stat-label muted">{s.label}</span>
+        <div class="ax-stat" data-reveal data-reveal-delay={i * 0.05}>
+          <span class="ax-stat-val">{s.value}</span>
+          <span class="ax-stat-label">{s.label}</span>
         </div>
       ))}
     </div>
-    <p class="muted burden-lead" data-reveal>The hidden HR / IT burden, per hire:</p>
-    <div class="stat-grid burden-grid">
-      {burdenStats.map((s, i) => (
-        <div class="stat-card small" data-reveal data-reveal-delay={i * 0.05}>
-          <span class="stat-value small">{s.value}</span>
-          <span class="stat-label muted">{s.label}</span>
+    <div class="ax-burden" data-reveal>
+      <p class="ax-burden-title">The hidden HR / IT burden</p>
+      <ul>
+        {burdenStats.map((s) => <li><strong>{s.value}</strong> {s.label}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section ax-band">
+    <div class="wrap">
+      <p class="ax-eyebrow" data-reveal>Our solution</p>
+      <h2 data-split>One orchestrator. Five specialists. Zero manual handoffs.</h2>
+      <p class="muted" data-reveal>
+        AWS-IQ uses <strong>Amazon Bedrock Multi-Agent Collaboration</strong> in a supervisor
+        pattern: the orchestrator routes each request to the right specialist
+        agent, then aggregates the results.
+      </p>
+      <div class="ax-agents" data-reveal>
+        <div class="ax-orch">
+          <strong>Orchestrator Agent</strong>
+          <span>Routes · aggregates · tracks state</span>
         </div>
-      ))}
+        <span class="ax-arrow" aria-hidden="true">→</span>
+        <ul class="ax-specs">
+          {['Profile Agent', 'Setup Agent', 'Knowledge Agent', 'Communication Agent', 'Daily Task Agent'].map((a) => <li>{a}</li>)}
+        </ul>
+      </div>
+      <p class="muted ax-arch-lead" data-reveal>
+        Serverless, event-driven, multi-agent: a request's journey end to end on AWS.
+      </p>
+      <figure class="arch-shot" data-reveal>
+        <img src="/images/nexa-aws/architecture-diagram.png" alt="AWS-IQ architecture: Web Dashboard sends HTTPS to Amazon API Gateway, which routes to the Orchestrator Agent (Amazon Bedrock Multi-Agent Collaboration), which dispatches to Profile, Setup, Knowledge, Communication, and Daily Task agents, backed by DynamoDB, S3, Bedrock KB, SES, and EventBridge. Responses stream back to the dashboard over WebSocket." loading="lazy" />
+      </figure>
     </div>
   </section>
 
   <section class="section wrap">
-    <p class="eyebrow" data-reveal>The system</p>
-    <h2 data-split>One orchestrator. Five specialist agents.</h2>
-    <p class="muted" data-reveal>
-      Serverless, event-driven, multi-agent: a request's journey end to end
-      on AWS, from the dashboard through the Orchestrator to whichever
-      specialist agent the task needs.
-    </p>
-    <figure class="arch-shot" data-reveal>
-      <img src="/images/nexa-aws/architecture-diagram.png" alt="AWS-IQ architecture: Web Dashboard sends HTTPS to Amazon API Gateway, which routes to the Orchestrator Agent (Amazon Bedrock Multi-Agent Collaboration), which dispatches to Profile, Setup, Knowledge, Communication, and Daily Task agents, backed by DynamoDB, S3, Bedrock KB, SES, and EventBridge. Responses stream back to the dashboard over WebSocket." loading="lazy" />
-    </figure>
-  </section>
-
-  <section class="section wrap">
-    <p class="eyebrow" data-reveal>What the new hire sees</p>
-    <h2 data-split>One dashboard, six views in.</h2>
+    <p class="ax-eyebrow" data-reveal>Our feature</p>
+    <h2 data-split>What the <span class="ax-green">new hire</span> actually <span class="ax-green">sees</span></h2>
     <p class="muted" data-reveal>
       This is the actual "Onboarding Command Center" from the live prototype.
-      Click a numbered marker or a label to see that section full-size,
+      Click a numbered marker or a label to see that section full size,
       with an explanation.
     </p>
     <DashboardExplorer />
   </section>
 
-  <section class="section wrap outcome">
-    <p class="eyebrow" data-reveal>Outcome</p>
-    <h2 data-split>A command center instead of 7 disconnected systems.</h2>
-    <p class="muted outcome-note" data-reveal>
-      Built with my NEXA teammates for the AWS x UTP GenAI Hackathon 2026.
-      One Orchestrator agent replaces the scattered VPN, email, SharePoint,
-      Workday, and software-provisioning steps with a single, cited,
-      role-aware conversation.
-    </p>
-    <a class="btn" href="https://github.com/Jessy123123/NEXA_AWS" target="_blank" rel="noopener" data-reveal>
-      View the source on GitHub →
-    </a>
+  <section class="section ax-band outcome">
+    <div class="wrap">
+      <p class="ax-eyebrow" data-reveal>Outcome</p>
+      <h2 data-split>A command center instead of <span class="ax-red">7</span> disconnected systems.</h2>
+      <p class="muted outcome-note" data-reveal>
+        Built with my NEXA teammates for the AWS x UTP GenAI Hackathon 2026,
+        where we placed <strong>2nd</strong>. One Orchestrator agent replaces the scattered VPN,
+        email, SharePoint, Workday, and software provisioning steps with a
+        single, cited, role aware conversation.
+      </p>
+      <a class="ax-btn" href="https://github.com/Jessy123123/NEXA_AWS" target="_blank" rel="noopener" data-reveal>
+        View the source on GitHub →
+      </a>
+    </div>
   </section>
+
+  </div>
 </BaseLayout>
 
 <style>
-  .nexaaws-hero h1 { font-size: clamp(3.4rem, 11vw, 7rem); }
+  h1 { font-family: 'Open Sans', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.01em; }
   .nexaaws-tagline { font-size: 1.3rem; max-width: 44ch; margin-top: 1.2rem; }
   .nexaaws-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
-  .nexaaws-tags li {
-    font-size: 0.8rem;
-    font-weight: 550;
-    padding: 0.3rem 0.85rem;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: var(--paper-raised);
+  .nexaaws-tags li { font-size: 0.8rem; font-weight: 600; padding: 0.3rem 0.85rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(31, 58, 110, 0.45); }
+  .nexaaws-tags li:first-child { background: #f39c12; border-color: transparent; color: #1b1b1b; font-weight: 700; }
+
+  /* AWS skin: the AWS-IQ hackathon deck. Off white slides, orange labels,
+     navy sans title, bold serif headings with red / green words, white stat cards. */
+  .aws-skin {
+    --ink: #1b1b1b; --body: #333; --mut: #5c6270; --line: #e6e3de;
+    --navy: #1f3a6e; --orange: #f39c12; --orange-d: #c87400; --red: #e8202a; --green: #3e9c7c;
+    --lav: #dce1ee; --sky: #dce6f8;
+    --sans: 'Open Sans', system-ui, sans-serif; --serif: 'Source Serif 4', Cambria, Georgia, serif;
+    background: #f5f4f2; color: var(--body); font-family: var(--sans);
   }
-  .nexaaws-tags li:first-child { background: var(--accent-soft); border-color: transparent; color: var(--accent); font-weight: 650; }
-  .stat-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.2rem;
-    margin-top: 2.5rem;
-  }
-  .stat-card {
-    background: var(--paper-raised);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 1.4rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-  .stat-value { font-family: var(--font-display); font-size: 1.9rem; color: var(--accent); }
-  .stat-value.small { font-size: 1.5rem; }
-  .stat-label { font-size: 0.85rem; }
-  .burden-lead { margin-top: 2rem; }
-  .burden-grid { margin-top: 1rem; }
-  .stat-card.small { padding: 1.1rem; }
-  .arch-shot {
-    margin: 2.5rem 0 0;
-    background: var(--paper-raised);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 1rem;
-  }
-  .arch-shot img { width: 100%; height: auto; display: block; border-radius: calc(var(--radius) - 8px); }
+  .aws-skin :global(h2) { font-family: var(--serif); font-weight: 800; color: var(--ink); letter-spacing: -0.01em; font-size: clamp(2rem, 4.2vw, 3rem); line-height: 1.12; }
+  .aws-skin :global(.ax-red) { color: var(--red); }
+  .aws-skin :global(.ax-green) { color: var(--green); }
+  .aws-skin .muted { color: var(--mut); }
+  .aws-skin strong { color: var(--ink); }
+  .ax-eyebrow { font-family: var(--sans); font-size: 0.85rem; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; color: var(--orange-d); margin-bottom: 0.4rem; }
+  .ax-band { background: #fff; max-width: none; }
+
+  /* Cover, after slide 1. */
+  .ax-cover { position: relative; overflow: hidden; background: #f5f4f2; padding: clamp(4rem, 10vh, 6.5rem) 0; }
+  .ax-streaks { position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(115deg, transparent 52%, rgba(255, 255, 255, 0.95) 52.2%, rgba(255, 255, 255, 0.4) 60%, transparent 60.2%),
+      linear-gradient(115deg, transparent 66%, rgba(255, 255, 255, 0.9) 66.2%, rgba(230, 230, 228, 0.6) 76%, transparent 76.2%),
+      linear-gradient(115deg, transparent 80%, rgba(225, 224, 220, 0.7) 80.2%, transparent 92%); }
+  .ax-cover .wrap { position: relative; }
+  .ax-cover .ax-eyebrow { color: var(--orange); font-size: 1.05rem; }
+  .ax-title { font-family: var(--sans) !important; font-weight: 800 !important; color: var(--navy) !important; font-size: clamp(2.6rem, 6vw, 4.6rem) !important; line-height: 1.05 !important; letter-spacing: -0.01em; }
+  .ax-rule { display: block; height: 6px; border-radius: 3px; background: var(--navy); margin: 1.2rem 0 1.4rem; max-width: 100%; }
+  .ax-lede { font-weight: 700; color: var(--ink); max-width: 60ch; font-size: 1.05rem; }
+  .ax-or { color: var(--orange); }
+  .ax-pills { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.5rem; }
+  .ax-pills li { background: var(--navy); color: #fff; font-size: 0.82rem; font-weight: 600; padding: 0.45rem 1.4rem; border-radius: 999px; }
+  .ax-pills li:first-child { background: var(--orange); color: var(--ink); }
+  .ax-slides { margin: 2.4rem 0 0; }
+  .ax-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: 0 30px 70px -38px rgba(31, 58, 110, 0.6); }
+  .ax-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .ax-slides figcaption { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem 1.2rem; margin-top: 1rem; font-size: 0.9rem; color: var(--mut); }
+  .ax-slides figcaption a, .ax-btn { margin-left: auto; background: var(--navy); color: #fff; font-weight: 700; font-size: 0.9rem; padding: 0.6rem 1.3rem; border-radius: 999px; text-decoration: none; transition: background 0.15s; }
+  .ax-slides figcaption a:hover, .ax-btn:hover { background: var(--orange-d); }
+  .ax-btn { display: inline-flex; margin: 1.5rem 0 0; }
+
+  /* Problem slide: white stat cards, orange figures, lavender burden panel. */
+  .ax-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: 2.2rem; }
+  .ax-stat { background: #fff; border-radius: 6px; padding: 1.6rem 1.2rem; text-align: center; display: flex; flex-direction: column; gap: 0.8rem; box-shadow: 0 1px 0 var(--line), 0 14px 30px -26px rgba(0, 0, 0, 0.45); }
+  .ax-stat-val { font-family: var(--sans); font-weight: 800; font-size: clamp(1.5rem, 2.4vw, 2rem); line-height: 1.1; color: var(--orange); }
+  .ax-stat-label { font-size: 0.86rem; color: var(--body); }
+  .ax-burden { margin-top: 1.4rem; background: var(--lav); border-radius: 6px; padding: 1.2rem 1.5rem; box-shadow: 0 16px 34px -28px rgba(31, 58, 110, 0.6); }
+  .ax-burden-title { font-weight: 800; text-transform: uppercase; color: var(--navy); font-size: 0.95rem; }
+  .ax-burden ul { list-style: none; padding: 0; margin-top: 0.7rem; display: flex; flex-wrap: wrap; gap: 0.6rem 2.6rem; color: var(--navy); font-size: 0.9rem; }
+  .ax-burden strong { color: var(--navy); margin-right: 0.3rem; }
+
+  /* Solution slide: orange orchestrator, arrow, five light blue agents. */
+  .ax-agents { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.2fr); align-items: center; gap: 1.6rem; margin-top: 2rem; }
+  .ax-orch { background: var(--orange); border-radius: 6px; padding: 1.3rem 1.4rem; display: flex; flex-direction: column; gap: 0.4rem; color: #fff; }
+  .ax-orch strong { color: #fff; font-size: 1.15rem; }
+  .ax-orch span { font-size: 0.85rem; }
+  .ax-arrow { font-size: 3rem; font-weight: 800; color: var(--orange); line-height: 1; }
+  .ax-specs { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+  .ax-specs li { background: var(--sky); border: 1px solid #6f87b8; border-radius: 4px; padding: 0.6rem 1rem; font-weight: 700; color: var(--ink); text-align: center; }
+  .ax-arch-lead { margin-top: 2.4rem; }
+  .arch-shot { margin: 1rem 0 0; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 1rem; }
+  .arch-shot img { width: 100%; height: auto; display: block; border-radius: 4px; }
   .outcome-note { max-width: 62ch; margin-top: 2rem; }
-  .outcome .btn { margin-top: 1.5rem; }
+
+  @media (max-width: 900px) { .ax-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ax-agents { grid-template-columns: 1fr; } .ax-arrow { transform: rotate(90deg); justify-self: center; } }
+  @media (max-width: 800px) { .ax-slides figcaption a { margin-left: 0; } }
+  @media (max-width: 480px) { .ax-stats { grid-template-columns: 1fr; } }
 </style>
