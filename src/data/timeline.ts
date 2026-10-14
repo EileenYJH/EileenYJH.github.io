@@ -63,7 +63,8 @@ export const timeline: Moment[] = [
     date: 'Dec 2024',
     kind: 'event',
     title: 'DevFest George Town 2024',
-    detail: 'My first DevFest, with a hands-on workshop on AI-driven image creation.',
+    detail: 'My first DevFest, with a hands-on workshop on AI-driven image creation using Imagen 3 in Google Colab.',
+    img: '/images/timeline/devfest-gt.jpg',
   },
   {
     year: 2025,
