@@ -151,6 +151,8 @@ export const timeline: Moment[] = [
     date: 'Jan 2026',
     kind: 'competition',
     title: 'NexG GodamLah! 2.0: MyMULA',
+    href: '/projects/mymula',
+    img: '/images/timeline/mymula.jpg',
     detail: 'Team VeriTech. A digital legal guardian protocol that lets parents approve forms for minors with biometric signing, and verifies age or income status without exposing personal data.',
   },
   {

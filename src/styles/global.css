@@ -35,6 +35,11 @@
   --accent-rgb: 20, 104, 184;
   --accent-soft: #E3EEF9;
 }
+[data-theme='mymula'] {
+  --accent: #1F5FD9;
+  --accent-rgb: 31, 95, 217;
+  --accent-soft: #E3ECFC;
+}
 [data-theme='aws'] {
   --accent: #B45309;
   --accent-rgb: 180, 83, 9;

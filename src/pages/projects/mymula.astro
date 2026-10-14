@@ -1,0 +1,282 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectHero from '../../components/project/ProjectHero.astro';
+
+const DEMO = 'https://my-mula-junior.vercel.app/';
+
+const problems = [
+  { icon: '💼', title: 'Economic exclusion', text: 'Minors cannot register a business with SSM or sign contracts, so young sellers either operate informally or borrow a parent’s identity.' },
+  { icon: '🎓', title: 'Education friction', text: 'Scholarship forms still ask for certified copies of a parent’s payslip, passing raw income data around on paper.' },
+  { icon: '🏥', title: 'Healthcare delays', text: 'A dental extraction or vaccination needs a parent’s wet signature. If the parent is at work, treatment waits.' },
+  { icon: '🛡️', title: 'Online risk', text: 'The Online Safety Act 2025 needs age checks, but without a privacy safe ID minors just type a fake birth year.' },
+];
+
+const handshake = [
+  { title: 'Link Guardian', text: 'The child opens MyMULA Junior and taps Link Guardian.' },
+  { title: 'Claim', text: 'The child enters a parent’s details, or scans their own birth certificate and OCR reads it.' },
+  { title: 'JPN check', text: 'MyDigital ID asks the National Registration Department one question: is this person the legal guardian? If not, the link is blocked.' },
+  { title: 'Tap and verify', text: 'A dynamic QR appears on the child’s phone. The parent scans it and confirms with Face ID or an NFC tap of their MyKad.' },
+  { title: 'Virtual tether', text: 'An encrypted parent and child link is stored. Every later request rides on it.' },
+];
+
+const cases = [
+  {
+    tag: 'Use case 1', title: 'Education', goal: 'Prove B40 household income for a scholarship without sharing a payslip.',
+    steps: ['Ali reaches the income section of a scholarship form and taps Verify with MyMULA.', 'His father gets a push notification and approves with Face ID.', 'MyMULA asks LHDN for the tax tier only, wraps it in a signed token, and the portal shows a green tick.'],
+    video: '/videos/mymula/case1.mp4', poster: '/images/mymula/case1.jpg',
+  },
+  {
+    tag: 'Use case 2', title: 'Business', goal: 'Let a 16 year old open an online store legally.',
+    steps: ['The app reads Ali’s MyKad chip over NFC and flags him as a minor.', 'His father receives the liability agreement for the sole proprietorship and signs with Smart ID plus a face scan.', 'The signed document goes to SSM, which lists the father as owner and Ali as operator.'],
+    video: '/videos/mymula/case2.mp4', poster: '/images/mymula/case2.jpg',
+  },
+  {
+    tag: 'Use case 3', title: 'Healthcare', goal: 'Get a minor treated while the parent is at work.',
+    steps: ['The clinic pushes a consent form for the procedure to Ali’s profile.', 'Ali forwards the full PDF to his mother, who reads the risks on her phone.', 'She signs with Smart ID and a liveness selfie, and the clinic sees Signed with a timestamp.'],
+  },
+  {
+    tag: 'Use case 4', title: 'Online safety', goal: 'Age gates and spending control without exposing identity.',
+    steps: ['Log in with MyMULA shares only age over 13: true, age over 18: false. No name, no IC.', 'Parents can set a digital curfew that revokes the login token after 10 PM.', 'In game purchases above RM20 wait for a parent to tap Approve or Reject.'],
+  },
+];
+
+const lights = [
+  { tone: 'green', label: 'Verified', text: 'Data matches the government database (JPN or LHDN) exactly.' },
+  { tone: 'yellow', label: 'Self declared', text: 'Read from an uploaded document but not yet confirmed by an API.' },
+  { tone: 'red', label: 'Mismatch', text: 'The uploaded document contradicts the government record.' },
+];
+
+const stack = [
+  { name: 'MyDigital ID SDK', role: 'Trust anchor for login and signing' },
+  { name: 'Google ML Kit OCR', role: 'Reads birth certificates and payslips on device' },
+  { name: 'NFC (MyKad chip)', role: 'Cryptographic proof the card is present' },
+  { name: 'JWT and W3C verifiable credentials', role: 'Packages a status like B40 without the raw figure' },
+  { name: 'OIDC with pairwise IDs', role: 'Log in with MyMULA, no cross platform tracking' },
+  { name: 'WebSockets and FCM', role: 'Instant requests between child, parent and agency' },
+];
+---
+<BaseLayout
+  overlayNav
+  theme="mymula"
+  title="MyMULA: guardian-backed identity for underage Malaysians | Eileen Yeoh"
+  description="Team VeriTech's NexG GodamLah! 2.0 entry: a digital legal guardian protocol that lets parents approve forms for minors with biometric signing."
+>
+  <link slot="head" rel="preconnect" href="https://fonts.googleapis.com" />
+  <link slot="head" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+
+  <ProjectHero img="/images/projects-hero/mymula.jpg" alt="MyMULA Junior running on two phones: the child's home screen and the scholarship document checklist" caption="MyMULA Junior, the child's app, from our NexG GodamLah! 2.0 demo." event="#2162EC" demo={DEMO}>
+    <p class="eyebrow" data-reveal>Project 07 · 2025 to 2026 · NexG GodamLah! 2.0 · Innovation Track</p>
+    <h1 data-split>MyMULA</h1>
+    <p class="mm-tagline" data-reveal>
+      Guardian backed identity and consent for underage Malaysians. A parent's
+      Smart ID becomes a digital permission slip.
+    </p>
+    <ul class="mm-tags" data-reveal>
+      {['Team VeriTech', 'MyDigital ID', 'Biometric consent', 'NFC MyKad', 'Zero knowledge checks'].map((t) => <li>{t}</li>)}
+    </ul>
+  </ProjectHero>
+
+  <div class="mm-skin">
+
+  <section class="mm-intro">
+    <div class="wrap mm-intro-grid">
+      <div data-reveal>
+        <img class="mm-logo" src="/images/mymula/logo.png" alt="MyMULA Guardian Identity logo" width="490" height="144" />
+        <p class="mm-eyebrow">Malaysia's first digital legal guardian protocol</p>
+        <h2 data-split>Underage Malaysians are digital natives but <span class="mm-blue">legal ghosts</span>.</h2>
+        <p class="mm-muted">
+          Under 18, you can't sign, register or consent on your own, so every
+          scholarship, store, clinic visit and app sign up stalls until a parent
+          turns up in person. MyMULA adds a <strong>Family Identity Graph</strong> to the national
+          digital ID, so the request travels instead of the people.
+        </p>
+      </div>
+      <div class="mm-roles" data-reveal>
+        <div class="mm-role"><span class="mm-chip">Child</span><strong>Ask for Permission</strong><span>One button on every form that needs a guardian.</span></div>
+        <div class="mm-role"><span class="mm-chip">Parent</span><strong>Control Center</strong><span>Approve or reject with Face ID or an NFC tap.</span></div>
+        <div class="mm-role"><span class="mm-chip">Service</span><strong>Verifiable consent token</strong><span>A legally binding digital guarantee, not a scanned form.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <p class="mm-eyebrow" data-reveal>The problem</p>
+    <h2 data-split>Four places a minor hits a <span class="mm-blue">dead end</span>.</h2>
+    <div class="mm-cards mm-cards--4">
+      {problems.map((p, i) => (
+        <div class="mm-card" data-reveal data-reveal-delay={i * 0.05}>
+          <span class="mm-icon" aria-hidden="true">{p.icon}</span>
+          <h3>{p.title}</h3>
+          <p>{p.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section mm-band">
+    <div class="wrap">
+      <p class="mm-eyebrow" data-reveal>Phase 1</p>
+      <h2 data-split>The <span class="mm-blue">digital handshake</span>.</h2>
+      <p class="mm-muted" data-reveal>Before any request, the parent and child link has to be proven once against the government record.</p>
+      <ol class="mm-steps">
+        {handshake.map((s, i) => (
+          <li data-reveal data-reveal-delay={i * 0.06}>
+            <span class="mm-step-n">{i + 1}</span>
+            <strong>{s.title}</strong>
+            <span>{s.text}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <p class="mm-eyebrow" data-reveal>Phase 2 · just in time consent</p>
+    <h2 data-split>Four pillars, <span class="mm-blue">one tap</span> from a parent.</h2>
+    <div class="mm-cases">
+      {cases.map((c) => (
+        <article class:list={['mm-case', { 'mm-case--video': c.video }]} data-reveal>
+          {c.video && (
+            <div class="mm-phone">
+              <video src={c.video} poster={c.poster} muted loop playsinline controls preload="none"></video>
+            </div>
+          )}
+          <div class="mm-case-body">
+            <span class="mm-chip">{c.tag}</span>
+            <h3>{c.title}</h3>
+            <p class="mm-goal">{c.goal}</p>
+            <ol>{c.steps.map((s) => <li>{s}</li>)}</ol>
+            {!c.video && <span class="mm-pill mm-pill--muted">Shown in our full demo video</span>}
+          </div>
+        </article>
+      ))}
+    </div>
+    <figure class="mm-extra" data-reveal>
+      <div class="mm-phone mm-phone--wide">
+        <video src="/videos/mymula/extra.mp4" poster="/images/mymula/extra.jpg" muted loop playsinline controls preload="none"></video>
+      </div>
+      <figcaption><strong>Also in the app</strong> Notifications for every approval, an AI helper that explains how to link a guardian, and Malay or English at a tap.</figcaption>
+    </figure>
+  </section>
+
+  <section class="section mm-band">
+    <div class="wrap">
+      <p class="mm-eyebrow" data-reveal>Under the hood</p>
+      <h2 data-split>A <span class="mm-blue">traffic light</span> for every field.</h2>
+      <p class="mm-muted" data-reveal>Documents are read on device with OCR, then each field gets a status a clinic or portal can trust at a glance.</p>
+      <div class="mm-lights">
+        {lights.map((l, i) => (
+          <div class="mm-light" data-reveal data-reveal-delay={i * 0.06}>
+            <span class={`mm-pill mm-pill--${l.tone}`}>{l.label}</span>
+            <p>{l.text}</p>
+          </div>
+        ))}
+      </div>
+      <div class="mm-stack" data-reveal>
+        {stack.map((s) => <div><strong>{s.name}</strong><span>{s.role}</span></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap outcome">
+    <p class="mm-eyebrow" data-reveal>Try it</p>
+    <h2 data-split>MyMULA Junior is <span class="mm-blue">live</span>.</h2>
+    <p class="mm-muted outcome-note" data-reveal>
+      Built by Team VeriTech with Eavan Tan, Jessy Pang Xin Yuan and Chua Xin Ying for
+      NexG GodamLah! 2.0. Open it on a phone to try the child's side of every flow.
+    </p>
+    <a class="mm-btn" href={DEMO} target="_blank" rel="noopener" data-reveal>Open MyMULA Junior ↗</a>
+  </section>
+
+  </div>
+</BaseLayout>
+
+<style>
+  h1 { font-family: 'Inter', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.03em; }
+  .mm-tagline { font-size: 1.3rem; max-width: 44ch; margin-top: 1.2rem; }
+  .mm-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
+  .mm-tags li { font-size: 0.8rem; font-weight: 600; padding: 0.3rem 0.85rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(26, 40, 56, 0.45); }
+  .mm-tags li:first-child { background: #2162ec; border-color: transparent; color: #fff; }
+
+  /* MyMULA skin: the app itself. White screens, royal blue, navy wordmark,
+     soft blue tinted cards, rounded pills for status. */
+  .mm-skin {
+    --ink: #1a2838; --body: #3b4656; --mut: #5d6878; --line: #e3e8f0;
+    --blue: #2162ec; --blue-d: #1f5fd9; --tint: #eef3fe; --tint-2: #dfe8fd;
+    --green: #16a34a; --yellow: #ca8a04; --red: #dc2626;
+    --sans: 'Inter', system-ui, sans-serif;
+    background: #fff; color: var(--body); font-family: var(--sans);
+  }
+  .mm-skin :global(h2) { font-family: var(--sans); font-weight: 800; color: var(--ink); letter-spacing: -0.03em; font-size: clamp(2rem, 4.2vw, 3rem); line-height: 1.1; }
+  .mm-skin :global(.mm-blue) { color: var(--blue); }
+  .mm-skin h3 { font-family: var(--sans); color: var(--ink); font-weight: 700; font-size: 1.05rem; }
+  .mm-skin strong { color: var(--ink); }
+  .mm-muted { color: var(--mut); margin-top: 0.9rem; max-width: 62ch; }
+  .mm-eyebrow { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue-d); margin-bottom: 0.5rem; }
+  .mm-band { background: var(--tint); max-width: none; }
+  .mm-chip { display: inline-block; font-size: 0.72rem; font-weight: 700; color: var(--blue-d); background: var(--tint-2); padding: 0.2rem 0.65rem; border-radius: 999px; }
+
+  .mm-intro { padding: clamp(4rem, 10vh, 6rem) 0; background: radial-gradient(60% 80% at 100% 0%, var(--tint) 0%, #fff 70%); }
+  .mm-intro-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 3rem; align-items: center; }
+  .mm-logo { width: min(320px, 70%); height: auto; display: block; margin-bottom: 1.6rem; mix-blend-mode: multiply; filter: contrast(1.08) brightness(1.04); }
+  .mm-roles { display: flex; flex-direction: column; gap: 0.9rem; }
+  .mm-role { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 1rem 1.2rem; display: grid; gap: 0.25rem; box-shadow: 0 16px 34px -28px rgba(33, 98, 236, 0.6); }
+  .mm-role .mm-chip { justify-self: start; }
+  .mm-role span:last-child { font-size: 0.88rem; color: var(--mut); }
+
+  .mm-cards { display: grid; gap: 1rem; margin-top: 2.2rem; }
+  .mm-cards--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .mm-card { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 1.3rem 1.2rem; box-shadow: 0 16px 34px -30px rgba(26, 40, 56, 0.5); }
+  .mm-icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--tint); font-size: 1.3rem; margin-bottom: 0.8rem; }
+  .mm-card p { font-size: 0.9rem; margin-top: 0.4rem; }
+
+  .mm-steps { list-style: none; padding: 0; margin-top: 2.2rem; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.9rem; counter-reset: s; position: relative; }
+  .mm-steps::before { content: ''; position: absolute; top: 22px; left: 22px; right: 22px; height: 2px; background: repeating-linear-gradient(90deg, var(--blue) 0 8px, transparent 8px 14px); opacity: 0.45; }
+  .mm-steps li { position: relative; display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.88rem; }
+  .mm-step-n { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--blue); color: #fff; font-weight: 800; box-shadow: 0 0 0 6px var(--tint); margin-bottom: 0.4rem; }
+  .mm-steps strong { font-size: 1rem; }
+
+  .mm-cases { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; margin-top: 2.2rem; }
+  .mm-case { background: #fff; border: 1px solid var(--line); border-radius: 22px; overflow: hidden; box-shadow: 0 20px 40px -32px rgba(26, 40, 56, 0.55); display: flex; flex-direction: column; }
+  .mm-phone { background: #f6f8fc; border-bottom: 1px solid var(--line); }
+  .mm-phone video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #f6f8fc; }
+  .mm-case-body { padding: 1.3rem 1.4rem 1.5rem; display: flex; flex-direction: column; gap: 0.45rem; }
+  .mm-case-body h3 { font-size: 1.3rem; }
+  .mm-case-body .mm-chip { align-self: flex-start; }
+  .mm-goal { font-weight: 600; color: var(--ink); }
+  .mm-case-body ol { margin: 0.3rem 0 0; padding-left: 1.2rem; display: grid; gap: 0.35rem; font-size: 0.9rem; }
+  .mm-case-body ol li::marker { color: var(--blue); font-weight: 700; }
+  .mm-case:not(.mm-case--video) { background: linear-gradient(180deg, var(--tint) 0%, #fff 55%); }
+  .mm-extra { margin: 1.2rem 0 0; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 1.4rem; align-items: center; background: #fff; border: 1px solid var(--line); border-radius: 22px; overflow: hidden; }
+  .mm-extra .mm-phone { border-bottom: 0; border-right: 1px solid var(--line); }
+  .mm-extra figcaption { padding: 1.2rem 1.4rem; font-size: 0.95rem; }
+  .mm-extra figcaption strong { display: block; font-size: 1.05rem; margin-bottom: 0.3rem; }
+
+  .mm-pill { display: inline-block; font-size: 0.78rem; font-weight: 700; padding: 0.25rem 0.8rem; border-radius: 999px; align-self: flex-start; }
+  .mm-pill--green { background: #dcfce7; color: #15803d; }
+  .mm-pill--yellow { background: #fef3c7; color: #a16207; }
+  .mm-pill--red { background: #fee2e2; color: #b91c1c; }
+  .mm-pill--muted { background: var(--tint-2); color: var(--blue-d); margin-top: 0.4rem; }
+  .mm-lights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 2rem; }
+  .mm-light { background: #fff; border-radius: 18px; padding: 1.2rem 1.3rem; display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.92rem; border: 1px solid var(--line); }
+  .mm-stack { margin-top: 1.4rem; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; background: #fff; border-radius: 18px; border: 1px solid var(--line); overflow: hidden; }
+  .mm-stack div { padding: 1rem 1.2rem; display: grid; gap: 0.2rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 0.88rem; }
+  .mm-stack div:nth-child(3n) { border-right: 0; }
+  .mm-stack div:nth-last-child(-n + 3) { border-bottom: 0; }
+  .mm-stack strong { color: var(--blue-d); }
+
+  .outcome-note { margin-top: 1.4rem; }
+  .mm-btn { display: inline-flex; margin-top: 1.5rem; background: var(--blue); color: #fff; font-weight: 700; padding: 0.8rem 1.5rem; border-radius: 999px; text-decoration: none; box-shadow: 0 14px 30px -14px rgba(33, 98, 236, 0.8); transition: background 0.15s, transform 0.15s; }
+  .mm-btn:hover { background: var(--ink); transform: translateY(-2px); }
+
+  @media (max-width: 1000px) {
+    .mm-cards--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .mm-steps { grid-template-columns: 1fr; }
+    .mm-steps::before { display: none; }
+    .mm-intro-grid, .mm-cases, .mm-extra { grid-template-columns: 1fr; }
+    .mm-extra .mm-phone { border-right: 0; border-bottom: 1px solid var(--line); }
+    .mm-lights, .mm-stack { grid-template-columns: 1fr; }
+    .mm-stack div { border-right: 0 !important; border-bottom: 1px solid var(--line) !important; }
+  }
+  @media (max-width: 520px) { .mm-cards--4 { grid-template-columns: 1fr; } }
+</style>
