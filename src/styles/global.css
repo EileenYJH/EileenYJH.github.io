@@ -35,6 +35,11 @@
   --accent-rgb: 20, 104, 184;
   --accent-soft: #E3EEF9;
 }
+[data-theme='inphychem'] {
+  --accent: #11676A;
+  --accent-rgb: 17, 103, 106;
+  --accent-soft: #DDF0EC;
+}
 [data-theme='mymula'] {
   --accent: #1F5FD9;
   --accent-rgb: 31, 95, 217;

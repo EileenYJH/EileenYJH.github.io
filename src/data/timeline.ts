@@ -79,6 +79,7 @@ export const timeline: Moment[] = [
     date: '25 Jul 2025',
     kind: 'award',
     title: 'Best Integrated Concept, InPhyChem District',
+    href: '/projects/inphychem',
     post: 'https://www.linkedin.com/feed/update/urn:li:activity:7354877127487361025/',
     detail: '“Towards Sustainable Cities” project showcase, Chancellor Hall, UTP.',
     img: '/images/timeline/inphychem.jpg',

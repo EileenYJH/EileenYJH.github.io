@@ -1,0 +1,265 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectHero from '../../components/project/ProjectHero.astro';
+
+const POSTER = 'https://www.canva.com/design/DAGrU1Ekfzs/pIFJPKOkGeDO12QtRRV7zg/view';
+
+const flow = [
+  { n: '01', t: 'Wastewater enters the coagulation tank', d: 'Industrial outflow collects in the top tank.', part: 'top' },
+  { n: '02', t: 'Add Fe₃O₄@C-IM-C₁₆ nanoparticles', d: 'Magnetic cores with a carbon shell, dosed into the tank.', part: 'top' },
+  { n: '03', t: 'Stir and mix for 30 to 60 minutes', d: 'Long enough for adsorption to near equilibrium and for flocs to form.', part: 'top' },
+  { n: '04', t: 'Open the outlet, water falls onto the Pelton turbine', d: 'Kinetic energy of the flow spins the turbine.', part: 'mid' },
+  { n: '05', t: 'Turbine spins the generator', d: 'Electricity is stored in a battery that drives the stirrer, closing the loop.', part: 'mid' },
+  { n: '06', t: 'Water reaches the rotary magnetic drum', d: 'Magnets in the drum catch the Fe₃O₄ flocs carrying microplastics.', part: 'bot' },
+  { n: '07', t: 'Scraper clears the drum, clean water exits', d: 'Flocs drop into a collection bin. No filter, no chemical flocculant.', part: 'bot' },
+];
+
+const turbine = [
+  { v: '5.89', u: 'm/s', l: 'turbine speed' },
+  { v: '100 to 200', u: 'rpm', l: 'rotation' },
+  { v: '24 to 48', u: 'V DC', l: 'voltage' },
+  { v: '4.2', u: 'A', l: 'current' },
+  { v: '100 to 300', u: 'W', l: 'power generated' },
+];
+
+const bonds = [
+  { tag: 'Hydrophobic', t: 'PE and PP', d: 'Non polar plastics cling to the long C₁₆ alkyl chains on the particle surface.' },
+  { tag: 'π stacking', t: 'Polystyrene', d: 'Benzene rings stack onto aromatic regions of the carbon shell.' },
+  { tag: 'Electrostatic and H bonds', t: 'Polyamide', d: 'Weakly polar plastics hold on to the imidazole carboxyl groups.' },
+];
+
+const gallery = [
+  { src: '/images/inphychem/model.jpg', alt: 'Full model: paper tank on top, turbine level, magnetic drum and a paper waterfall leading to a river' , cap: 'The full model, with the waterfall and river.' },
+  { src: '/images/inphychem/turbine.jpg', alt: 'Middle level: an orange Pelton wheel on a vertical axle with gears and spools, inside a ring of tubing', cap: 'Middle part: Pelton turbine and gear train to the generator.' },
+  { src: '/images/inphychem/drum.jpg', alt: 'Rotary magnetic drum made from a plastic bottle with bottle caps inside and a stick scraper', cap: 'Bottom part: rotary magnetic drum and fixed scraper.' },
+  { src: '/images/inphychem/drum-front.jpg', alt: 'Front view of the drum level built from bricks, with the outlet tube', cap: 'The drum level from the front.' },
+  { src: '/images/inphychem/tank-outlet.jpg', alt: 'The white coagulation tank with its outlet tube sealed in blue putty', cap: 'Top part: coagulation tank outlet.' },
+];
+---
+<BaseLayout
+  overlayNav
+  theme="inphychem"
+  title="Hydro-Magnetic: self-powered microplastic removal | Eileen Yeoh"
+  description="Best Integrated Concept at InPhyChem District: a self-powered wastewater system that removes microplastics with magnetic nanoparticles and a Pelton turbine."
+>
+  <link slot="head" rel="preconnect" href="https://fonts.googleapis.com" />
+  <link slot="head" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&display=swap" />
+
+  <ProjectHero img="/images/projects-hero/inphychem.jpg" alt="ES1 and Group 2 posing with the poster and the model at the InPhyChem District showcase" caption="ES1 & Group 2 with our poster and model at InPhyChem District, Chancellor Hall, UTP, where we won Best Integrated Concept." post="https://www.linkedin.com/feed/update/urn:li:activity:7354877127487361025/" event="#CB6CE6" focus="50% 40%">
+    <p class="eyebrow" data-reveal>Project 08 · 2025 · FCC0025 Chemistry II & FCP0025 Physics II</p>
+    <h1 data-split>Hydro-Magnetic</h1>
+    <p class="hm-tagline" data-reveal>
+      A microplastic removal system for industrial wastewater that powers
+      itself from the water it cleans.
+    </p>
+    <ul class="hm-tags" data-reveal>
+      {['🏆 Best Integrated Concept', 'Faraday’s law', 'Magnetic nanoparticles', 'Pelton turbine', 'Towards Sustainable Cities'].map((t) => <li>{t}</li>)}
+    </ul>
+  </ProjectHero>
+
+  <div class="hm-skin">
+
+  <section class="hm-cover">
+    <div class="wrap">
+      <p class="hm-label" data-reveal>InPhyChem District · ES1 & Group 2</p>
+      <h2 class="hm-title" data-reveal>Hydro-Magnetic Microplastic Removal System <span>for Industrial Wastewater Treatment</span></h2>
+      <div class="hm-poster" data-reveal>
+        <div class="hm-poster-frame">
+          <iframe src={`${POSTER}?embed`} title="InPhyChem poster: Hydro-Magnetic Microplastic Removal System" allow="fullscreen" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="hm-poster-side">
+          <p class="hm-tile hm-tile--lav">Project background</p>
+          <p>Old or overloaded treatment plants let microplastics from fibres, plastic dust and coatings slip into rivers. Removing them usually costs a lot of energy and adds chemical flocculants that bring their own risks.</p>
+          <p class="hm-tile hm-tile--mint">Objectives</p>
+          <ul>
+            <li>Apply <strong>magnetic nanomaterials</strong> to target microplastics without secondary pollution.</li>
+            <li>Build a <strong>self powered</strong> system on hydroelectric energy to cut grid dependence.</li>
+          </ul>
+          <a class="hm-btn" href={POSTER} target="_blank" rel="noopener">Open the poster in Canva ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <p class="hm-label" data-reveal>How does it work?</p>
+    <h2 data-split>Three levels, one flow of water.</h2>
+    <ol class="hm-flow">
+      {flow.map((f, i) => (
+        <li class={`hm-flow--${f.part}`} data-reveal data-reveal-delay={i * 0.05}>
+          <span class="hm-flow-n">{f.n}</span>
+          <div><strong>{f.t}</strong><span>{f.d}</span></div>
+        </li>
+      ))}
+    </ol>
+    <ul class="hm-legend" data-reveal>
+      <li class="hm-flow--top">Top: coagulation tank</li>
+      <li class="hm-flow--mid">Middle: Pelton turbine and generator</li>
+      <li class="hm-flow--bot">Bottom: magnetic separation unit</li>
+    </ul>
+  </section>
+
+  <section class="section hm-band">
+    <div class="wrap hm-split">
+      <div>
+        <p class="hm-label" data-reveal>Physics · middle part</p>
+        <h2 data-split>The outflow pays for the stirring.</h2>
+        <p class="hm-muted" data-reveal>
+          Water leaving the tank turns a Pelton turbine. By Faraday's law, the
+          spinning magnetic field induces a current in the generator coil, which
+          charges the battery that runs the stirrer. Kinetic energy becomes
+          mechanical, then electrical, then mechanical again.
+        </p>
+        <p class="hm-eq" data-reveal>EMF = −N <span class="hm-frac"><span>dΦ</span><span>dt</span></span></p>
+      </div>
+      <div class="hm-stats" data-reveal>
+        {turbine.map((s) => <div><span class="hm-stat-v">{s.v}<small>{s.u}</small></span><span class="hm-stat-l">{s.l}</span></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <p class="hm-label" data-reveal>Chemistry · the nanoparticle</p>
+    <h2 data-split>Fe₃O₄@C-IM-C₁₆, built to grab plastic and let go.</h2>
+    <div class="hm-np">
+      <div class="hm-np-art" data-reveal aria-hidden="true">
+        <span class="hm-np-shell"><span class="hm-np-core">Fe₃O₄</span></span>
+        <span class="hm-np-lab hm-np-lab--core">core ~15 to 20 nm</span>
+        <span class="hm-np-lab hm-np-lab--shell">carbon shell ~5 to 10 nm</span>
+      </div>
+      <div class="hm-bonds">
+        {bonds.map((b, i) => (
+          <div class="hm-bond" data-reveal data-reveal-delay={i * 0.06}>
+            <span class="hm-tile hm-tile--sky">{b.tag}</span>
+            <strong>{b.t}</strong>
+            <span>{b.d}</span>
+          </div>
+        ))}
+        <p class="hm-muted" data-reveal>
+          The particle is amphiphilic overall. Its carbon shell protects the
+          iron oxide core from oxidation and leaching, so the particles survive
+          magnetic separation, washing and drying and can be <strong>reused</strong>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section hm-band">
+    <div class="wrap">
+      <p class="hm-label" data-reveal>The model</p>
+      <h2 data-split>Built from bricks, bottles and a lot of putty.</h2>
+      <div class="hm-gallery">
+        {gallery.map((g, i) => (
+          <figure class={i === 0 ? 'hm-g-wide' : ''} data-reveal data-reveal-delay={i * 0.04}>
+            <img src={g.src} alt={g.alt} loading="lazy" />
+            <figcaption>{g.cap}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap outcome">
+    <p class="hm-label" data-reveal>Outcome</p>
+    <h2 data-split>Best Integrated Concept.</h2>
+    <p class="hm-muted" data-reveal>
+      Recognised at InPhyChem District, “Towards Sustainable Cities”, for tying
+      the chemistry of the nanoparticle and the physics of the turbine into one
+      working loop. Fifteen of us across ES1 and Group 2, advised by Miss Easter
+      Joseph and Dr. Chong Fai Kait.
+    </p>
+    <a class="hm-btn" href="https://www.linkedin.com/feed/update/urn:li:activity:7354877127487361025/" target="_blank" rel="noopener" data-reveal>Read my LinkedIn post ↗</a>
+  </section>
+
+  </div>
+</BaseLayout>
+
+<style>
+  h1 { font-family: 'Montserrat', system-ui, sans-serif; font-weight: 900; letter-spacing: -0.02em; }
+  .hm-tagline { font-size: 1.3rem; max-width: 42ch; margin-top: 1.2rem; }
+  .hm-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
+  .hm-tags li { font-size: 0.8rem; font-weight: 600; padding: 0.3rem 0.85rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(17, 103, 106, 0.45); }
+  .hm-tags li:first-child { background: #ffde59; border-color: transparent; color: #1b1b1b; }
+
+  /* Hydro-Magnetic skin: the InPhyChem poster. Lavender section tiles, teal
+     and navy text, mint, yellow and sky accents, bold geometric sans. */
+  .hm-skin {
+    --ink: #10232b; --body: #33414a; --mut: #5b5856; --line: #e4e1ea;
+    --lav: #cb6ce6; --lav-d: #9a3fb5; --lav-soft: #f5e8fa; --teal: #11676a; --navy: #014a84;
+    --mint: #a0df85; --yellow: #ffde59; --sky: #5e9fd3; --brown: #944606;
+    --sans: 'Montserrat', system-ui, sans-serif;
+    background: #fff; color: var(--body);
+  }
+  .hm-skin :global(h2) { font-family: var(--sans); font-weight: 800; color: var(--teal); letter-spacing: -0.02em; font-size: clamp(1.9rem, 4vw, 2.9rem); line-height: 1.12; }
+  .hm-skin strong { color: var(--ink); }
+  .hm-muted { color: var(--mut); margin-top: 1rem; max-width: 62ch; }
+  .hm-label { display: inline-block; font-family: var(--sans); font-weight: 800; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: #fff; background: var(--lav); padding: 0.35rem 0.9rem; border-radius: 6px; margin-bottom: 0.9rem; }
+  .hm-band { background: var(--lav-soft); max-width: none; }
+  .hm-tile { display: inline-block; font-family: var(--sans); font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.3rem 0.75rem; border-radius: 6px; color: var(--ink); }
+  .hm-tile--lav { background: var(--lav); color: #fff; }
+  .hm-tile--mint { background: var(--mint); }
+  .hm-tile--sky { background: var(--sky); color: #fff; }
+  .hm-btn { display: inline-flex; margin-top: 1.4rem; background: var(--teal); color: #fff; font-family: var(--sans); font-weight: 700; padding: 0.7rem 1.3rem; border-radius: 999px; text-decoration: none; transition: background 0.15s; }
+  .hm-btn:hover { background: var(--navy); }
+
+  .hm-cover { padding: clamp(4rem, 10vh, 6rem) 0; background: linear-gradient(180deg, #fff 0%, var(--lav-soft) 100%); }
+  .hm-title { font-family: var(--sans) !important; color: var(--navy) !important; font-weight: 900 !important; font-size: clamp(2rem, 4.6vw, 3.4rem) !important; }
+  .hm-title span { display: block; color: var(--teal); font-weight: 700; font-size: 0.55em; margin-top: 0.4rem; }
+  .hm-poster { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2rem; margin-top: 2.2rem; align-items: start; }
+  .hm-poster-frame { position: relative; aspect-ratio: 1 / 1.414; border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 0 0 6px var(--lav), 0 30px 60px -30px rgba(1, 74, 132, 0.6); }
+  .hm-poster-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .hm-poster-side { display: flex; flex-direction: column; gap: 0.8rem; }
+  .hm-poster-side .hm-tile { align-self: flex-start; margin-top: 0.6rem; }
+  .hm-poster-side ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.5rem; }
+  .hm-poster-side .hm-btn { align-self: flex-start; }
+
+  .hm-flow { list-style: none; padding: 0; margin-top: 2rem; display: grid; gap: 0.7rem; }
+  .hm-flow li { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: center; background: #fff; border-radius: 10px; padding: 0.9rem 1.1rem; border-left: 8px solid var(--c); box-shadow: 0 0 0 1px var(--line); }
+  .hm-flow li div { display: flex; flex-direction: column; gap: 0.15rem; }
+  .hm-flow li div span { font-size: 0.9rem; color: var(--mut); }
+  .hm-flow-n { font-family: var(--sans); font-weight: 900; font-size: 1.5rem; color: var(--c); width: 2.2em; }
+  .hm-flow--top { --c: var(--lav-d); }
+  .hm-flow--mid { --c: var(--sky); }
+  .hm-flow--bot { --c: var(--teal); }
+  .hm-legend { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; margin-top: 1.2rem; font-size: 0.85rem; font-weight: 600; }
+  .hm-legend li { display: inline-flex; align-items: center; gap: 0.45rem; color: var(--ink); }
+  .hm-legend li::before { content: ''; width: 14px; height: 14px; border-radius: 3px; background: var(--c); }
+
+  .hm-split { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 3rem; align-items: center; }
+  .hm-eq { margin-top: 1.6rem; display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--sans); font-weight: 800; font-size: 1.6rem; color: var(--navy); background: var(--yellow); padding: 0.6rem 1.2rem; border-radius: 10px; }
+  .hm-frac { display: inline-flex; flex-direction: column; text-align: center; font-size: 0.8em; line-height: 1.05; }
+  .hm-frac span:first-child { border-bottom: 2px solid var(--navy); padding: 0 0.2em; }
+  .hm-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem; }
+  .hm-stats div { background: #fff; border-radius: 12px; padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.2rem; border-top: 5px solid var(--sky); box-shadow: 0 14px 30px -26px rgba(1, 74, 132, 0.6); }
+  .hm-stats div:last-child { grid-column: 1 / -1; border-top-color: var(--mint); }
+  .hm-stat-v { font-family: var(--sans); font-weight: 900; font-size: 1.7rem; color: var(--navy); line-height: 1.1; }
+  .hm-stat-v small { font-size: 0.5em; font-weight: 700; margin-left: 0.3em; color: var(--teal); }
+  .hm-stat-l { font-size: 0.82rem; color: var(--mut); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+
+  .hm-np { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 3rem; align-items: center; margin-top: 2rem; }
+  .hm-np-art { position: relative; aspect-ratio: 1; max-width: 340px; width: 100%; justify-self: center; }
+  .hm-np-shell { position: absolute; inset: 8%; border-radius: 50%; background: radial-gradient(circle, #3d3d3d 0 52%, #5b5856 53% 100%); display: grid; place-items: center;
+    box-shadow: 0 0 0 10px rgba(255, 222, 89, 0.55), 0 0 0 22px rgba(160, 223, 133, 0.35), 0 0 0 34px rgba(203, 108, 230, 0.18); }
+  .hm-np-core { width: 52%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #b56a2a, var(--brown) 70%); display: grid; place-items: center; color: #fff; font-family: var(--sans); font-weight: 800; }
+  .hm-np-lab { position: absolute; font-size: 0.75rem; font-weight: 700; background: #fff; padding: 0.2rem 0.55rem; border-radius: 6px; box-shadow: 0 0 0 1px var(--line); color: var(--ink); }
+  .hm-np-lab--core { left: 0; bottom: 4%; }
+  .hm-np-lab--shell { right: 0; top: 4%; }
+  .hm-bonds { display: grid; gap: 0.8rem; }
+  .hm-bond { display: grid; gap: 0.3rem; background: #fff; border-radius: 10px; padding: 0.9rem 1.1rem; box-shadow: 0 0 0 1px var(--line); }
+  .hm-bond .hm-tile { justify-self: start; text-transform: none; letter-spacing: 0.02em; }
+  .hm-bond span:last-child { font-size: 0.9rem; color: var(--mut); }
+
+  .hm-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 2rem; }
+  .hm-gallery figure { margin: 0; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 0 0 1px var(--line); }
+  .hm-gallery img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block; }
+  .hm-gallery figcaption { font-size: 0.8rem; padding: 0.6rem 0.8rem; color: var(--mut); }
+  .hm-g-wide { grid-row: span 2; }
+  .hm-g-wide img { aspect-ratio: auto; height: calc(100% - 2.6rem); }
+
+  @media (max-width: 900px) {
+    .hm-poster, .hm-split, .hm-np { grid-template-columns: 1fr; }
+    .hm-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .hm-g-wide { grid-row: auto; grid-column: 1 / -1; }
+    .hm-g-wide img { height: auto; aspect-ratio: 3 / 4; }
+  }
+</style>
