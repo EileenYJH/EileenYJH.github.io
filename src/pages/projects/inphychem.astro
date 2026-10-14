@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectHero from '../../components/project/ProjectHero.astro';
+import HydroMagnetic3D from '../../components/inphychem/HydroMagnetic3D.astro';
 
 const POSTER = 'https://www.canva.com/design/DAHYB0gZtCE/A9cc1JNWDeKBckuxdxQhLg/view';
 
@@ -84,6 +85,8 @@ const gallery = [
   <section class="section wrap">
     <p class="hm-label" data-reveal>How does it work?</p>
     <h2 data-split>Three levels, one flow of water.</h2>
+    <p class="hm-muted" data-reveal>A 3D model of our prototype running the full cycle. Click a step to jump to it, or drag to look around.</p>
+    <HydroMagnetic3D />
     <ol class="hm-flow">
       {flow.map((f, i) => (
         <li class={`hm-flow--${f.part}`} data-reveal data-reveal-delay={i * 0.05}>
