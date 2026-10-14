@@ -2,8 +2,8 @@
 // Project page opening: the event photo fills the screen first, then the
 // title rises over it as you scroll. Colours come from the page's theme
 // (--accent) plus the event's own colour (--event), like the home hero.
-interface Props { img: string; alt: string; caption: string; post?: string; event: string; focus?: string }
-const { img, alt, caption, post, event, focus = 'center' } = Astro.props;
+interface Props { img: string; alt: string; caption: string; post?: string; demo?: string; event: string; focus?: string }
+const { img, alt, caption, post, demo, event, focus = 'center' } = Astro.props;
 ---
 <section class="ph" style={`--event:${event}`} data-nav-solid-after>
   <div class="ph-sticky">
@@ -13,6 +13,7 @@ const { img, alt, caption, post, event, focus = 'center' } = Astro.props;
     <div class="wrap ph-inner">
       <div class="ph-title">
         <slot />
+        {demo && <a class="ph-demo" href={demo} target="_blank" rel="noopener"><span class="ph-demo-dot" aria-hidden="true"></span>Live demo <span class="ph-demo-url">{demo.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span> ↗</a>}
       </div>
       <p class="ph-cap">
         {caption}
@@ -107,6 +108,11 @@ const { img, alt, caption, post, event, focus = 'center' } = Astro.props;
     opacity: calc(var(--p) * 2 - 1);
     max-width: 70ch;
   }
+  .ph-demo { display: inline-flex; align-items: center; gap: 0.55rem; margin-top: 1.4rem; padding: 0.7rem 1.2rem; border-radius: 999px; background: #fff; color: #151A2E; font-weight: 700; text-decoration: none; box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.6); transition: transform 0.2s; }
+  .ph-demo:hover { transform: translateY(-2px); }
+  .ph-demo-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25); }
+  .ph-demo-url { font-weight: 500; color: #5f6672; font-size: 0.88em; }
+  @media (max-width: 560px) { .ph-demo-url { display: none; } }
   .ph-cap a { color: #fff; font-weight: 600; text-decoration-color: var(--trace); text-underline-offset: 3px; }
   .ph-hint {
     position: absolute; left: 50%; bottom: 1.6rem; translate: -50% 0;

@@ -32,7 +32,7 @@ const roi = [
   title="NEXA: AI-powered tariff automation | Eileen Yeoh"
   description="A hybrid AI + human-validated system that classifies HS tariff codes, matches FTAs, and calculates landed cost for Jabil's trade compliance team. Champion, Jabil IT ECP Bootcamp 3.0."
 >
-  <ProjectHero img="/images/projects-hero/jabil.jpg" alt="Team NEXA at the Jabil IT ECP Bootcamp 3.0 final" caption="Team NEXA at the Jabil IT ECP Bootcamp 3.0: Data & AI Innovation final, where we were named Champion." post="https://www.linkedin.com/feed/update/urn:li:activity:7478788671337410560/" event="#CC785C">
+  <ProjectHero img="/images/projects-hero/jabil.jpg" alt="Team NEXA at the Jabil IT ECP Bootcamp 3.0 final" caption="Team NEXA at the Jabil IT ECP Bootcamp 3.0: Data & AI Innovation final, where we were named Champion." post="https://www.linkedin.com/feed/update/urn:li:activity:7478788671337410560/" event="#2478CC">
     <p class="eyebrow" data-reveal>Project 02 · 2026 · Jabil IT ECP Bootcamp 3.0</p>
     <h1 data-split>NEXA</h1>
     <p class="nexa-tagline" data-reveal>
@@ -45,22 +45,22 @@ const roi = [
   </ProjectHero>
 
   <link slot="head" rel="preconnect" href="https://fonts.googleapis.com" />
-  <link slot="head" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+  <link slot="head" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
 
   <div class="nexa-skin">
 
-  <section class="nx-dark" id="slides">
+  <section class="nx-cover" id="slides">
+    <div class="nx-blob" aria-hidden="true"></div>
     <div class="wrap">
-      <p class="nx-eyebrow nx-eyebrow--dark" data-reveal>NEXA AI · Use Case 2 · Malaysia to Jabil</p>
-      <h2 class="nx-headline" data-reveal>How can we <span>tango</span> with AI?</h2>
-      <p class="nx-dark-lede" data-reveal>The proposal deck we pitched at the final. Use the arrows to flip through all 54 slides.</p>
+      <p class="nx-kicker" data-reveal>How can we<br /><strong>Tango with AI?</strong></p>
+      <h2 class="nx-title" data-reveal><span class="nx-shadow">NEXA's</span> AI-Assisted Tariff Calculation Automation</h2>
+      <p class="nx-lede" data-reveal>The proposal deck we pitched at the final, 24 June 2026. Use the arrows to flip through all 54 slides.</p>
       <figure class="nx-slides" data-reveal>
         <div class="nx-frame">
           <iframe src="https://www.canva.com/design/DAHJpr88qDg/EEv1KjpHxZe6B-jVqjwT7w/view?embed" title="NEXA presentation slides for Jabil Use Case 2" allow="fullscreen" allowfullscreen loading="lazy"></iframe>
         </div>
         <figcaption>
-          <span class="nx-chip">AI-Assisted Tariff Calculation Automation</span>
-          <span class="nx-chip">24 June 2026</span>
+          <span>Presented by <strong>Eileen Yeoh Jing Han, Eavan Tan, Jessy Pang Xin Yuan, Chua Xin Ying</strong></span>
           <a href="https://www.canva.com/design/DAHJpr88qDg/EEv1KjpHxZe6B-jVqjwT7w/view" target="_blank" rel="noopener">Open in Canva ↗</a>
         </figcaption>
       </figure>
@@ -69,27 +69,24 @@ const roi = [
 
   <section class="section wrap">
     <p class="nx-eyebrow" data-reveal>Root cause analysis</p>
-    <h2 data-split>The bottleneck of manual calculation.</h2>
+    <h2 data-split>The bottleneck of <span class="hl-red">manual</span> calculation.</h2>
     <div class="nx-kpis">
-      <div class="nx-kpi nx-kpi--coral" data-reveal>
-        <span class="nx-kpi-label">Manual hours</span>
-        <span class="nx-kpi-val">12.5<small>hrs</small></span>
-        <span class="nx-kpi-note">per 50 item batch workflow</span>
+      <div class="nx-kpi" style="--bar:#fc6c18" data-reveal>
+        <span class="nx-kpi-val" style="color:#e85d0c">12.5 hrs</span>
+        <span class="nx-kpi-label">Manual hours per 50 item batch workflow</span>
       </div>
-      <div class="nx-kpi nx-kpi--red" data-reveal data-reveal-delay="0.06">
-        <span class="nx-kpi-label">Error exposure</span>
-        <span class="nx-kpi-val">$500K<small>/yr</small></span>
+      <div class="nx-kpi nx-kpi--filled" data-reveal data-reveal-delay="0.06">
+        <span class="nx-kpi-val">≥$500,000</span>
+        <span class="nx-kpi-label">Error exposure a year</span>
         <span class="nx-kpi-note">about $2,500 per batch, 500 SKUs each</span>
       </div>
-      <div class="nx-kpi nx-kpi--teal" data-reveal data-reveal-delay="0.12">
-        <span class="nx-kpi-label">Volume</span>
-        <span class="nx-kpi-val">100K<small>SKUs</small></span>
-        <span class="nx-kpi-note">classified every year</span>
+      <div class="nx-kpi" style="--bar:#1884cc" data-reveal data-reveal-delay="0.12">
+        <span class="nx-kpi-val" style="color:#1468b8">100K</span>
+        <span class="nx-kpi-label">SKUs classified every year</span>
       </div>
-      <div class="nx-kpi nx-kpi--amber" data-reveal data-reveal-delay="0.18">
-        <span class="nx-kpi-label">Regulatory feed</span>
-        <span class="nx-kpi-val">None</span>
-        <span class="nx-kpi-note">slow response to tariff and FTA changes</span>
+      <div class="nx-kpi" style="--bar:#f09c00" data-reveal data-reveal-delay="0.18">
+        <span class="nx-kpi-val" style="color:#e85d0c">SLOW</span>
+        <span class="nx-kpi-label">Response to regulatory changes. No live regulatory feed</span>
       </div>
     </div>
     <div class="problem-grid">
@@ -100,9 +97,9 @@ const roi = [
         one off delay.
       </p>
       <p data-reveal>
-        SAP and e2open already hold the data, but it stays fragmented across
-        platforms, earlier automation lacked explainability, and there was no
-        governance framework to make AI a safe option, until now.
+        SAP and e2open already hold the data, but it stays <strong>fragmented</strong> across
+        platforms, earlier automation lacked <strong>explainability</strong>, and there was no
+        <strong>governance</strong> framework to make AI a safe option, until now.
       </p>
     </div>
   </section>
@@ -110,7 +107,7 @@ const roi = [
   <section class="section nx-band">
     <div class="wrap">
       <p class="nx-eyebrow" data-reveal>The system</p>
-      <h2 data-split>One pipeline. Mandatory human sign-off.</h2>
+      <h2 data-split>One pipeline. <span class="hl-blue">Mandatory</span> human sign-off.</h2>
       <p class="muted" data-reveal>
         NEXA sits as an intelligent bridge layer between SAP S/4HANA, SAP GTS,
         the regulatory feed, and e2open GTM. It classifies, matches, and costs
@@ -119,7 +116,7 @@ const roi = [
       </p>
       <div class="nx-panel" data-reveal>
         <div class="nx-panel-head">
-          <span class="nx-panel-title">AI pipeline status</span>
+          <span class="nx-panel-title">AI pipeline</span>
           <span class="nx-live"><i></i>Live · Supabase</span>
         </div>
         <div class="nx-panel-body"><PipelineDiagram /></div>
@@ -128,8 +125,8 @@ const roi = [
   </section>
 
   <section class="section wrap">
-    <p class="nx-eyebrow" data-reveal>See it in action</p>
-    <h2 data-split>Six views into the system.</h2>
+    <p class="nx-eyebrow" data-reveal>Demo video</p>
+    <h2 data-split>Six views into the <span class="hl-blue">system</span>.</h2>
     <p class="muted" data-reveal>
       Captured from the live prototype. Click any card to play.
     </p>
@@ -140,20 +137,18 @@ const roi = [
 
   <section class="section nx-band">
     <div class="wrap">
-      <p class="nx-eyebrow" data-reveal>AI and human workflow</p>
-      <h2 data-split>AI handles the volume. Humans handle the complexity.</h2>
+      <p class="nx-eyebrow" data-reveal>Human in the loop</p>
+      <h2 data-split><span class="hl-blue">AI</span> handles the volume. <span class="hl-orange">Humans</span> handle the complexity.</h2>
       <p class="muted" data-reveal>
         Every classification carries a confidence score, and the score decides
         how much scrutiny it gets before touching SAP.
       </p>
       <div class="tier-grid">
         {tiers.map((t, i) => (
-          <div class={`nx-mod nx-mod--${'abc'[i]}`} data-reveal data-reveal-delay={i * 0.08}>
-            <div class="nx-mod-head">
-              <span class="nx-badge">{'ABC'[i]}</span>
-              <div><h3>{t.name}</h3><span class="nx-mono">confidence {t.range}</span></div>
-            </div>
-            <p class="muted">{t.action}</p>
+          <div class="nx-tier" style={`--bar:${['#1884cc', '#305478', '#e43c3c'][i]};--lab:${['#0e7c86', '#0e7c86', '#e43c3c'][i]}`} data-reveal data-reveal-delay={i * 0.08}>
+            <span class="nx-tier-label">Confidence {t.range}</span>
+            <h3>{t.name}</h3>
+            <p>{t.action}</p>
           </div>
         ))}
       </div>
@@ -161,34 +156,37 @@ const roi = [
   </section>
 
   <section class="section wrap">
-    <p class="nx-eyebrow" data-reveal>Governance and security</p>
-    <h2 data-split>What the AI can and can't do.</h2>
+    <p class="nx-eyebrow" data-reveal>Governance and accountability</p>
+    <h2 data-split>What the AI <span class="hl-blue">can</span> and <span class="hl-orange">can't</span> do.</h2>
     <div class="gov-grid">
-      <div class="nx-card nx-card--teal" data-reveal>
+      <div class="nx-gov nx-gov--ai" data-reveal>
+        <span class="nx-gov-tag">AI recommends</span>
         <h3>AI can</h3>
-        <p class="muted">Classify HS codes and match FTAs with a confidence score. Calculate landed cost and flag uncertain items.</p>
+        <p>Classify HS codes and match FTAs with a confidence score. Calculate landed cost and flag uncertain items.</p>
       </div>
-      <div class="nx-card nx-card--red" data-reveal data-reveal-delay="0.08">
+      <div class="nx-gov nx-gov--no" data-reveal data-reveal-delay="0.08">
+        <span class="nx-gov-tag">Not accountable for decisions</span>
         <h3>AI cannot, by design</h3>
-        <p class="muted">Write any figure to SAP unapproved. Change its own confidence thresholds. Act without an audit trail entry.</p>
+        <p>Write any figure to SAP unapproved. Change its own confidence thresholds. Act without an audit trail entry.</p>
       </div>
-      <div class="nx-card nx-card--coral" data-reveal data-reveal-delay="0.16">
+      <div class="nx-gov nx-gov--human" data-reveal data-reveal-delay="0.16">
+        <span class="nx-gov-tag">Analysts decide</span>
         <h3>Data stays local</h3>
-        <p class="muted">In region Azure OpenAI, so no trade data leaves Jabil's tenancy. Names and financials are stripped before anything reaches the model.</p>
+        <p>In region Azure OpenAI, so no trade data leaves Jabil's tenancy. Names and financials are stripped before anything reaches the model.</p>
       </div>
     </div>
   </section>
 
   <section class="section nx-band outcome">
     <div class="wrap">
-      <p class="nx-eyebrow" data-reveal>Outcome</p>
-      <h2 data-split>The numbers that won it.</h2>
+      <p class="nx-eyebrow" data-reveal>Business impact and ROI</p>
+      <h2 data-split>The numbers that <span class="hl-green">won</span> it.</h2>
       <div class="nx-kpis">
         {roi.map((r, i) => (
-          <div class={`nx-kpi nx-kpi--${['teal', 'coral', 'amber', 'ink'][i]}`} data-reveal data-reveal-delay={i * 0.06}>
-            <span class="nx-kpi-label">{r.label}</span>
-            <span class="nx-kpi-val">{r.value}</span>
-            <span class="nx-kpi-note">{r.sub}</span>
+          <div class="nx-kpi" style={`--bar:${['#00b4fc', '#30cc48', '#f09c00', '#305478'][i]}`} data-reveal data-reveal-delay={i * 0.06}>
+            <span class="nx-kpi-label nx-kpi-label--top">{r.label}</span>
+            <span class="nx-kpi-val" style={`color:${['#1468b8', '#1f9a35', '#d98400', '#12306b'][i]}`}>{r.value}</span>
+            <span class="nx-kpi-pill">{r.sub}</span>
           </div>
         ))}
       </div>
@@ -206,98 +204,103 @@ const roi = [
 </BaseLayout>
 
 <style>
-  h1 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; letter-spacing: 0.02em; }
+  h1 { font-family: 'Inter', system-ui, sans-serif; font-weight: 800; letter-spacing: -0.02em; text-shadow: 0.06em 0.05em 0 rgba(48, 204, 216, 0.55); }
   .nexa-tagline { font-size: 1.3rem; max-width: 42ch; margin-top: 1.2rem; }
   .nexa-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
-  .nexa-tags li {
-    font-size: 0.8rem; font-weight: 550; padding: 0.3rem 0.85rem; border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.28); background: rgba(24, 23, 21, 0.35);
-  }
-  .nexa-tags li:first-child { background: #cc785c; border-color: transparent; color: #fff; font-weight: 650; }
+  .nexa-tags li { font-size: 0.8rem; font-weight: 550; padding: 0.3rem 0.85rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(0, 24, 72, 0.35); }
+  .nexa-tags li:first-child { background: #fc6c18; border-color: transparent; color: #fff; font-weight: 650; }
 
-  /* NEXA skin: the prototype's own design system. Warm cream canvas, coral CTA,
-     serif display type, mono figures, teal / coral / amber module colours. */
+  /* NEXA skin: the Jabil proposal deck. White slides, teal section labels,
+     orange / blue / red highlight words, cyan to blue cover blob, white cards with colour bars. */
   .nexa-skin {
-    --cv: #faf9f5; --soft: #f5f0e8; --card: #efe9de; --cream: #e8e0d2; --dark: #181715;
-    --ink: #141413; --body: #3d3d3a; --mut: #6c6a64; --hair: #e6dfd8;
-    --coral: #cc785c; --coral-d: #a9583e; --teal: #5db8a6; --teal-d: #2f8a78; --amber: #d97706; --red: #c64545;
-    --serif: 'Cormorant Garamond', 'Tiempos Headline', Georgia, serif;
-    --mono: 'JetBrains Mono', ui-monospace, monospace;
-    background: var(--cv); color: var(--body);
+    --ink: #141414; --body: #333; --mut: #5f6672; --line: #e3e8ef;
+    --teal: #0e7c86; --navy: #12306b; --slate: #305478; --blue: #1468b8; --sky: #1884cc;
+    --orange: #e85d0c; --red: #e43c3c; --amber: #f09c00; --green: #1f9a35;
+    --sans: 'Inter', system-ui, sans-serif;
+    background: #fff; color: var(--body);
   }
-  .nexa-skin :global(h2) { font-family: var(--serif); font-weight: 500; color: var(--ink); letter-spacing: -0.01em; font-size: clamp(2.2rem, 4.6vw, 3.4rem); line-height: 1.08; }
-  .nexa-skin h3 { color: var(--ink); font-weight: 600; font-size: 1.05rem; }
+  .nexa-skin :global(h2) { font-family: var(--sans); font-weight: 500; color: var(--ink); letter-spacing: -0.025em; font-size: clamp(2rem, 4.2vw, 3rem); line-height: 1.1; }
+  .nexa-skin :global(.hl-red) { color: var(--red); font-weight: 800; }
+  .nexa-skin :global(.hl-orange) { color: var(--orange); font-weight: 800; }
+  .nexa-skin :global(.hl-blue) { color: var(--sky); font-weight: 800; }
+  .nexa-skin :global(.hl-green) { color: var(--green); font-weight: 800; }
+  .nexa-skin h3 { font-family: var(--sans); color: var(--ink); font-weight: 700; font-size: 1.05rem; }
   .nexa-skin .muted { color: var(--mut); }
-  .nx-eyebrow { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--coral-d); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.6rem; }
-  .nx-eyebrow::before { content: ''; width: 22px; height: 2px; background: var(--coral); }
-  .nx-band { background: var(--soft); border-block: 1px solid var(--hair); max-width: none; }
+  .nexa-skin strong { color: var(--ink); }
+  .nx-eyebrow { font-family: var(--sans); font-size: 0.82rem; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.35rem; }
+  .nx-band { background: #f4f8fc; max-width: none; }
 
-  /* Dark slide stage, like the app's search hero. */
-  .nx-dark { position: relative; overflow: hidden; background: var(--dark); color: #faf9f5; padding: clamp(4rem, 10vh, 6.5rem) 0; }
-  .nx-dark::before { content: ''; position: absolute; top: -140px; right: -120px; width: 520px; height: 520px; border-radius: 50%; background: radial-gradient(circle, rgba(204, 120, 92, 0.26) 0%, transparent 70%); pointer-events: none; }
-  .nx-dark::after { content: ''; position: absolute; bottom: -180px; left: -140px; width: 460px; height: 460px; border-radius: 50%; background: radial-gradient(circle, rgba(93, 184, 166, 0.14) 0%, transparent 70%); pointer-events: none; }
-  .nx-eyebrow--dark { color: #a09d96; }
-  .nexa-skin .nx-dark .nx-headline { color: #faf9f5; }
-  .nx-headline { font-family: var(--serif); font-weight: 400; font-size: clamp(2.4rem, 5.4vw, 4rem); line-height: 1.05; color: #faf9f5; }
-  .nx-headline span { color: var(--coral); font-style: italic; }
-  .nx-dark-lede { color: #a09d96; margin-top: 0.8rem; max-width: 52ch; }
-  .nx-slides { margin: 2rem 0 0; position: relative; z-index: 1; }
-  .nx-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; background: #0f0e0d; border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.8); }
+  /* Cover, after slide 1: white with the cyan / blue glow in the corner. */
+  .nx-cover { position: relative; overflow: hidden; background: #fff; padding: clamp(4rem, 10vh, 6.5rem) 0; }
+  .nx-blob { position: absolute; top: -18%; right: -10%; width: 62vw; max-width: 900px; aspect-ratio: 1.4; border-radius: 50%;
+    background: radial-gradient(closest-side at 55% 45%, #1d4fd8 0%, #2478cc 30%, #30ccd8 58%, rgba(48, 204, 216, 0) 100%);
+    filter: blur(40px); opacity: 0.55; pointer-events: none; }
+  .nx-cover .wrap { position: relative; }
+  .nx-kicker { font-family: var(--sans); font-size: 0.9rem; color: var(--ink); line-height: 1.3; }
+  .nx-kicker strong { font-size: 1.25rem; font-weight: 800; }
+  .nx-title { font-family: var(--sans); font-weight: 500; font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 1.05; letter-spacing: -0.03em; color: var(--ink); margin-top: 1rem; max-width: 18ch; }
+  .nx-shadow { font-weight: 800; text-shadow: 0.05em 0.05em 0 #30ccd8; }
+  .nx-lede { color: var(--mut); margin-top: 1rem; max-width: 54ch; }
+  .nx-slides { margin: 2rem 0 0; }
+  .nx-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: 0 30px 70px -36px rgba(18, 48, 107, 0.55); }
   .nx-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-  .nx-slides figcaption { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-top: 1rem; }
-  .nx-chip { font-family: var(--mono); font-size: 0.75rem; padding: 0.25rem 0.8rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.06); color: #c9c5bc; }
-  .nx-slides figcaption a { margin-left: auto; background: var(--coral); color: #fff; font-weight: 600; font-size: 0.9rem; padding: 0.5rem 1.1rem; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
-  .nx-slides figcaption a:hover { background: var(--coral-d); }
+  .nx-slides figcaption { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem 1.2rem; margin-top: 1rem; font-size: 0.88rem; color: var(--mut); border-top: 1px solid var(--line); padding-top: 0.9rem; }
+  .nx-slides figcaption a { margin-left: auto; background: var(--navy); color: #fff; font-weight: 700; font-size: 0.88rem; padding: 0.55rem 1.1rem; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
+  .nx-slides figcaption a:hover { background: var(--blue); }
 
-  /* KPI cards, as on the prototype's lookup screen. */
-  .nx-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: 2.2rem; }
-  .nx-kpi { background: var(--cv); border: 1px solid var(--hair); border-radius: 12px; padding: 1.4rem 1.2rem; display: flex; flex-direction: column; gap: 0.4rem; }
-  .nx-kpi-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #8e8b82; }
-  .nx-kpi-val { font-family: var(--serif); font-size: 2.6rem; line-height: 1; color: var(--ink); letter-spacing: -0.01em; }
-  .nx-kpi-val small { font-family: var(--body-font, inherit); font-size: 0.95rem; color: var(--mut); margin-left: 0.25rem; }
-  .nx-kpi-note { font-size: 0.85rem; color: var(--mut); }
-  .nx-kpi--coral .nx-kpi-val { color: var(--coral-d); }
-  .nx-kpi--teal .nx-kpi-val { color: var(--teal-d); }
-  .nx-kpi--amber .nx-kpi-val { color: var(--amber); }
-  .nx-kpi--red .nx-kpi-val { color: var(--red); }
+  /* Stat cards, as on the root cause and ROI slides. */
+  .nx-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.1rem; margin-top: 2.2rem; }
+  .nx-kpi { position: relative; background: #fff; border-radius: 16px; padding: 1.5rem 1.3rem 1.3rem; display: flex; flex-direction: column; gap: 0.45rem; text-align: center; align-items: center;
+    box-shadow: 0 18px 40px -28px rgba(18, 48, 107, 0.45), 0 0 0 1px var(--line); overflow: hidden; }
+  .nx-kpi::before { content: ''; position: absolute; inset: 0 0 auto; height: 6px; background: var(--bar, var(--sky)); }
+  .nx-kpi-val { font-family: var(--sans); font-weight: 800; font-size: clamp(1.9rem, 3vw, 2.5rem); line-height: 1; letter-spacing: -0.02em; color: var(--ink); }
+  .nx-kpi-label { font-family: var(--sans); font-weight: 700; font-size: 0.9rem; color: var(--ink); }
+  .nx-kpi-label--top { order: -1; font-size: 0.82rem; }
+  .nx-kpi-note { font-size: 0.8rem; color: var(--mut); }
+  .nx-kpi-pill { font-size: 0.78rem; font-weight: 600; color: var(--ink); background: #fcf0b4; border-radius: 999px; padding: 0.25rem 0.75rem; }
+  .nx-kpi--filled { background: var(--red); box-shadow: 0 18px 40px -24px rgba(228, 60, 60, 0.7); }
+  .nx-kpi--filled::before { display: none; }
+  .nx-kpi--filled .nx-kpi-val, .nx-kpi--filled .nx-kpi-label { color: #fff; }
+  .nx-kpi--filled .nx-kpi-note { color: rgba(255, 255, 255, 0.85); }
   .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 2rem; }
 
-  /* Panel with a soft header bar. */
-  .nx-panel { margin-top: 2rem; background: var(--cv); border: 1px solid var(--hair); border-radius: 12px; overflow: hidden; }
-  .nx-panel-head { display: flex; align-items: center; gap: 0.8rem; padding: 0.8rem 1.4rem; background: var(--soft); border-bottom: 1px solid var(--hair); }
-  .nx-panel-title { flex: 1; font-weight: 600; color: var(--ink); font-size: 0.95rem; }
-  .nx-live { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; font-weight: 500; color: var(--teal-d); }
-  .nx-live i { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); animation: nx-blink 2s ease-in-out infinite; }
+  .nx-panel { margin-top: 2rem; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 0 0 1px var(--line), 0 20px 44px -32px rgba(18, 48, 107, 0.45); }
+  .nx-panel-head { display: flex; align-items: center; gap: 0.8rem; padding: 0.8rem 1.4rem; background: var(--navy); color: #fff; }
+  .nx-panel-title { flex: 1; font-family: var(--sans); font-weight: 700; font-size: 0.95rem; }
+  .nx-live { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; font-weight: 600; color: #8fe6ee; }
+  .nx-live i { width: 7px; height: 7px; border-radius: 50%; background: #30ccd8; animation: nx-blink 2s ease-in-out infinite; }
   @keyframes nx-blink { 50% { opacity: 0.35; } }
   .nx-panel-body { padding: 1.4rem; }
   .nx-panel-body :global(.pipeline) { background: transparent; border: 0; padding: 0; }
-  .nx-panel-body :global(.pipeline-stage) { background: var(--soft); border-color: var(--hair); border-top: 3px solid var(--coral); }
-  .nx-panel-body :global(.pipeline-stage:nth-of-type(4n+3)) { border-top-color: var(--teal); }
-  .nx-panel-body :global(.pipeline-num) { font-family: var(--mono); color: var(--coral-d); }
-  .nx-panel-body :global(.pipeline-arrow) { color: var(--coral); }
-  .nx-panel-body :global(.pipeline-gate) { background: rgba(217, 119, 6, 0.08); border: 1px dashed rgba(217, 119, 6, 0.4); }
+  .nx-panel-body :global(.pipeline-stage) { background: #fff; border-color: var(--line); border-top: 4px solid var(--sky); }
+  .nx-panel-body :global(.pipeline-num) { color: var(--teal); font-weight: 800; }
+  .nx-panel-body :global(.pipeline-arrow) { color: var(--sky); }
+  .nx-panel-body :global(.pipeline-gate) { background: #fcf0c0; }
+  .nx-panel-body :global(.pipeline-gate h3) { color: #c04800; }
 
   .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
 
-  /* Module A / B / C cards. */
-  .tier-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; margin-top: 2.5rem; }
-  .nx-mod { background: var(--cv); border: 1px solid var(--hair); border-radius: 16px; overflow: hidden; --mc: var(--teal-d); --mb: rgba(93, 184, 166, 0.15); }
-  .nx-mod--b { --mc: var(--coral-d); --mb: rgba(204, 120, 92, 0.13); }
-  .nx-mod--c { --mc: var(--amber); --mb: rgba(217, 119, 6, 0.12); border: 2px dashed var(--amber); background: rgba(251, 191, 36, 0.04); }
-  .nx-mod-head { display: flex; gap: 0.8rem; align-items: flex-start; padding: 1.1rem 1.3rem 0.9rem; background: var(--soft); border-bottom: 1px solid var(--hair); }
-  .nx-badge { width: 36px; height: 36px; flex-shrink: 0; border-radius: 8px; display: grid; place-items: center; font-weight: 700; background: var(--mb); color: var(--mc); }
-  .nx-mono { font-family: var(--mono); font-size: 0.78rem; color: var(--mc); }
-  .nx-mod p { padding: 1rem 1.3rem 1.3rem; font-size: 0.92rem; }
+  /* Tier cards, styled like the risk cards: top bar, italic spaced label. */
+  .tier-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.1rem; margin-top: 2.5rem; }
+  .nx-tier { background: #fff; border-top: 5px solid var(--bar); border-radius: 6px; padding: 1.2rem 1.3rem 1.4rem; box-shadow: 0 0 0 1px var(--line), 0 16px 36px -30px rgba(18, 48, 107, 0.5); }
+  .nx-tier-label { display: block; font-family: var(--sans); font-style: italic; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lab); }
+  .nx-tier h3 { margin-top: 0.45rem; }
+  .nx-tier p { font-size: 0.92rem; color: var(--body); margin-top: 0.5rem; }
 
-  .gov-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; margin-top: 2.5rem; }
-  .nx-card { background: var(--cv); border: 1px solid var(--hair); border-left: 3px solid var(--lc, var(--teal)); border-radius: 12px; padding: 1.3rem 1.4rem; }
-  .nx-card--red { --lc: var(--red); }
-  .nx-card--coral { --lc: var(--coral); }
-  .nx-card p { font-size: 0.92rem; margin-top: 0.4rem; }
+  /* Governance: blue AI band, red line, cream human band. */
+  .gov-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.1rem; margin-top: 2.5rem; }
+  .nx-gov { border-radius: 10px; padding: 1.3rem 1.4rem; }
+  .nx-gov--ai { background: #e6eef8; }
+  .nx-gov--no { background: #fff; box-shadow: 0 0 0 1px var(--line); }
+  .nx-gov--human { background: #fcf0c0; }
+  .nx-gov-tag { display: block; font-family: var(--sans); font-weight: 800; font-size: 0.8rem; text-transform: uppercase; color: var(--blue); margin-bottom: 0.4rem; }
+  .nx-gov--no .nx-gov-tag { color: var(--red); }
+  .nx-gov--human .nx-gov-tag { color: #c04800; }
+  .nx-gov p { font-size: 0.92rem; margin-top: 0.4rem; }
 
   .outcome-note { margin-top: 2.5rem; max-width: 60ch; }
-  .nx-btn { display: inline-flex; margin-top: 1.5rem; background: var(--coral); color: #fff; font-weight: 600; padding: 0.7rem 1.3rem; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
-  .nx-btn:hover { background: var(--coral-d); }
+  .nx-btn { display: inline-flex; margin-top: 1.5rem; background: var(--navy); color: #fff; font-family: var(--sans); font-weight: 700; padding: 0.7rem 1.3rem; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
+  .nx-btn:hover { background: var(--blue); }
 
   @media (max-width: 1000px) { .nx-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tier-grid, .gov-grid { grid-template-columns: 1fr; } }
   @media (max-width: 800px) { .problem-grid { grid-template-columns: 1fr; } .nx-slides figcaption a { margin-left: 0; } }
