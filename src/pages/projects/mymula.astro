@@ -99,6 +99,15 @@ const stack = [
     </div>
   </section>
 
+  <section class="section wrap" id="video">
+    <p class="mm-eyebrow" data-reveal>Watch</p>
+    <h2 data-split>The full <span class="mm-blue">MyMULA</span> demo.</h2>
+    <div class="mm-yt" data-reveal>
+      <iframe src="https://www.youtube-nocookie.com/embed/QV5uF9bV6-8?rel=0" title="MyMULA demo video by Team VeriTech" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    <p class="mm-yt-cap" data-reveal>Our NexG GodamLah! 2.0 submission video, covering all four use cases. <a href="https://youtu.be/QV5uF9bV6-8" target="_blank" rel="noopener">Watch on YouTube ↗</a></p>
+  </section>
+
   <section class="section wrap">
     <p class="mm-eyebrow" data-reveal>The problem</p>
     <h2 data-split>Four places a minor hits a <span class="mm-blue">dead end</span>.</h2>
@@ -146,7 +155,7 @@ const stack = [
             <h3>{c.title}</h3>
             <p class="mm-goal">{c.goal}</p>
             <ol>{c.steps.map((s) => <li>{s}</li>)}</ol>
-            {!c.video && <span class="mm-pill mm-pill--muted">Shown in our full demo video</span>}
+            {!c.video && <a class="mm-pill mm-pill--muted" href="#video">Shown in the full demo video ↑</a>}
           </div>
         </article>
       ))}
@@ -265,6 +274,11 @@ const stack = [
   .mm-stack div:nth-last-child(-n + 3) { border-bottom: 0; }
   .mm-stack strong { color: var(--blue-d); }
 
+  .mm-yt { position: relative; aspect-ratio: 16 / 9; margin-top: 2rem; border-radius: 22px; overflow: hidden; background: var(--ink); box-shadow: 0 0 0 1px var(--line), 0 30px 60px -34px rgba(33, 98, 236, 0.7); }
+  .mm-yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .mm-yt-cap { margin-top: 0.9rem; font-size: 0.92rem; color: var(--mut); }
+  .mm-yt-cap a { color: var(--blue-d); font-weight: 700; text-decoration: none; margin-left: 0.4rem; }
+  a.mm-pill { text-decoration: none; }
   .outcome-note { margin-top: 1.4rem; }
   .mm-btn { display: inline-flex; margin-top: 1.5rem; background: var(--blue); color: #fff; font-weight: 700; padding: 0.8rem 1.5rem; border-radius: 999px; text-decoration: none; box-shadow: 0 14px 30px -14px rgba(33, 98, 236, 0.8); transition: background 0.15s, transform 0.15s; }
   .mm-btn:hover { background: var(--ink); transform: translateY(-2px); }
