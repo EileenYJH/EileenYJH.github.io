@@ -16,7 +16,7 @@ const demos = [
 const tiers = [
   { range: '>95%', name: 'Scan & Approve', action: 'Reviews the summary line. Can bulk-approve all green items in one click.' },
   { range: '70 to 94%', name: 'Individual Review', action: 'Opens the reasoning log, reviews HS chapter notes, approves or overrides with a documented reason.' },
-  { range: '<70% / alert', name: 'Full Manual', action: 'Senior analyst reviews with full context and can override, request supplier clarification, or hold the shipment.' },
+  { range: '<70% or alert', name: 'Full Manual', action: 'Senior analyst reviews with full context and can override, request supplier clarification, or hold the shipment.' },
 ];
 
 const roi = [
@@ -32,7 +32,7 @@ const roi = [
   title="NEXA: AI-powered tariff automation | Eileen Yeoh"
   description="A hybrid AI + human-validated system that classifies HS tariff codes, matches FTAs, and calculates landed cost for Jabil's trade compliance team. Champion, Jabil IT ECP Bootcamp 3.0."
 >
-  <ProjectHero img="/images/projects-hero/jabil.jpg" alt="Team NEXA at the Jabil IT ECP Bootcamp 3.0 final" caption="Team NEXA at the Jabil IT ECP Bootcamp 3.0: Data & AI Innovation final, where we were named Champion." post="https://www.linkedin.com/feed/update/urn:li:activity:7478788671337410560/" event="#1D4ED8">
+  <ProjectHero img="/images/projects-hero/jabil.jpg" alt="Team NEXA at the Jabil IT ECP Bootcamp 3.0 final" caption="Team NEXA at the Jabil IT ECP Bootcamp 3.0: Data & AI Innovation final, where we were named Champion." post="https://www.linkedin.com/feed/update/urn:li:activity:7478788671337410560/" event="#CC785C">
     <p class="eyebrow" data-reveal>Project 02 · 2026 · Jabil IT ECP Bootcamp 3.0</p>
     <h1 data-split>NEXA</h1>
     <p class="nexa-tagline" data-reveal>
@@ -44,16 +44,60 @@ const roi = [
     </ul>
   </ProjectHero>
 
+  <link slot="head" rel="preconnect" href="https://fonts.googleapis.com" />
+  <link slot="head" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+
+  <div class="nexa-skin">
+
+  <section class="nx-dark" id="slides">
+    <div class="wrap">
+      <p class="nx-eyebrow nx-eyebrow--dark" data-reveal>NEXA AI · Use Case 2 · Malaysia to Jabil</p>
+      <h2 class="nx-headline" data-reveal>How can we <span>tango</span> with AI?</h2>
+      <p class="nx-dark-lede" data-reveal>The proposal deck we pitched at the final. Use the arrows to flip through all 54 slides.</p>
+      <figure class="nx-slides" data-reveal>
+        <div class="nx-frame">
+          <iframe src="https://www.canva.com/design/DAHJpr88qDg/EEv1KjpHxZe6B-jVqjwT7w/view?embed" title="NEXA presentation slides for Jabil Use Case 2" allow="fullscreen" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <figcaption>
+          <span class="nx-chip">AI-Assisted Tariff Calculation Automation</span>
+          <span class="nx-chip">24 June 2026</span>
+          <a href="https://www.canva.com/design/DAHJpr88qDg/EEv1KjpHxZe6B-jVqjwT7w/view" target="_blank" rel="noopener">Open in Canva ↗</a>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
   <section class="section wrap">
-    <p class="eyebrow" data-reveal>The problem</p>
-    <h2 data-split>Manual tariff classification doesn't scale.</h2>
+    <p class="nx-eyebrow" data-reveal>Root cause analysis</p>
+    <h2 data-split>The bottleneck of manual calculation.</h2>
+    <div class="nx-kpis">
+      <div class="nx-kpi nx-kpi--coral" data-reveal>
+        <span class="nx-kpi-label">Manual hours</span>
+        <span class="nx-kpi-val">12.5<small>hrs</small></span>
+        <span class="nx-kpi-note">per 50 item batch workflow</span>
+      </div>
+      <div class="nx-kpi nx-kpi--red" data-reveal data-reveal-delay="0.06">
+        <span class="nx-kpi-label">Error exposure</span>
+        <span class="nx-kpi-val">$500K<small>/yr</small></span>
+        <span class="nx-kpi-note">about $2,500 per batch, 500 SKUs each</span>
+      </div>
+      <div class="nx-kpi nx-kpi--teal" data-reveal data-reveal-delay="0.12">
+        <span class="nx-kpi-label">Volume</span>
+        <span class="nx-kpi-val">100K<small>SKUs</small></span>
+        <span class="nx-kpi-note">classified every year</span>
+      </div>
+      <div class="nx-kpi nx-kpi--amber" data-reveal data-reveal-delay="0.18">
+        <span class="nx-kpi-label">Regulatory feed</span>
+        <span class="nx-kpi-val">None</span>
+        <span class="nx-kpi-note">slow response to tariff and FTA changes</span>
+      </div>
+    </div>
     <div class="problem-grid">
       <p data-reveal>
-        Jabil's trade compliance analysts classify HS codes, match free-trade
-        agreements, and calculate landed cost by hand: an 8-step process
-        costing 12.5 hours per 50-item batch, with roughly $2,500 in
-        financial error exposure per batch. At ~100,000 SKUs a year, that's a
-        structural bottleneck, not a one-off delay.
+        Jabil's trade compliance analysts classify HS codes, match free trade
+        agreements, and calculate landed cost by hand. It is an 8 step process,
+        and at around 100,000 SKUs a year that is a structural bottleneck, not a
+        one off delay.
       </p>
       <p data-reveal>
         SAP and e2open already hold the data, but it stays fragmented across
@@ -63,20 +107,28 @@ const roi = [
     </div>
   </section>
 
-  <section class="section wrap">
-    <p class="eyebrow" data-reveal>The system</p>
-    <h2 data-split>One pipeline. Mandatory human sign-off.</h2>
-    <p class="muted" data-reveal>
-      NEXA sits as an intelligent bridge layer between SAP S/4HANA, SAP GTS,
-      the regulatory feed, and e2open GTM. It classifies, matches, and costs
-      every shipment, then stops for a human before anything is written
-      back.
-    </p>
-    <PipelineDiagram />
+  <section class="section nx-band">
+    <div class="wrap">
+      <p class="nx-eyebrow" data-reveal>The system</p>
+      <h2 data-split>One pipeline. Mandatory human sign-off.</h2>
+      <p class="muted" data-reveal>
+        NEXA sits as an intelligent bridge layer between SAP S/4HANA, SAP GTS,
+        the regulatory feed, and e2open GTM. It classifies, matches, and costs
+        every shipment, then stops for a human before anything is written
+        back.
+      </p>
+      <div class="nx-panel" data-reveal>
+        <div class="nx-panel-head">
+          <span class="nx-panel-title">AI pipeline status</span>
+          <span class="nx-live"><i></i>Live · Supabase</span>
+        </div>
+        <div class="nx-panel-body"><PipelineDiagram /></div>
+      </div>
+    </div>
   </section>
 
   <section class="section wrap">
-    <p class="eyebrow" data-reveal>See it in action</p>
+    <p class="nx-eyebrow" data-reveal>See it in action</p>
     <h2 data-split>Six views into the system.</h2>
     <p class="muted" data-reveal>
       Captured from the live prototype. Click any card to play.
@@ -86,122 +138,168 @@ const roi = [
     </div>
   </section>
 
-  <section class="section wrap">
-    <p class="eyebrow" data-reveal>AI-human workflow</p>
-    <h2 data-split>AI handles the volume. Humans handle the complexity.</h2>
-    <p class="muted" data-reveal>
-      Every classification carries a confidence score, and the score decides
-      how much scrutiny it gets before touching SAP.
-    </p>
-    <div class="tier-grid">
-      {tiers.map((t, i) => (
-        <div class="card tier-card" data-reveal data-reveal-delay={i * 0.08}>
-          <span class="tier-range">{t.range}</span>
-          <h3>{t.name}</h3>
-          <p class="muted">{t.action}</p>
-        </div>
-      ))}
+  <section class="section nx-band">
+    <div class="wrap">
+      <p class="nx-eyebrow" data-reveal>AI and human workflow</p>
+      <h2 data-split>AI handles the volume. Humans handle the complexity.</h2>
+      <p class="muted" data-reveal>
+        Every classification carries a confidence score, and the score decides
+        how much scrutiny it gets before touching SAP.
+      </p>
+      <div class="tier-grid">
+        {tiers.map((t, i) => (
+          <div class={`nx-mod nx-mod--${'abc'[i]}`} data-reveal data-reveal-delay={i * 0.08}>
+            <div class="nx-mod-head">
+              <span class="nx-badge">{'ABC'[i]}</span>
+              <div><h3>{t.name}</h3><span class="nx-mono">confidence {t.range}</span></div>
+            </div>
+            <p class="muted">{t.action}</p>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
   <section class="section wrap">
-    <p class="eyebrow" data-reveal>Governance & security</p>
+    <p class="nx-eyebrow" data-reveal>Governance and security</p>
     <h2 data-split>What the AI can and can't do.</h2>
     <div class="gov-grid">
-      <div class="card" data-reveal>
+      <div class="nx-card nx-card--teal" data-reveal>
         <h3>AI can</h3>
         <p class="muted">Classify HS codes and match FTAs with a confidence score. Calculate landed cost and flag uncertain items.</p>
       </div>
-      <div class="card" data-reveal data-reveal-delay="0.08">
+      <div class="nx-card nx-card--red" data-reveal data-reveal-delay="0.08">
         <h3>AI cannot, by design</h3>
-        <p class="muted">Write any figure to SAP unapproved. Change its own confidence thresholds. Act without an audit-trail entry.</p>
+        <p class="muted">Write any figure to SAP unapproved. Change its own confidence thresholds. Act without an audit trail entry.</p>
       </div>
-      <div class="card" data-reveal data-reveal-delay="0.16">
+      <div class="nx-card nx-card--coral" data-reveal data-reveal-delay="0.16">
         <h3>Data stays local</h3>
-        <p class="muted">In-region Azure OpenAI, so no trade data leaves Jabil's tenancy. Names and financials are stripped before anything reaches the model.</p>
+        <p class="muted">In region Azure OpenAI, so no trade data leaves Jabil's tenancy. Names and financials are stripped before anything reaches the model.</p>
       </div>
     </div>
   </section>
 
-  <section class="section wrap outcome">
-    <p class="eyebrow" data-reveal>Outcome</p>
-    <h2 data-split>The numbers that won it.</h2>
-    <div class="roi-grid">
-      {roi.map((r, i) => (
-        <div class="roi-card" data-reveal data-reveal-delay={i * 0.06}>
-          <span class="roi-value">{r.value}</span>
-          <span class="roi-label">{r.label}</span>
-          <span class="roi-sub muted">{r.sub}</span>
-        </div>
-      ))}
+  <section class="section nx-band outcome">
+    <div class="wrap">
+      <p class="nx-eyebrow" data-reveal>Outcome</p>
+      <h2 data-split>The numbers that won it.</h2>
+      <div class="nx-kpis">
+        {roi.map((r, i) => (
+          <div class={`nx-kpi nx-kpi--${['teal', 'coral', 'amber', 'ink'][i]}`} data-reveal data-reveal-delay={i * 0.06}>
+            <span class="nx-kpi-label">{r.label}</span>
+            <span class="nx-kpi-val">{r.value}</span>
+            <span class="nx-kpi-note">{r.sub}</span>
+          </div>
+        ))}
+      </div>
+      <p class="muted outcome-note" data-reveal>
+        Built with Eavan Tan, Jessy Pang, Xin Yuan, and Chua Xin Ying for
+        Jabil's IT ECP Bootcamp 3.0: <strong>Champion, Use Case 2</strong>.
+      </p>
+      <a class="nx-btn" href="https://github.com/eavan127/NEXA-AI-Powered-Tariff" target="_blank" rel="noopener" data-reveal>
+        View the source on GitHub →
+      </a>
     </div>
-    <p class="muted outcome-note" data-reveal>
-      Built with Eavan Tan, Jessy Pang, Xin Yuan, and Chua Xin Ying for
-      Jabil's IT ECP Bootcamp 3.0: <strong>Champion, Use Case 2</strong>.
-    </p>
-    <a class="btn" href="https://github.com/eavan127/NEXA-AI-Powered-Tariff" target="_blank" rel="noopener" data-reveal>
-      View the source on GitHub →
-    </a>
   </section>
+
+  </div>
 </BaseLayout>
 
 <style>
-  .nexa-hero h1 { font-size: clamp(4rem, 14vw, 9rem); }
+  h1 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; letter-spacing: 0.02em; }
   .nexa-tagline { font-size: 1.3rem; max-width: 42ch; margin-top: 1.2rem; }
   .nexa-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
   .nexa-tags li {
-    font-size: 0.8rem;
-    font-weight: 550;
-    padding: 0.3rem 0.85rem;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: var(--paper-raised);
+    font-size: 0.8rem; font-weight: 550; padding: 0.3rem 0.85rem; border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.28); background: rgba(24, 23, 21, 0.35);
   }
-  .nexa-tags li:first-child { background: var(--accent-soft); border-color: transparent; color: var(--accent); font-weight: 650; }
+  .nexa-tags li:first-child { background: #cc785c; border-color: transparent; color: #fff; font-weight: 650; }
+
+  /* NEXA skin: the prototype's own design system. Warm cream canvas, coral CTA,
+     serif display type, mono figures, teal / coral / amber module colours. */
+  .nexa-skin {
+    --cv: #faf9f5; --soft: #f5f0e8; --card: #efe9de; --cream: #e8e0d2; --dark: #181715;
+    --ink: #141413; --body: #3d3d3a; --mut: #6c6a64; --hair: #e6dfd8;
+    --coral: #cc785c; --coral-d: #a9583e; --teal: #5db8a6; --teal-d: #2f8a78; --amber: #d97706; --red: #c64545;
+    --serif: 'Cormorant Garamond', 'Tiempos Headline', Georgia, serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    background: var(--cv); color: var(--body);
+  }
+  .nexa-skin :global(h2) { font-family: var(--serif); font-weight: 500; color: var(--ink); letter-spacing: -0.01em; font-size: clamp(2.2rem, 4.6vw, 3.4rem); line-height: 1.08; }
+  .nexa-skin h3 { color: var(--ink); font-weight: 600; font-size: 1.05rem; }
+  .nexa-skin .muted { color: var(--mut); }
+  .nx-eyebrow { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--coral-d); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.6rem; }
+  .nx-eyebrow::before { content: ''; width: 22px; height: 2px; background: var(--coral); }
+  .nx-band { background: var(--soft); border-block: 1px solid var(--hair); max-width: none; }
+
+  /* Dark slide stage, like the app's search hero. */
+  .nx-dark { position: relative; overflow: hidden; background: var(--dark); color: #faf9f5; padding: clamp(4rem, 10vh, 6.5rem) 0; }
+  .nx-dark::before { content: ''; position: absolute; top: -140px; right: -120px; width: 520px; height: 520px; border-radius: 50%; background: radial-gradient(circle, rgba(204, 120, 92, 0.26) 0%, transparent 70%); pointer-events: none; }
+  .nx-dark::after { content: ''; position: absolute; bottom: -180px; left: -140px; width: 460px; height: 460px; border-radius: 50%; background: radial-gradient(circle, rgba(93, 184, 166, 0.14) 0%, transparent 70%); pointer-events: none; }
+  .nx-eyebrow--dark { color: #a09d96; }
+  .nexa-skin .nx-dark .nx-headline { color: #faf9f5; }
+  .nx-headline { font-family: var(--serif); font-weight: 400; font-size: clamp(2.4rem, 5.4vw, 4rem); line-height: 1.05; color: #faf9f5; }
+  .nx-headline span { color: var(--coral); font-style: italic; }
+  .nx-dark-lede { color: #a09d96; margin-top: 0.8rem; max-width: 52ch; }
+  .nx-slides { margin: 2rem 0 0; position: relative; z-index: 1; }
+  .nx-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; background: #0f0e0d; border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.8); }
+  .nx-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .nx-slides figcaption { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-top: 1rem; }
+  .nx-chip { font-family: var(--mono); font-size: 0.75rem; padding: 0.25rem 0.8rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.06); color: #c9c5bc; }
+  .nx-slides figcaption a { margin-left: auto; background: var(--coral); color: #fff; font-weight: 600; font-size: 0.9rem; padding: 0.5rem 1.1rem; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
+  .nx-slides figcaption a:hover { background: var(--coral-d); }
+
+  /* KPI cards, as on the prototype's lookup screen. */
+  .nx-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: 2.2rem; }
+  .nx-kpi { background: var(--cv); border: 1px solid var(--hair); border-radius: 12px; padding: 1.4rem 1.2rem; display: flex; flex-direction: column; gap: 0.4rem; }
+  .nx-kpi-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #8e8b82; }
+  .nx-kpi-val { font-family: var(--serif); font-size: 2.6rem; line-height: 1; color: var(--ink); letter-spacing: -0.01em; }
+  .nx-kpi-val small { font-family: var(--body-font, inherit); font-size: 0.95rem; color: var(--mut); margin-left: 0.25rem; }
+  .nx-kpi-note { font-size: 0.85rem; color: var(--mut); }
+  .nx-kpi--coral .nx-kpi-val { color: var(--coral-d); }
+  .nx-kpi--teal .nx-kpi-val { color: var(--teal-d); }
+  .nx-kpi--amber .nx-kpi-val { color: var(--amber); }
+  .nx-kpi--red .nx-kpi-val { color: var(--red); }
   .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 2rem; }
-  .demo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2.5rem;
-  }
-  .tier-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.2rem;
-    margin-top: 2.5rem;
-  }
-  .tier-range { display: inline-block; font-size: 0.78rem; font-weight: 650; color: var(--accent); }
-  .tier-card h3 { margin-top: 0.35rem; }
-  .tier-card p { font-size: 0.9rem; margin-top: 0.4rem; }
-  .gov-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.2rem;
-    margin-top: 2.5rem;
-  }
-  .gov-grid p { font-size: 0.9rem; margin-top: 0.4rem; }
-  .roi-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2.5rem;
-  }
-  .roi-card {
-    background: var(--paper-raised);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-  .roi-value { font-family: var(--font-display); font-size: 2.2rem; color: var(--accent); }
-  .roi-label { font-weight: 600; }
-  .roi-sub { font-size: 0.82rem; }
+
+  /* Panel with a soft header bar. */
+  .nx-panel { margin-top: 2rem; background: var(--cv); border: 1px solid var(--hair); border-radius: 12px; overflow: hidden; }
+  .nx-panel-head { display: flex; align-items: center; gap: 0.8rem; padding: 0.8rem 1.4rem; background: var(--soft); border-bottom: 1px solid var(--hair); }
+  .nx-panel-title { flex: 1; font-weight: 600; color: var(--ink); font-size: 0.95rem; }
+  .nx-live { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; font-weight: 500; color: var(--teal-d); }
+  .nx-live i { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); animation: nx-blink 2s ease-in-out infinite; }
+  @keyframes nx-blink { 50% { opacity: 0.35; } }
+  .nx-panel-body { padding: 1.4rem; }
+  .nx-panel-body :global(.pipeline) { background: transparent; border: 0; padding: 0; }
+  .nx-panel-body :global(.pipeline-stage) { background: var(--soft); border-color: var(--hair); border-top: 3px solid var(--coral); }
+  .nx-panel-body :global(.pipeline-stage:nth-of-type(4n+3)) { border-top-color: var(--teal); }
+  .nx-panel-body :global(.pipeline-num) { font-family: var(--mono); color: var(--coral-d); }
+  .nx-panel-body :global(.pipeline-arrow) { color: var(--coral); }
+  .nx-panel-body :global(.pipeline-gate) { background: rgba(217, 119, 6, 0.08); border: 1px dashed rgba(217, 119, 6, 0.4); }
+
+  .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+
+  /* Module A / B / C cards. */
+  .tier-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; margin-top: 2.5rem; }
+  .nx-mod { background: var(--cv); border: 1px solid var(--hair); border-radius: 16px; overflow: hidden; --mc: var(--teal-d); --mb: rgba(93, 184, 166, 0.15); }
+  .nx-mod--b { --mc: var(--coral-d); --mb: rgba(204, 120, 92, 0.13); }
+  .nx-mod--c { --mc: var(--amber); --mb: rgba(217, 119, 6, 0.12); border: 2px dashed var(--amber); background: rgba(251, 191, 36, 0.04); }
+  .nx-mod-head { display: flex; gap: 0.8rem; align-items: flex-start; padding: 1.1rem 1.3rem 0.9rem; background: var(--soft); border-bottom: 1px solid var(--hair); }
+  .nx-badge { width: 36px; height: 36px; flex-shrink: 0; border-radius: 8px; display: grid; place-items: center; font-weight: 700; background: var(--mb); color: var(--mc); }
+  .nx-mono { font-family: var(--mono); font-size: 0.78rem; color: var(--mc); }
+  .nx-mod p { padding: 1rem 1.3rem 1.3rem; font-size: 0.92rem; }
+
+  .gov-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; margin-top: 2.5rem; }
+  .nx-card { background: var(--cv); border: 1px solid var(--hair); border-left: 3px solid var(--lc, var(--teal)); border-radius: 12px; padding: 1.3rem 1.4rem; }
+  .nx-card--red { --lc: var(--red); }
+  .nx-card--coral { --lc: var(--coral); }
+  .nx-card p { font-size: 0.92rem; margin-top: 0.4rem; }
+
   .outcome-note { margin-top: 2.5rem; max-width: 60ch; }
-  .outcome .btn { margin-top: 1.5rem; }
-  @media (max-width: 800px) {
-    .problem-grid { grid-template-columns: 1fr; }
-  }
+  .nx-btn { display: inline-flex; margin-top: 1.5rem; background: var(--coral); color: #fff; font-weight: 600; padding: 0.7rem 1.3rem; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
+  .nx-btn:hover { background: var(--coral-d); }
+
+  @media (max-width: 1000px) { .nx-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tier-grid, .gov-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 800px) { .problem-grid { grid-template-columns: 1fr; } .nx-slides figcaption a { margin-left: 0; } }
+  @media (max-width: 480px) { .nx-kpis { grid-template-columns: 1fr; } }
 </style>

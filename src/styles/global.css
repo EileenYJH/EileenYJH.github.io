@@ -23,7 +23,7 @@
 }
 
 /* Per-project themes, set via <html data-theme> from BaseLayout.
-   ARIA: deep teal, from the team's Makerthon slides. NEXA: teal (trade compliance).
+   ARIA: deep teal, from the team's Makerthon slides. NEXA: coral on cream, from the team's prototype.
    AWS-IQ: amber (AWS orange). All meet AA contrast on paper. */
 [data-theme='aria'] {
   --accent: #0F5B55;
@@ -31,9 +31,9 @@
   --accent-soft: #DDEFEB;
 }
 [data-theme='nexa'] {
-  --accent: #0F766E;
-  --accent-rgb: 15, 118, 110;
-  --accent-soft: #D8EEEA;
+  --accent: #A9583E;
+  --accent-rgb: 169, 88, 62;
+  --accent-soft: #F3E4DC;
 }
 [data-theme='aws'] {
   --accent: #B45309;

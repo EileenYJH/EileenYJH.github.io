@@ -29,6 +29,7 @@ const {
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <slot name="head" />
   </head>
   <body>
     <Nav overlay={overlayNav} />
