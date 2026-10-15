@@ -53,9 +53,10 @@ const short = (u: string) => u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/
 
     <article class="cv-sheet" id="cv">
       <header class="cv-head">
-        <div>
+        <img class="cv-photo" src="/images/eileen.jpg" alt="Eileen Yeoh Jing Han" width="96" height="96" />
+        <div class="cv-id">
           <h2 class="cv-name">Eileen Yeoh Jing Han</h2>
-          <p class="cv-role">Electrical and Electronics Engineering undergraduate · Universiti Teknologi PETRONAS</p>
+          <p class="cv-role">Electrical and Electronics Engineering undergraduate<br />Universiti Teknologi PETRONAS (UTP)</p>
         </div>
         <ul class="cv-contact">
           <li><a href={`mailto:${EMAIL}`}>{EMAIL}</a></li>
@@ -163,7 +164,9 @@ const short = (u: string) => u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/
     padding: 16mm 15mm; box-shadow: 0 30px 70px -40px rgba(20, 22, 28, 0.45), 0 0 0 1px var(--cv-line);
     font-family: 'Inter Variable', 'Inter', system-ui, sans-serif; font-size: 9.2pt; line-height: 1.38;
   }
-  .cv-head { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-end; border-bottom: 2px solid var(--cv-ink); padding-bottom: 4mm; }
+  .cv-head { display: flex; gap: 5mm; align-items: center; border-bottom: 2px solid var(--cv-ink); padding-bottom: 4mm; }
+  .cv-photo { width: 26mm; height: 26mm; border-radius: 50%; object-fit: cover; object-position: 50% 30%; flex: none; border: 2px solid var(--cv-line); }
+  .cv-id { flex: 1; min-width: 0; }
   .cv-name { font-size: 20pt; line-height: 1.1; letter-spacing: -0.01em; color: var(--cv-ink); }
   .cv-role { color: var(--cv-mut); margin-top: 1mm; font-size: 10pt; }
   .cv-contact { list-style: none; padding: 0; margin: 0; text-align: right; font-size: 8.6pt; flex: none; }
