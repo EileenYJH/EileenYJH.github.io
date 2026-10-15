@@ -1,0 +1,206 @@
+---
+// CV / resume built from the same data as the rest of the site, so it never
+// drifts out of date. "Download PDF" prints just the A4 sheet; the switches
+// choose which sections go in.
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { timeline } from '../data/timeline';
+
+const SITE = 'https://eileenyjh.github.io';
+const EMAIL = 'eileenyeoh06@gmail.com';
+const LINKEDIN = 'https://www.linkedin.com/in/eileen-yeoh-jing-han-7ba86a214/';
+const GITHUB = 'https://github.com/EileenYJH';
+
+const semesters = timeline.filter((m) => m.kind === 'study' && m.cgpa);
+const latest = semesters[semesters.length - 1];
+const courses = semesters.flatMap((s) => s.courses ?? []);
+const allA = courses.every((c) => c.grade === 'A');
+
+const awards = timeline.filter((m) => m.kind === 'award' && !m.academic).reverse();
+const competitions = timeline.filter((m) => m.kind === 'competition').reverse();
+const events = timeline.filter((m) => m.kind === 'event').reverse();
+const leadership = timeline.find((m) => m.kind === 'now')?.chips ?? [];
+const exchange = timeline.find((m) => /Sheffield/.test(m.title));
+const foundation = timeline.find((m) => /Foundation/.test(m.title));
+const scholar = timeline.find((m) => /PESP/.test(m.title));
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order).map((p) => {
+  const [name, ...rest] = p.data.title.split(': ');
+  return { name, what: rest.join(': '), summary: p.data.summary, tags: p.data.tags, href: p.data.href };
+});
+const skills = [...new Set(projects.flatMap((p) => p.tags))];
+const short = (u: string) => u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+---
+<BaseLayout title="CV | Eileen Yeoh Jing Han" description="Eileen Yeoh Jing Han's CV, generated from her portfolio. Download it as a PDF.">
+  <div class="cv-page">
+    <div class="cv-tools wrap">
+      <div>
+        <p class="eyebrow">Curriculum vitae</p>
+        <h1>My CV</h1>
+        <p class="muted">Built live from this portfolio. Pick the sections, then download it as an A4 PDF.</p>
+      </div>
+      <div class="cv-controls">
+        <fieldset>
+          <legend>Include</legend>
+          {[['projects', 'Projects'], ['awards', 'Awards and competitions'], ['leadership', 'Leadership'], ['events', 'Events and activities'], ['courses', 'Coursework'], ['skills', 'Skills']].map(([k, l]) => (
+            <label><input type="checkbox" data-toggle={k} checked={k !== 'courses'} /> {l}</label>
+          ))}
+        </fieldset>
+        <button type="button" class="cv-btn" data-print>Download PDF</button>
+        <p class="cv-hint muted">In the print window, choose “Save as PDF”.</p>
+      </div>
+    </div>
+
+    <article class="cv-sheet" id="cv">
+      <header class="cv-head">
+        <div>
+          <h2 class="cv-name">Eileen Yeoh Jing Han</h2>
+          <p class="cv-role">Electrical and Electronics Engineering undergraduate · Universiti Teknologi PETRONAS</p>
+        </div>
+        <ul class="cv-contact">
+          <li><a href={`mailto:${EMAIL}`}>{EMAIL}</a></li>
+          <li><a href={LINKEDIN}>{short(LINKEDIN)}</a></li>
+          <li><a href={GITHUB}>{short(GITHUB)}</a></li>
+          <li><a href={SITE}>{short(SITE)}</a></li>
+        </ul>
+      </header>
+
+      <section class="cv-sec">
+        <h3>Education</h3>
+        <div class="cv-item">
+          <div class="cv-row"><strong>Bachelor of Electrical and Electronics Engineering with Honours</strong><span>Sep 2025 to present</span></div>
+          <div class="cv-row cv-sub"><span>Universiti Teknologi PETRONAS (UTP), Malaysia</span><span>CGPA {latest?.cgpa}</span></div>
+          <ul>
+            <li>Dean’s List every semester{allA ? `, grade A in all ${courses.length} degree courses so far` : ''}.</li>
+            {scholar && <li>{scholar.title}.</li>}
+          </ul>
+        </div>
+        {exchange && (
+          <div class="cv-item">
+            <div class="cv-row"><strong>Student exchange</strong><span>{exchange.date}</span></div>
+            <div class="cv-row cv-sub"><span>University of Sheffield, United Kingdom</span></div>
+          </div>
+        )}
+        {foundation && (
+          <div class="cv-item">
+            <div class="cv-row"><strong>Foundation in Electrical & Electronics Engineering</strong><span>{foundation.date}</span></div>
+            <div class="cv-row cv-sub"><span>Universiti Teknologi PETRONAS (UTP)</span><span>CGPA 4.00</span></div>
+            <ul><li>{foundation.detail}</li></ul>
+          </div>
+        )}
+        <div class="cv-item" data-sec="courses">
+          <p class="cv-label">Coursework</p>
+          <p class="cv-inline">{courses.map((c) => `${c.name} (${c.grade})`).join(' · ')}</p>
+        </div>
+      </section>
+
+      <section class="cv-sec" data-sec="projects">
+        <h3>Projects</h3>
+        {projects.map((p) => (
+          <div class="cv-item">
+            <div class="cv-row"><strong>{p.name}{p.what && <span class="cv-what">: {p.what}</span>}</strong>{p.href && <a href={`${SITE}${p.href}`}>{short(SITE)}{p.href}</a>}</div>
+            <p>{p.summary}</p>
+          </div>
+        ))}
+      </section>
+
+      <section class="cv-sec" data-sec="awards">
+        <h3>Awards and competitions</h3>
+        <ul class="cv-list">
+          {[...awards, ...competitions].map((m) => (
+            <li><div class="cv-row"><strong>{m.title}</strong><span>{m.date}</span></div>{m.detail && <p>{m.detail}</p>}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="cv-sec" data-sec="leadership">
+        <h3>Leadership</h3>
+        <ul class="cv-bullets">{leadership.map((l) => <li>{l}</li>)}</ul>
+      </section>
+
+      <section class="cv-sec" data-sec="events">
+        <h3>Events and activities</h3>
+        <ul class="cv-list">
+          {events.map((m) => (
+            <li><div class="cv-row"><strong>{m.title}</strong><span>{m.date}</span></div></li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="cv-sec" data-sec="skills">
+        <h3>Skills</h3>
+        <p class="cv-inline">{skills.join(' · ')}</p>
+      </section>
+    </article>
+  </div>
+</BaseLayout>
+
+<script>
+  const root = document.querySelector<HTMLElement>('#cv')!;
+  document.querySelectorAll<HTMLInputElement>('[data-toggle]').forEach((box) => {
+    const apply = () => root.querySelectorAll<HTMLElement>(`[data-sec="${box.dataset.toggle}"]`).forEach((el) => (el.hidden = !box.checked));
+    box.addEventListener('change', apply); apply();
+  });
+  document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+</script>
+
+<style>
+  .cv-page { padding: 7rem 0 4rem; background: var(--paper); }
+  .cv-tools { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .cv-tools h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); }
+  .cv-controls { display: flex; flex-direction: column; gap: 0.8rem; align-items: flex-start; }
+  .cv-controls fieldset { border: 1px solid var(--line); border-radius: 12px; padding: 0.7rem 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; max-width: 520px; }
+  .cv-controls legend { font-size: 0.75rem; font-weight: 650; text-transform: uppercase; letter-spacing: 0.08em; padding: 0 0.3rem; color: var(--muted); }
+  .cv-controls label { font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; }
+  .cv-btn { background: var(--ink); color: var(--paper); border: 0; border-radius: 999px; padding: 0.75rem 1.5rem; font-weight: 700; font-size: 0.95rem; cursor: pointer; }
+  .cv-btn:hover { background: var(--accent); }
+  .cv-hint { font-size: 0.8rem; margin: 0; }
+
+  /* The A4 sheet */
+  .cv-sheet {
+    --cv-ink: #14161c; --cv-mut: #4b5160; --cv-acc: #1f4fa3; --cv-line: #d9dde6;
+    width: min(210mm, calc(100% - 2rem)); margin: 0 auto; background: #fff; color: var(--cv-ink);
+    padding: 16mm 15mm; box-shadow: 0 30px 70px -40px rgba(20, 22, 28, 0.45), 0 0 0 1px var(--cv-line);
+    font-family: 'Inter Variable', 'Inter', system-ui, sans-serif; font-size: 9.2pt; line-height: 1.38;
+  }
+  .cv-head { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-end; border-bottom: 2px solid var(--cv-ink); padding-bottom: 4mm; }
+  .cv-name { font-size: 20pt; line-height: 1.1; letter-spacing: -0.01em; color: var(--cv-ink); }
+  .cv-role { color: var(--cv-mut); margin-top: 1mm; font-size: 10pt; }
+  .cv-contact { list-style: none; padding: 0; margin: 0; text-align: right; font-size: 8.8pt; }
+  .cv-contact a, .cv-row a { color: var(--cv-acc); text-decoration: none; }
+  .cv-sec { margin-top: 4mm; }
+  .cv-sec h3 { font-size: 10.5pt; text-transform: uppercase; letter-spacing: 0.1em; color: var(--cv-acc); border-bottom: 1px solid var(--cv-line); padding-bottom: 1mm; margin-bottom: 2.2mm; }
+  .cv-item { margin-bottom: 2mm; break-inside: avoid; }
+  .cv-row { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; }
+  .cv-row > span, .cv-row > a { flex: none; font-size: 8.8pt; color: var(--cv-mut); }
+  .cv-sub { color: var(--cv-mut); font-style: italic; }
+  .cv-what { font-weight: 400; color: var(--cv-mut); }
+  .cv-sheet p, .cv-sheet li { max-width: none; }
+  .cv-item p, .cv-list p { margin-top: 0.6mm; color: #2c313b; }
+  .cv-item ul, .cv-bullets { margin: 0.8mm 0 0; padding-left: 4.5mm; }
+  .cv-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.4mm; }
+  .cv-list li { break-inside: avoid; }
+  .cv-bullets { columns: 2; column-gap: 8mm; }
+  .cv-bullets li { break-inside: avoid; margin-bottom: 0.6mm; }
+  .cv-label { font-weight: 700; margin-top: 1mm; }
+  .cv-inline { color: #2c313b; }
+  [hidden] { display: none !important; }
+
+  @media (max-width: 700px) {
+    .cv-sheet { padding: 8mm 6mm; }
+    .cv-head, .cv-row { flex-direction: column; align-items: flex-start; gap: 0.2rem; }
+    .cv-contact { text-align: left; }
+    .cv-bullets { columns: 1; }
+  }
+
+  @page { size: A4; margin: 11mm 12mm; }
+  @media print {
+    :global(.nav-bar), :global(.footer), .cv-tools { display: none !important; }
+    :global(html), :global(body), .cv-page { background: #fff !important; background-image: none !important; }
+    :global(body)::before, :global(body)::after, :global(html)::before, :global(html)::after { display: none !important; }
+    .cv-page { padding: 0; }
+    .cv-sheet { width: auto; padding: 0; box-shadow: none; margin: 0; }
+    .cv-sec h3 { break-after: avoid; }
+    :global(*) { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
