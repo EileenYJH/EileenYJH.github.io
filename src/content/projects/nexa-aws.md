@@ -5,6 +5,8 @@ tags: [Amazon Bedrock, multi-agent AI, serverless, DynamoDB]
 flagship: false
 href: /projects/nexa-aws
 order: 3
+color: "#B45309"
+context: "AWS x UTP GenAI Hackathon · 2nd place"
 ---
 
 AWS-IQ is a serverless, event-driven, multi-agent onboarding system built for

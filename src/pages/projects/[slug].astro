@@ -1,0 +1,187 @@
+---
+// Generated project page, built straight from the registry
+// (src/content/projects/<id>.md). It is only used for projects that don't
+// have a hand-built page next to this file: those always win. Sections
+// appear only when their field is filled in, so nothing is padded out.
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectHero from '../../components/project/ProjectHero.astro';
+import { builtProjects, splitTitle, DEFAULT_COLOR, type Project } from '../../lib/projects';
+
+export async function getStaticPaths() {
+  const bespoke = new Set(
+    Object.keys(import.meta.glob('./*.astro')).map((f) => f.replace(/^\.\/|\.astro$/g, '')),
+  );
+  return (await builtProjects())
+    .filter((p) => !bespoke.has(p.id) && (p.data.href ?? `/projects/${p.id}`) === `/projects/${p.id}`)
+    .map((p) => ({ params: { slug: p.id }, props: { project: p } }));
+}
+
+interface Props { project: Project }
+const { project } = Astro.props;
+const d = project.data;
+const { Content } = await render(project);
+const { name, what } = splitTitle(d.title);
+
+const color = d.color ?? DEFAULT_COLOR;
+const rgb = [1, 3, 5].map((i) => parseInt(color.slice(i, i + 2), 16)).join(', ');
+const vars = `--accent:${color};--accent-rgb:${rgb};--accent-soft:color-mix(in srgb, ${color} 13%, #fff);`;
+
+const [hero, ...gallery] = d.images;
+const year = d.completed?.slice(0, 4);
+const eyebrow = [d.context, year].filter(Boolean).join(' · ');
+const stack = d.technologies.length ? d.technologies : d.tags;
+const links = [
+  d.demo && { href: d.demo, label: 'Live demo' },
+  d.repo && { href: d.repo, label: 'Source on GitHub' },
+  d.post && { href: d.post, label: 'LinkedIn post' },
+].filter(Boolean) as { href: string; label: string }[];
+const hasBody = project.body?.trim().length;
+---
+<BaseLayout
+  title={`${name} | Eileen Yeoh`}
+  description={d.summary}
+>
+  <div class="gp" style={vars}>
+    {hero ? (
+      <ProjectHero img={hero.src} alt={hero.alt} caption={hero.caption ?? ''} post={d.post} demo={d.demo} event={color}>
+        {eyebrow && <p class="eyebrow gp-hero-eyebrow">{eyebrow}</p>}
+        <h1>{name}</h1>
+      </ProjectHero>
+    ) : null}
+
+    <section class:list={['section', 'wrap', 'gp-intro', { 'gp-intro--first': !hero }]}>
+      {!hero && eyebrow && <p class="eyebrow" data-reveal>{eyebrow}</p>}
+      {!hero && <h1 data-split>{name}</h1>}
+      {what && <p class="gp-what" data-reveal>{what}</p>}
+      <p class="gp-tagline" data-reveal>{d.tagline ?? d.summary}</p>
+      {d.tags.length > 0 && (
+        <ul class="gp-tags" data-reveal>{d.tags.map((t) => <li>{t}</li>)}</ul>
+      )}
+      {links.length > 0 && (
+        <div class="gp-links" data-reveal>
+          {links.map((l) => <a class="btn btn--ghost" href={l.href} target="_blank" rel="noopener">{l.label} ↗</a>)}
+        </div>
+      )}
+    </section>
+
+    {d.problem && (
+      <section class="section wrap gp-sec">
+        <p class="eyebrow" data-reveal>The problem</p>
+        <p class="gp-lead" data-reveal>{d.problem}</p>
+      </section>
+    )}
+
+    {(d.role || d.contributions.length > 0 || d.team.length > 0) && (
+      <section class="section wrap gp-sec">
+        <p class="eyebrow" data-reveal>My role</p>
+        {d.role && <p class="gp-lead" data-reveal>{d.role}</p>}
+        {d.contributions.length > 0 && (
+          <ul class="gp-list" data-reveal>{d.contributions.map((c) => <li>{c}</li>)}</ul>
+        )}
+        {d.team.length > 0 && <p class="muted gp-team" data-reveal>Team: {d.team.join(', ')}</p>}
+      </section>
+    )}
+
+    {(d.implementation || hasBody) && (
+      <section class="section wrap gp-sec">
+        <p class="eyebrow" data-reveal>How it works</p>
+        {d.implementation && <p class="gp-lead" data-reveal>{d.implementation}</p>}
+        {hasBody && <div class="gp-body" data-reveal><Content /></div>}
+      </section>
+    )}
+
+    {d.results.length > 0 && (
+      <section class="section wrap gp-sec">
+        <p class="eyebrow" data-reveal>Results</p>
+        <div class="gp-results">
+          {d.results.map((r, i) => (
+            <div class="card gp-result" data-reveal data-reveal-delay={i * 0.06}>
+              <p>{r.text}</p>
+              {r.source && <p class="gp-source">Source: {r.source}</p>}
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {(d.challenges.length > 0 || d.learnings.length > 0) && (
+      <section class="section wrap gp-sec gp-two">
+        {d.challenges.length > 0 && (
+          <div data-reveal>
+            <p class="eyebrow">What was hard</p>
+            <ul class="gp-list">{d.challenges.map((c) => <li>{c}</li>)}</ul>
+          </div>
+        )}
+        {d.learnings.length > 0 && (
+          <div data-reveal>
+            <p class="eyebrow">What I learned</p>
+            <ul class="gp-list">{d.learnings.map((c) => <li>{c}</li>)}</ul>
+          </div>
+        )}
+      </section>
+    )}
+
+    {gallery.length > 0 && (
+      <section class="section wrap gp-sec">
+        <p class="eyebrow" data-reveal>Gallery</p>
+        <div class="gp-gallery">
+          {gallery.map((g) => (
+            <figure class="card gp-fig" data-reveal>
+              <img src={g.src} alt={g.alt} loading="lazy" decoding="async" />
+              {g.caption && <figcaption class="muted">{g.caption}</figcaption>}
+            </figure>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {stack.length > 0 && (
+      <section class="section wrap gp-sec">
+        <p class="eyebrow" data-reveal>Built with</p>
+        <ul class="gp-tags gp-stack" data-reveal>{stack.map((t) => <li>{t}</li>)}</ul>
+      </section>
+    )}
+
+    <section class="section wrap gp-back">
+      <a class="btn" href="/projects">← All projects</a>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .gp-intro--first h1 { font-size: clamp(2.6rem, 8vw, 5.6rem); max-width: none; }
+  .gp-hero-eyebrow { color: #fff; }
+  .gp-hero-eyebrow::before { background: #fff; }
+  .gp-what { font-size: 1.15rem; font-weight: 600; color: var(--steel); margin-top: 0.6rem; }
+  .gp-tagline { font-size: 1.3rem; margin-top: 1rem; }
+  .gp-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
+  .gp-tags li {
+    font-size: 0.8rem;
+    font-weight: 550;
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+  }
+  .gp-tags li:first-child { background: var(--accent-soft); border-color: transparent; color: var(--accent); font-weight: 650; }
+  .gp-links { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.8rem; }
+  .gp-sec { padding-block: clamp(2.5rem, 6vh, 4.5rem); }
+  .gp-lead { font-size: 1.15rem; line-height: 1.65; margin-top: 0.8rem; }
+  .gp-list { margin-top: 0.8rem; padding-left: 1.2rem; display: grid; gap: 0.5rem; line-height: 1.6; }
+  .gp-team { margin-top: 1rem; font-size: 0.95rem; }
+  .gp-body { margin-top: 1rem; line-height: 1.7; }
+  .gp-body :global(p + p) { margin-top: 1rem; }
+  .gp-results { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 1rem; margin-top: 1.2rem; }
+  .gp-result p:first-child { font-weight: 600; line-height: 1.5; }
+  .gp-source { margin-top: 0.6rem; font-size: 0.8rem; color: var(--muted); }
+  .gp-two { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  .gp-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 1rem; margin-top: 1.2rem; }
+  .gp-fig { padding: 0.6rem; margin: 0; }
+  .gp-fig img { border-radius: calc(var(--radius) - 6px); width: 100%; }
+  .gp-fig figcaption { font-size: 0.85rem; margin-top: 0.6rem; padding-inline: 0.3rem; }
+  .gp-back { padding-top: 0; }
+  @media (max-width: 760px) {
+    .gp-two { grid-template-columns: 1fr; }
+  }
+</style>

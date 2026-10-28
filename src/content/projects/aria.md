@@ -5,6 +5,8 @@ tags: [ESP32, ESP-NOW, sensor fusion, embedded C++]
 flagship: true
 href: /projects/aria
 order: 1
+color: "#0F5B55"
+context: "USM IEEE Makerthon 2026"
 ---
 
 ARIA is a two-tier wireless fire-safety system: one hub, up to six sensor

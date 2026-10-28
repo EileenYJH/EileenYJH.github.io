@@ -5,6 +5,8 @@ tags: [LangChain, Azure OpenAI, SAP integration, trade compliance]
 flagship: true
 href: /projects/nexa
 order: 2
+color: "#1468B8"
+context: "Jabil IT ECP Bootcamp 3.0 · Champion"
 ---
 
 NEXA is a proof-of-concept AI middleware layer sitting between SAP S/4HANA

@@ -5,6 +5,8 @@ tags: [MyDigital ID, biometric consent, verifiable credentials, React Native]
 flagship: false
 href: /projects/mymula
 order: 7
+color: "#1F5FD9"
+context: "NexG GodamLah! 2.0 · Team VeriTech"
 ---
 
 MyMULA was Team VeriTech's entry to NexG GodamLah! 2.0 (Innovation Track).

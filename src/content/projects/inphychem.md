@@ -5,6 +5,8 @@ tags: [Faraday's law, magnetic nanoparticles, Pelton turbine, sustainability]
 flagship: false
 href: /projects/inphychem
 order: 8
+color: "#11676A"
+context: "InPhyChem District · Best Integrated Concept"
 ---
 
 Chemistry II and Physics II integrated project, May semester 2025, for the InPhyChem District "Towards Sustainable Cities" showcase.

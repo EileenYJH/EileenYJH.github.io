@@ -1,25 +1,16 @@
 ---
-import { getCollection } from 'astro:content';
+import { listedProjects, projectHref, splitTitle, DEFAULT_COLOR } from '../../lib/projects';
 
-// Each project keeps the colour of its own page.
-const projectMeta: Record<string, { color: string; context: string }> = {
-  '/projects/aria': { color: '#0F5B55', context: 'USM IEEE Makerthon 2026' },
-  '/projects/nexa': { color: '#1468B8', context: 'Jabil IT ECP Bootcamp 3.0 · Champion' },
-  '/projects/nexa-aws': { color: '#B45309', context: 'AWS x UTP GenAI Hackathon · 2nd place' },
-  '/projects/sedic': { color: '#6D28D9', context: 'SEDIC 2026 · Track 1 winner' },
-  '/projects/mosfet': { color: '#138A8A', context: 'Cleanroom lab, UTP' },
-  '/projects/mymula': { color: '#1F5FD9', context: 'NexG GodamLah! 2.0 · Team VeriTech' },
-  '/projects/inphychem': { color: '#11676A', context: 'InPhyChem District · Best Integrated Concept' },
-  '/projects/power-supply': { color: '#15803D', context: 'Electronics lab, UTP' },
-};
-
-const projects = (await getCollection('projects'))
-  .sort((a, b) => a.data.order - b.data.order)
-  .map((p) => {
-    const [name, ...rest] = p.data.title.split(': ');
-    const href = p.data.href ?? '/projects';
-    return { name, what: rest.join(': '), summary: p.data.summary, tags: p.data.tags, href, ...projectMeta[href] };
-  });
+// Colour and context line come from each project's frontmatter, so each row
+// keeps the colour of its own page.
+const projects = (await listedProjects()).map((p) => ({
+  ...splitTitle(p.data.title),
+  summary: p.data.summary,
+  tags: p.data.tags,
+  href: projectHref(p),
+  color: p.data.color ?? DEFAULT_COLOR,
+  context: p.data.context,
+}));
 ---
 <ul class="work-list">
   {projects.map((p, i) => (
@@ -27,7 +18,7 @@ const projects = (await getCollection('projects'))
       <a class="work-row" href={p.href} style={`--c:${p.color}`}>
         <span class="work-swatch" aria-hidden="true"></span>
         <span class="work-main">
-          <span class="work-context">{p.context}</span>
+          {p.context && <span class="work-context">{p.context}</span>}
           <span class:list={['work-name', { 'work-name--long': p.name.length > 24 }]}>{p.name}</span>
           <span class="work-what">{p.what}</span>
         </span>
