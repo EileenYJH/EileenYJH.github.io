@@ -10,6 +10,9 @@ import CountryMap from '../../components/hormuz/CountryMap.astro';
 import ModelLab from '../../components/hormuz/ModelLab.astro';
 import IndustryBars from '../../components/hormuz/IndustryBars.astro';
 import ScreenTabs from '../../components/hormuz/ScreenTabs.astro';
+import '@fontsource/pixelify-sans/500.css';
+import '@fontsource/pixelify-sans/600.css';
+import '@fontsource/vt323/400.css';
 
 const entry = (await getEntry('projects', 'oxhack26-hormuz-flow'))!;
 const d = entry.data;
@@ -60,16 +63,18 @@ const mine = d.contributions.map((c) => {
   title="Hormuz Flow: an oil shock, country by country | Eileen Yeoh"
   description={d.summary}
 >
-  <ProjectHero img={hero.src} alt={hero.alt} caption={hero.caption ?? ''} focus={hero.focus} post={d.post} demo={d.demo} event="#F59E0B">
-    <p class="eyebrow" data-reveal>Project 09 · 2026 · OxHack 26, Oxford</p>
-    <h1>Hormuz Flow</h1>
+  <div class="hz-herowrap">
+  <ProjectHero img={hero.src} alt={hero.alt} caption={hero.caption ?? ''} focus={hero.focus} post={d.post} demo={d.demo} event="#FFA424">
+    <p class="eyebrow hz-hero-eyebrow" data-reveal>Project 09 · 2026 · OxHack 26, Oxford</p>
+    <h1 class="hz-h1">Hormuz Flow</h1>
     <p class="hz-tagline" data-reveal>Follow the missing oil from the strait to the price of diesel, the grocery bill and the cost of living, country by country.</p>
     <ul class="hz-tags" data-reveal>
       {['Team of four · 2-day hackathon', '175 countries', 'Every number sourced', 'Python models', 'Gemini, number-checked'].map((t) => <li>{t}</li>)}
     </ul>
   </ProjectHero>
+  </div>
 
-  <div class="hz">
+  <div class="hz hz-app">
     <section class="wrap hz-sec hz-intro">
       <div class="hz-intro-grid">
         <div>
@@ -189,10 +194,37 @@ const mine = d.contributions.map((c) => {
 </BaseLayout>
 
 <style>
+  /* The hero darkens into the app's navy rather than the accent. */
+  .hz-herowrap { --accent: #121A2D; }
+  .hz-hero-eyebrow { color: #FFA424 !important; }
+  .hz-hero-eyebrow::before { background: #FFA424 !important; }
+  .hz-h1 { font-family: 'Pixelify Sans', 'Trebuchet MS', system-ui, sans-serif !important; font-weight: 600 !important; letter-spacing: 0 !important; }
   .hz-tagline { font-size: clamp(1.05rem, 1.6vw, 1.3rem); max-width: 40rem; margin-top: 1rem; color: rgba(255, 255, 255, 0.92); }
   .hz-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.2rem; }
   .hz-tags li { font-size: 0.78rem; font-weight: 600; padding: 0.3rem 0.8rem; border-radius: 999px; background: rgba(255, 255, 255, 0.14); color: #fff; border: 1px solid rgba(255, 255, 255, 0.28); backdrop-filter: blur(4px); }
 
+  /* The app's own palette and type (ui/app/src/theme.css in the team repo). */
+  .hz-app {
+    --paper: #0A0E1C; --paper-raised: #121A2D; --ink: #F1E8D2; --muted: #C4BAA3; --line: #27324C; --steel: #8FBBE3;
+    --accent: #FFA424; --accent-rgb: 255, 164, 36; --accent-soft: #2A2112; --on-accent: #0A0E1C;
+    --seen: #5AA9FF; --model: #C09BFF; --model-soft: #221D36; --ok: #6FE39A; --hurt: #FF6B4D;
+    --hz-empty: #1A2439; --hz-track: #1A2439; --hz-edge: #3D4C6E; --hz-sea: #0B2240;
+    --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 12px 32px rgba(0, 0, 0, 0.35);
+    --shadow-card-hover: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 18px 44px rgba(0, 0, 0, 0.45);
+    --font-pix: 'Pixelify Sans', 'Trebuchet MS', system-ui, sans-serif;
+    --font-num: 'VT323', ui-monospace, Menlo, Consolas, monospace;
+    background-color: var(--paper);
+    background-image: linear-gradient(rgba(90, 169, 255, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(90, 169, 255, 0.045) 1px, transparent 1px);
+    background-size: 44px 44px;
+    color: var(--ink);
+  }
+  .hz-app h2, .hz-app h3 { color: var(--ink); }
+  .hz-app h2 { font-family: var(--font-pix); font-weight: 600; letter-spacing: 0; }
+  .hz-app :global(.btn) { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .hz-app :global(.btn--ghost) { background: transparent; border-color: var(--line); color: var(--ink); }
+  .hz-app :global(.btn--ghost:hover) { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .hz-app :global(button) { color: var(--ink); }
+  .hz-app :global(select) { color: var(--ink); background: var(--paper-raised); border-color: var(--line); }
   .hz-sec { padding-block: clamp(2.8rem, 7vh, 4.8rem); }
   .hz-sec + .hz-sec { border-top: 1px solid var(--line); }
   .hz h2 { max-width: 22ch; }
@@ -205,7 +237,7 @@ const mine = d.contributions.map((c) => {
   .hz-links { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; }
   .hz-facts { display: grid; gap: 0.7rem; }
   .hz-fact { display: grid; gap: 0.2rem; padding: 1rem 1.1rem; border-radius: 14px; background: var(--paper-raised); border: 1px solid var(--line); border-left: 4px solid var(--accent); }
-  .hz-fact b { font-family: var(--font-display); font-size: clamp(1.7rem, 3vw, 2.3rem); color: var(--accent); line-height: 1.05; }
+  .hz-fact b { font-family: var(--font-num); font-size: clamp(2.2rem, 3.8vw, 3rem); color: var(--accent); line-height: 1.05; }
   .hz-fact b small { font-size: 0.5em; margin-left: 0.25rem; color: var(--steel); }
   .hz-fact span { font-size: 0.9rem; line-height: 1.45; }
   .hz-fact em { font-style: normal; font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
@@ -228,7 +260,7 @@ const mine = d.contributions.map((c) => {
   .hz-gem { list-style: none; padding: 0; margin-top: 1rem; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.8rem; }
   .hz-gem li { position: relative; display: grid; grid-template-columns: 2rem 1fr; gap: 0.8rem; align-items: start; padding: 1.1rem; }
   .hz-gem li + li::before { content: '→'; position: absolute; left: -0.4rem; top: 50%; transform: translate(-50%, -50%); color: var(--accent); font-weight: 700; }
-  .hz-gk { width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.9rem; }
+  .hz-gk { width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--on-accent); font-weight: 700; font-size: 0.9rem; }
   .hz-gem b { font-size: 0.95rem; }
   .hz-gem p { font-size: 0.86rem; color: var(--muted); line-height: 1.5; margin-top: 0.15rem; }
 
