@@ -49,6 +49,28 @@ challenges:
 repo: https://github.com/Alex-Sebastian-Ene/oxhack
 demo: https://alex-sebastian-ene.github.io/oxhack/
 post: https://www.linkedin.com/feed/update/urn:li:activity:7521157386674425856/
+links:
+  - label: Devpost
+    href: https://devpost.com/software/hormuz-flow
+screenshots:
+  - src: /images/projects/oxhack26-hormuz-flow/app-globe.jpg
+    alt: Hormuz Flow World view, a 3D globe with countries coloured by exposure and a panel for setting the oil flow lost through the strait
+    caption: "World view. Set how much of the strait's oil is lost (or replay 2026), and the app works out Brent, then fuel, food and inflation, and colours each country by exposure."
+  - src: /images/projects/oxhack26-hormuz-flow/app-globe-plastics.jpg
+    alt: The globe with the plastics product layer selected, highlighting the countries that depend on Gulf plastics
+    caption: Product layers on the globe, here plastics, show which countries' supply runs through the strait. This is part of the industry view I built.
+  - src: /images/projects/oxhack26-hormuz-flow/app-strait.jpg
+    alt: The Strait view, a map of the Strait of Hormuz with simulated tanker routes and counts of ships with trackers on and off
+    caption: "Strait view: a simulation of tankers crossing the strait, including the ones that switch their trackers off."
+  - src: /images/projects/oxhack26-hormuz-flow/app-households.jpg
+    alt: The Households view, with charts of real pay against prices since 2019 and the forecast change in household costs by region
+    caption: "Households view: pay against prices since 2019, and which households are hit hardest."
+  - src: /images/projects/oxhack26-hormuz-flow/app-models.jpg
+    alt: The Models view, cards for each model with its headline results, how it was tested and what it can't do
+    caption: "Models view: one card per model, with the question it answers, its headline results, how it was tested and its limits."
+  - src: /images/projects/oxhack26-hormuz-flow/app-landing.jpg
+    alt: The Hormuz Flow landing page, a pixel-art night scene of the strait with headline figures for oil flow
+    caption: The landing page, with the headline figures for how much oil is still getting through.
 images:
   - src: /images/projects/oxhack26-hormuz-flow/team.jpg
     alt: The Hormuz Flow team of four at OxHack 26, in front of the sponsors banner

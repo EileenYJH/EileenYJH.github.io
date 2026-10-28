@@ -42,6 +42,8 @@ validated in `src/content.config.ts`; a build fails if one is wrong.
 | `results` | `{ text, source }` cards. Only results with evidence. |
 | `challenges`, `learnings` | "What was hard" / "What I learned". |
 | `repo`, `demo`, `post` | Link buttons. `demo` only once verified working. |
+| `links` | Extra buttons as `{ label, href }`, e.g. Devpost, slides, video. |
+| `screenshots` | `{ src, alt, caption }` screenshots or diagrams of the system, shown under "How it works" (first one full width). |
 | `images` | `{ src, alt, caption }`, files in `public/`. The first is the hero. Source photos come from Drive: `Portfolio picture/<project>`. |
 | `unknowns` | Things not yet confirmed. **Never shown on the site.** |
 

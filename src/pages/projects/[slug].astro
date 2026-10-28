@@ -35,6 +35,7 @@ const links = [
   d.demo && { href: d.demo, label: 'Live demo' },
   d.repo && { href: d.repo, label: 'Source on GitHub' },
   d.post && { href: d.post, label: 'LinkedIn post' },
+  ...d.links,
 ].filter(Boolean) as { href: string; label: string }[];
 const hasBody = project.body?.trim().length;
 ---
@@ -83,10 +84,20 @@ const hasBody = project.body?.trim().length;
       </section>
     )}
 
-    {(d.implementation || hasBody) && (
+    {(d.implementation || hasBody || d.screenshots.length > 0) && (
       <section class="section wrap gp-sec">
         <p class="eyebrow" data-reveal>How it works</p>
         {d.implementation && <p class="gp-lead" data-reveal>{d.implementation}</p>}
+        {d.screenshots.length > 0 && (
+          <div class="gp-shots">
+            {d.screenshots.map((g) => (
+              <figure class="card gp-fig gp-shot" data-reveal>
+                <a href={g.src} target="_blank" rel="noopener"><img src={g.src} alt={g.alt} loading="lazy" decoding="async" /></a>
+                {g.caption && <figcaption class="muted">{g.caption}</figcaption>}
+              </figure>
+            ))}
+          </div>
+        )}
         {hasBody && <div class="gp-body" data-reveal><Content /></div>}
       </section>
     )}
@@ -180,6 +191,9 @@ const hasBody = project.body?.trim().length;
   .gp-fig { padding: 0.6rem; margin: 0; }
   .gp-fig img { border-radius: calc(var(--radius) - 6px); width: 100%; }
   .gp-fig figcaption { font-size: 0.85rem; margin-top: 0.6rem; padding-inline: 0.3rem; }
+  .gp-shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 460px), 1fr)); gap: 1.2rem; margin-top: 1.6rem; }
+  .gp-shot:first-child, .gp-shot:last-child:nth-child(even) { grid-column: 1 / -1; }
+  .gp-shot a { display: block; }
   .gp-back { padding-top: 0; }
   @media (max-width: 760px) {
     .gp-two { grid-template-columns: 1fr; }

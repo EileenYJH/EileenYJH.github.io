@@ -78,7 +78,7 @@ describe('project registry', () => {
 
   it('only references images that exist in public/', () => {
     for (const e of entries) {
-      for (const img of e.data.images ?? []) {
+      for (const img of [...(e.data.images ?? []), ...(e.data.screenshots ?? [])]) {
         expect(existsSync(join(ROOT, 'public', img.src)), `${e.id}: missing ${img.src}`).toBe(true);
         expect(img.alt?.trim(), `${e.id}: ${img.src} needs alt text`).toBeTruthy();
       }
@@ -90,6 +90,7 @@ describe('project registry', () => {
       for (const key of ['repo', 'demo', 'post']) {
         if (e.data[key]) expect(e.data[key], `${e.id}: ${key}`).toMatch(/^https:\/\//);
       }
+      for (const l of e.data.links ?? []) expect(l.href, `${e.id}: link ${l.label}`).toMatch(/^https:\/\//);
     }
   });
 

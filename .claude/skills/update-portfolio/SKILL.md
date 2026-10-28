@@ -100,6 +100,12 @@ matching the existing entries:
   Eileen says otherwise. `flagship: true` only if she asks.
 - `status`, `completed`: only if known.
 - `results`: each `{ text, source }`; the source is shown in small print.
+- `links`: extra buttons such as Devpost, slides or a video, as
+  `{ label, href }`. Check each link loads.
+- `screenshots`: screenshots or diagrams of the working system, shown in
+  "How it works" with a caption explaining what each view does. Look for them
+  on the project's Devpost gallery, in the repo, or take them from the live
+  demo. Put the most explanatory one first (it spans the full width).
 - `images`: see "Finding images" below. Save them as
   `public/images/projects/<id>/<short-name>.jpg`, write real alt text, and
   put the hero (best team or demo photo, landscape) first: it becomes the
