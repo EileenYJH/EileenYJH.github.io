@@ -102,7 +102,7 @@ const evMax = 125;
   .hz-chain { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); gap: 1.6rem 2.2rem; padding: clamp(1.2rem, 3vw, 2rem); margin-top: 1.8rem; }
   .hz-ctl { display: grid; gap: 0.8rem; align-content: start; }
   .hz-lbl { font-weight: 600; font-size: 0.95rem; }
-  .hz-lbl output { font-family: var(--font-display); font-size: 1.6rem; color: var(--accent); margin-inline: 0.2rem; }
+  .hz-lbl output { font-family: var(--font-num, var(--font-display)); font-size: 2.1rem; color: var(--accent); margin-inline: 0.2rem; }
   .hz-ctl input[type='range'] { width: 100%; accent-color: var(--accent); }
   .hz-help { font-size: 0.88rem; }
   .hz-presets, .hz-mode { display: flex; flex-wrap: wrap; gap: 0.45rem; }
@@ -113,28 +113,28 @@ const evMax = 125;
     transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   }
   .hz-presets button span { color: var(--muted); margin-left: 0.15rem; }
-  .hz-presets button[aria-pressed='true'], .hz-mode button[aria-checked='true'] { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .hz-presets button[aria-pressed='true'] span { color: rgba(255, 255, 255, 0.8); }
+  .hz-presets button[aria-pressed='true'], .hz-mode button[aria-checked='true'] { background: var(--accent); border-color: var(--accent); color: var(--on-accent, #fff); }
+  .hz-presets button[aria-pressed='true'] span { color: inherit; opacity: 0.7; }
   .hz-links { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; align-content: start; counter-reset: n; }
   .hz-node { position: relative; display: grid; gap: 0.15rem; padding: 0.9rem 0.9rem 0.8rem; border-radius: 12px; background: var(--accent-soft); }
   .hz-node + .hz-node::before { content: '→'; position: absolute; left: -0.62rem; top: 50%; transform: translate(-50%, -50%); color: var(--accent); font-weight: 700; }
   .hz-k { font-size: 0.74rem; font-weight: 650; text-transform: uppercase; letter-spacing: 0.04em; color: var(--steel); }
-  .hz-v { font-family: var(--font-display); font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 650; color: var(--accent); line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .hz-v { font-family: var(--font-num, var(--font-display)); font-size: clamp(2rem, 3.4vw, 2.6rem); font-weight: 650; color: var(--accent); line-height: 1.1; font-variant-numeric: tabular-nums; }
   .hz-s { font-size: 0.76rem; color: var(--muted); line-height: 1.35; }
   .hz-l, .hz-r { display: grid; gap: 1.2rem; align-content: start; min-width: 0; }
   .hz-plot { margin: 0; }
   .hz-plot svg { width: 100%; height: auto; display: block; }
   .hz-plot figcaption { font-size: 0.8rem; margin-top: 0.3rem; }
   .grid { stroke: var(--line); stroke-width: 1; }
-  .tick { font-size: 10px; fill: var(--muted); font-family: inherit; }
+  .tick { font-size: 13px; fill: var(--muted); font-family: var(--font-num, inherit); }
   .band { fill: rgba(var(--accent-rgb), 0.12); transition: all 0.3s ease; }
   .curve { fill: none; stroke: var(--accent); stroke-width: 2.5; }
   .vline { stroke: var(--accent); stroke-dasharray: 3 4; stroke-width: 1.2; }
-  .dot { fill: var(--accent); stroke: #fff; stroke-width: 2.5; }
+  .dot { fill: var(--accent); stroke: var(--paper); stroke-width: 2.5; }
   .hz-real { padding: 1rem; border: 1px dashed var(--line); border-radius: 12px; }
   .hz-real svg { width: 100%; height: auto; margin: 0.4rem 0; }
-  .real-line { fill: none; stroke: var(--ink); stroke-width: 2; }
-  .real-dot { fill: var(--paper-raised); stroke: var(--ink); stroke-width: 2; }
+  .real-line { fill: none; stroke: var(--seen, var(--ink)); stroke-width: 2; }
+  .real-dot { fill: var(--paper-raised); stroke: var(--seen, var(--ink)); stroke-width: 2; }
   .hz-real-cap { font-size: 0.84rem; line-height: 1.5; }
   .hz-src { font-size: 0.78rem; line-height: 1.5; }
   @media (max-width: 860px) {

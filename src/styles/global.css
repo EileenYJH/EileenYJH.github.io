@@ -68,11 +68,11 @@
   --accent-rgb: 109, 40, 217;
   --accent-soft: #ECE4FB;
 }
-/* Hormuz Flow: crude-oil red (supply shock). */
+/* Hormuz Flow: the app's own palette (oil orange on night navy). */
 [data-theme='hormuz'] {
-  --accent: #BE123C;
-  --accent-rgb: 190, 18, 60;
-  --accent-soft: #FBE4EA;
+  --accent: #C76A00;
+  --accent-rgb: 199, 106, 0;
+  --accent-soft: #FFF1DC;
 }
 
 * { box-sizing: border-box; margin: 0; }

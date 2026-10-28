@@ -28,7 +28,7 @@ const { shots } = Astro.props;
     font: inherit; font-size: 0.82rem; font-weight: 550; cursor: pointer;
     padding: 0.38rem 0.8rem; border-radius: 999px; border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink);
   }
-  .st-tabs button[aria-selected='true'] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .st-tabs button[aria-selected='true'] { background: var(--accent); border-color: var(--accent); color: var(--on-accent, #fff); }
   .st-pane { margin: 0; }
   .st-zoom { display: block; width: 100%; padding: 0; border: 0; background: #0B0F1C; border-radius: 10px; overflow: hidden; cursor: zoom-in; }
   .st-zoom img { width: 100%; height: auto; display: block; aspect-ratio: 1600 / 805; object-fit: cover; object-position: top; }
