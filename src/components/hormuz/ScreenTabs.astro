@@ -1,0 +1,60 @@
+---
+// The app's views, one at a time, with a click-to-enlarge viewer.
+interface Shot { src: string; alt: string; caption?: string; label: string }
+interface Props { shots: Shot[] }
+const { shots } = Astro.props;
+---
+<div class="st card" data-reveal>
+  <div class="st-tabs" role="tablist" aria-label="App views">
+    {shots.map((s, i) => (
+      <button type="button" role="tab" id={`st-tab-${i}`} aria-controls={`st-pane-${i}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{s.label}</button>
+    ))}
+  </div>
+  {shots.map((s, i) => (
+    <figure class="st-pane" role="tabpanel" id={`st-pane-${i}`} aria-labelledby={`st-tab-${i}`} hidden={i !== 0}>
+      <button type="button" class="st-zoom" data-src={s.src} data-alt={s.alt} aria-label={`Enlarge: ${s.label}`}>
+        <img src={s.src} alt={s.alt} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" width="1600" height="805" />
+      </button>
+      {s.caption && <figcaption class="muted">{s.caption}</figcaption>}
+    </figure>
+  ))}
+</div>
+<dialog class="st-dialog" id="st-dialog"><img alt="" id="st-dialog-img" /><p>Click or press Esc to close.</p></dialog>
+
+<style>
+  .st { padding: clamp(0.8rem, 2vw, 1.2rem); margin-top: 1.8rem; }
+  .st-tabs { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+  .st-tabs button {
+    font: inherit; font-size: 0.82rem; font-weight: 550; cursor: pointer;
+    padding: 0.38rem 0.8rem; border-radius: 999px; border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink);
+  }
+  .st-tabs button[aria-selected='true'] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .st-pane { margin: 0; }
+  .st-zoom { display: block; width: 100%; padding: 0; border: 0; background: #0B0F1C; border-radius: 10px; overflow: hidden; cursor: zoom-in; }
+  .st-zoom img { width: 100%; height: auto; display: block; aspect-ratio: 1600 / 805; object-fit: cover; object-position: top; }
+  .st-pane figcaption { font-size: 0.86rem; line-height: 1.5; margin-top: 0.7rem; }
+  .st-dialog { border: 0; padding: 0; background: transparent; max-width: min(96vw, 1600px); }
+  .st-dialog::backdrop { background: rgba(11, 15, 28, 0.85); }
+  .st-dialog img { width: 100%; height: auto; border-radius: 8px; display: block; }
+  .st-dialog p { color: #fff; text-align: center; font-size: 0.8rem; margin-top: 0.4rem; }
+</style>
+
+<script>
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('.st-tabs button')];
+  const pick = (t: HTMLButtonElement) => tabs.forEach((o) => {
+    const on = o === t; o.setAttribute('aria-selected', String(on)); o.tabIndex = on ? 0 : -1;
+    (document.getElementById(o.getAttribute('aria-controls')!) as HTMLElement).hidden = !on;
+  });
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => pick(t));
+    t.addEventListener('keydown', (e) => {
+      const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (d) { const n = tabs[(i + d + tabs.length) % tabs.length]; pick(n); n.focus(); }
+    });
+  });
+  const dlg = document.getElementById('st-dialog') as HTMLDialogElement | null;
+  const img = document.getElementById('st-dialog-img') as HTMLImageElement | null;
+  document.querySelectorAll<HTMLButtonElement>('.st-zoom').forEach((b) =>
+    b.addEventListener('click', () => { if (!dlg || !img) return; img.src = b.dataset.src!; img.alt = b.dataset.alt!; dlg.showModal(); }));
+  dlg?.addEventListener('click', () => dlg.close());
+</script>

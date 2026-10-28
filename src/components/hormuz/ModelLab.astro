@@ -1,0 +1,187 @@
+---
+// The data and machine-learning side: how the team's models were trained and
+// tested, read from the app's own Models page (src/data/hormuz/models.json).
+import data from '../../data/hormuz/models.json';
+
+const cards = data.cards;
+const skill = {
+  given: [
+    { name: 'Deep sequence ensemble (LSTM, TCN, Transformer, N-BEATS)', v: 0.004, tag: 'rejected' },
+    { name: 'Bayesian pass-through (MCMC)', v: 0.218 },
+    { name: 'Global neural network', v: 0.286 },
+  ],
+  forecast: [
+    { name: 'Bayesian pass-through (MCMC)', v: 0.106 },
+    { name: 'Global neural network', v: 0.176 },
+  ],
+};
+const folds = Array.from({ length: 8 }, (_, i) => i);
+---
+<div class="ml" data-reveal>
+  <div class="ml-top">
+    <div class="ml-folds card">
+      <div class="ml-head">
+        <h3>Trained on the past, tested on the future</h3>
+        <button type="button" class="ml-play" id="ml-play" aria-pressed="false">▶ Play the folds</button>
+      </div>
+      <p class="muted">The inflation models were all scored on the same <b>8 forward-chaining folds</b>: fit only on the months before a block, forecast the block, then move on. That gives <b>214 forecast origins</b>, 2008-01 to 2025-10, none of which the model saw while training.</p>
+      <div class="ml-timeline" aria-hidden="true">
+        {folds.map((i) => <span class="ml-block" data-i={i}></span>)}
+      </div>
+      <div class="ml-axis" aria-hidden="true"><span>earlier months</span><span>2008</span><span>2025</span></div>
+      <p class="ml-legend"><span class="lg lg-train"></span>training months <span class="lg lg-test"></span>forecast and scored <span class="lg lg-wait"></span>not yet seen</p>
+      <p class="muted ml-fold-txt" id="ml-fold-txt" aria-live="polite">Fold 1 of 8: fitted only on the months before 2008, then scored on the next block.</p>
+    </div>
+
+    <div class="ml-skill card">
+      <div class="ml-head">
+        <h3>Inflation skill, out of sample</h3>
+        <div class="ml-tog" role="radiogroup" aria-label="Test">
+          <button type="button" role="radio" data-k="given" aria-checked="true">Given the oil path</button>
+          <button type="button" role="radio" data-k="forecast" aria-checked="false">Forecasting oil too</button>
+        </div>
+      </div>
+      <p class="muted">Skill = how much smaller the forecast error is than a "same as usual" baseline (0 = no better; higher is better).</p>
+      {(['given', 'forecast'] as const).map((k) => (
+        <div class:list={['ml-bars', { 'is-hidden': k !== 'given' }]} data-k={k}>
+          {skill[k].map((s) => (
+            <div class="ml-bar">
+              <span class="ml-bn">{s.name}{'tag' in s && s.tag ? <em> · {s.tag}</em> : ''}</span>
+              <span class="ml-track"><i style={`width:${Math.max(1.5, (s.v / 0.3) * 100)}%`}></i></span>
+              <b>+{s.v.toFixed(3)}</b>
+            </div>
+          ))}
+        </div>
+      ))}
+      <p class="muted ml-foot">The deep networks were tried first and failed (shuffled targets also scored about 0, so no leak). That failure is why the smaller global network exists.</p>
+    </div>
+  </div>
+
+  <div class="ml-cards card">
+    <div class="ml-tabs" role="tablist" aria-label="Models">
+      {cards.map((c, i) => (
+        <button type="button" role="tab" id={`ml-tab-${c.id}`} aria-controls={`ml-pane-${c.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{c.title}</button>
+      ))}
+    </div>
+    {cards.map((c, i) => (
+      <section class="ml-pane" role="tabpanel" id={`ml-pane-${c.id}`} aria-labelledby={`ml-tab-${c.id}`} hidden={i !== 0}>
+        <p class="ml-kind">{c.kind}</p>
+        <p class="ml-asks">{c.asks}</p>
+        <div class="ml-stats">
+          {c.stats.map((s) => (
+            <div class="ml-stat">
+              <b>{s.v}</b>
+              <span>{s.label}</span>
+              {s.note && <small>{s.note}</small>}
+            </div>
+          ))}
+        </div>
+        <div class="ml-two">
+          <div><h4>How it was tested</h4><p>{c.tested}</p></div>
+          {c.limits && c.limits.length > 0 && <div><h4>What it can't do</h4><ul>{c.limits.map((l) => <li>{l}</li>)}</ul></div>}
+        </div>
+      </section>
+    ))}
+    <p class="muted ml-credit">Models built and trained by Alexandru-Sebastian Ene, on the University of Southampton's Iridis cluster. Every figure is the one the app's Models page shows, read from the team's notes with their dates (24–25 Oct 2026).</p>
+  </div>
+</div>
+
+<style>
+  .ml { display: grid; gap: 1.2rem; margin-top: 1.8rem; }
+  .ml-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.2rem; align-items: start; }
+  .ml .card { padding: clamp(1.1rem, 2.6vw, 1.6rem); }
+  .ml h3 { font-size: 1.1rem; }
+  .ml-head { display: flex; justify-content: space-between; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+  .ml-folds > p, .ml-skill > p { font-size: 0.88rem; line-height: 1.55; }
+  .ml-play, .ml-tog button, .ml-tabs button {
+    font: inherit; font-size: 0.8rem; font-weight: 550; cursor: pointer;
+    padding: 0.35rem 0.75rem; border-radius: 999px; border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink);
+  }
+  .ml-play { border-color: var(--accent); color: var(--accent); }
+  .ml-play[aria-pressed='true'] { background: var(--accent); color: #fff; }
+  .ml-tog { display: flex; gap: 0.3rem; }
+  .ml-tog button[aria-checked='true'] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .ml-timeline { display: grid; grid-template-columns: 2.2fr repeat(8, 1fr); gap: 3px; margin-top: 1rem; height: 2.2rem; }
+  .ml-timeline::before { content: ''; border-radius: 6px 0 0 6px; background: var(--steel); opacity: 0.85; }
+  .ml-block { border-radius: 3px; background: #E5E7EC; transition: background 0.35s ease, transform 0.35s ease; }
+  .ml-block.is-train { background: var(--steel); opacity: 0.85; }
+  .ml-block.is-test { background: var(--accent); transform: scaleY(1.18); }
+  .ml-block:last-child { border-radius: 3px 6px 6px 3px; }
+  .ml-axis { display: grid; grid-template-columns: 2.2fr 4fr 4fr; font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; }
+  .ml-axis span:last-child { text-align: right; }
+  .ml-legend { font-size: 0.75rem; color: var(--muted); display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.6rem; }
+  .lg { width: 0.8rem; height: 0.55rem; border-radius: 2px; display: inline-block; margin-left: 0.4rem; }
+  .lg-train { background: var(--steel); margin-left: 0; }
+  .lg-test { background: var(--accent); }
+  .lg-wait { background: #E5E7EC; }
+  .ml-fold-txt { margin-top: 0.4rem; font-size: 0.85rem; font-weight: 550; color: var(--ink); }
+  .ml-bars { display: grid; gap: 0.7rem; margin-top: 1rem; }
+  .ml-bars.is-hidden { display: none; }
+  .ml-bar { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.25rem 0.8rem; align-items: center; }
+  .ml-bn { grid-column: 1 / -1; font-size: 0.82rem; font-weight: 550; }
+  .ml-bn em { font-style: normal; color: var(--muted); font-weight: 500; }
+  .ml-track { height: 0.7rem; border-radius: 99px; background: #EEF0F4; overflow: hidden; }
+  .ml-track i { display: block; height: 100%; border-radius: 99px; background: var(--accent); transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+  .ml-bar b { font-variant-numeric: tabular-nums; font-size: 0.9rem; }
+  .ml-foot { margin-top: 1rem; font-size: 0.8rem !important; }
+  .ml-tabs { display: flex; flex-wrap: wrap; gap: 0.35rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+  .ml-tabs button[aria-selected='true'] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .ml-pane { padding-top: 1.1rem; }
+  .ml-kind { font-size: 0.75rem; font-weight: 650; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+  .ml-asks { font-size: 1.05rem; line-height: 1.55; margin-top: 0.3rem; }
+  .ml-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 0.6rem; margin-top: 1rem; }
+  .ml-stat { background: var(--accent-soft); border-radius: 12px; padding: 0.8rem 0.9rem; display: grid; gap: 0.2rem; align-content: start; }
+  .ml-stat b { font-family: var(--font-display); font-size: 1.4rem; color: var(--accent); line-height: 1.15; font-variant-numeric: tabular-nums; }
+  .ml-stat span { font-size: 0.84rem; font-weight: 550; line-height: 1.35; }
+  .ml-stat small { font-size: 0.74rem; color: var(--muted); line-height: 1.4; }
+  .ml-two { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; margin-top: 1.1rem; font-size: 0.88rem; line-height: 1.6; }
+  .ml-two h4 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--steel); margin-bottom: 0.3rem; }
+  .ml-two ul { padding-left: 1.1rem; display: grid; gap: 0.3rem; }
+  .ml-credit { font-size: 0.78rem; margin-top: 1.1rem; }
+  @media (max-width: 860px) { .ml-top, .ml-two { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.ml');
+  if (root) {
+    // folds
+    const blocks = [...root.querySelectorAll<HTMLElement>('.ml-block')];
+    const txt = document.getElementById('ml-fold-txt')!;
+    const play = document.getElementById('ml-play')!;
+    let k = 0, timer = 0;
+    const year = (i: number) => Math.round(2008 + (i * 17.8) / 8);
+    const step = (i: number) => {
+      blocks.forEach((b, j) => { b.classList.toggle('is-train', j < i); b.classList.toggle('is-test', j === i); });
+      txt.textContent = `Fold ${i + 1} of 8: fitted only on the months before about ${year(i)}, then scored on its forecasts for the next block.`;
+    };
+    const stop = () => { clearInterval(timer); timer = 0; play.setAttribute('aria-pressed', 'false'); play.textContent = '▶ Play the folds'; };
+    play.addEventListener('click', () => {
+      if (timer) return stop();
+      play.setAttribute('aria-pressed', 'true'); play.textContent = '❚❚ Pause';
+      timer = window.setInterval(() => { k = (k + 1) % 8; step(k); }, 1100);
+    });
+    blocks.forEach((b, i) => b.addEventListener('click', () => { stop(); k = i; step(i); }));
+    step(0);
+
+    // skill toggle
+    root.querySelectorAll<HTMLButtonElement>('.ml-tog button').forEach((b) =>
+      b.addEventListener('click', () => {
+        root.querySelectorAll('.ml-tog button').forEach((o) => o.setAttribute('aria-checked', String(o === b)));
+        root.querySelectorAll<HTMLElement>('.ml-bars').forEach((p) => p.classList.toggle('is-hidden', p.dataset.k !== b.dataset.k));
+      }));
+
+    // tabs
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('.ml-tabs button')];
+    const select = (t: HTMLButtonElement) => {
+      tabs.forEach((o) => { const on = o === t; o.setAttribute('aria-selected', String(on)); o.tabIndex = on ? 0 : -1;
+        (document.getElementById(o.getAttribute('aria-controls')!) as HTMLElement).hidden = !on; });
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(t));
+      t.addEventListener('keydown', (e) => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (d) { const n = tabs[(i + d + tabs.length) % tabs.length]; select(n); n.focus(); }
+      });
+    });
+  }
+</script>

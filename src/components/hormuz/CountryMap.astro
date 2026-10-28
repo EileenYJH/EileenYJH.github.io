@@ -1,0 +1,196 @@
+---
+// Every country, from the same data the app uses: UN Comtrade Gulf share of oil
+// imports, IMF budget weights, and each country's own Brent -> pump-price
+// pass-through. Fuel at the pump follows the shock slider above (hz:shock).
+import data from '../../data/hormuz/countries.json';
+
+const countries = data.countries.filter((c) => c.iso !== 'ATA');
+const [, , vw, vh] = data.viewBox;
+const byGulf = countries.filter((c) => typeof c.gs === 'number').sort((a, b) => (b.gs ?? 0) - (a.gs ?? 0));
+const quick = ['IND', 'CHN', 'JPN', 'KOR', 'PAK', 'GBR', 'USA', 'MYS'];
+const names = Object.fromEntries(countries.map((c) => [c.iso, c.name]));
+const payload = Object.fromEntries(countries.map(({ d, ...rest }) => [rest.iso, rest]));
+---
+<div class="cm card" data-reveal data-countries={JSON.stringify(payload)} data-rank={JSON.stringify(byGulf.map((c) => c.iso))}>
+  <div class="cm-bar">
+    <div class="cm-modes" role="radiogroup" aria-label="Colour the map by">
+      <button type="button" role="radio" data-mode="gs" aria-checked="true">Gulf share of oil imports</button>
+      <button type="button" role="radio" data-mode="fuel" aria-checked="false">Fuel at the pump</button>
+      <button type="button" role="radio" data-mode="food" aria-checked="false">Food in the budget</button>
+    </div>
+    <label class="cm-pick">
+      <span class="sr-only">Choose a country</span>
+      <select id="cm-select">
+        <option value="">Find a country…</option>
+        {[...countries].sort((a, b) => a.name.localeCompare(b.name)).map((c) => <option value={c.iso}>{c.name}</option>)}
+      </select>
+    </label>
+  </div>
+
+  <div class="cm-body">
+    <div class="cm-mapwrap">
+      <svg class="cm-map" viewBox={`0 0 ${vw} ${vh}`} role="group" aria-label="World map. Choose a country to see its numbers.">
+        <rect x="0" y="0" width={vw} height={vh} class="cm-sea" />
+        {countries.map((c) => (
+          <path d={c.d} data-iso={c.iso} class="cm-c" tabindex="-1"><title>{c.name}</title></path>
+        ))}
+        <circle cx={180 + 56.3} cy={84 - 26.6} r="2.4" class="cm-strait" />
+        <text x={180 + 59.5} y={84 - 28.5} class="cm-strait-t">Hormuz</text>
+      </svg>
+      <div class="cm-legend">
+        <span id="cm-leg-lo">0%</span>
+        <span class="cm-ramp" aria-hidden="true"></span>
+        <span id="cm-leg-hi">100%</span>
+        <span class="cm-nodata"><i aria-hidden="true"></i> no data</span>
+      </div>
+      <div class="cm-quick" role="group" aria-label="Quick picks">
+        {quick.map((iso) => <button type="button" data-iso={iso}>{names[iso]}</button>)}
+      </div>
+    <p class="muted cm-src">
+      Gulf share: imports from the seven Gulf producers over all oil imports, an upper bound for oil through the strait. {data.source.trade}.
+      Budget weights: {data.source.weights}. Fuel: each country's own pass-through (only where it has its own monthly motor-fuel prices), times 1.49 in a supply disruption. Map: {data.source.map}.
+    </p>
+  
+    </div>
+
+    <article class="cm-card" id="cm-card" aria-live="polite">
+      <p class="cm-empty muted">Pick a country on the map, from the list, or start with one of the quick picks.</p>
+    </article>
+  </div>
+
+</div>
+
+<style>
+  .cm { padding: clamp(1rem, 2.6vw, 1.6rem); margin-top: 1.8rem; display: grid; gap: 1rem; }
+  .cm-bar { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: space-between; align-items: center; }
+  .cm-modes { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .cm-modes button, .cm-quick button {
+    font: inherit; font-size: 0.82rem; font-weight: 550; cursor: pointer;
+    padding: 0.38rem 0.8rem; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink);
+  }
+  .cm-modes button[aria-checked='true'] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .cm-quick { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.6rem; }
+  .cm-quick button { font-size: 0.76rem; padding: 0.28rem 0.65rem; }
+  .cm-quick button:hover, .cm-modes button:hover { border-color: var(--accent); }
+  .cm-pick select { font: inherit; font-size: 0.88rem; padding: 0.45rem 0.7rem; border-radius: 10px; border: 1px solid var(--line); background: var(--paper-raised); min-width: 13rem; max-width: 100%; }
+  .cm-body { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 1.2rem; align-items: start; }
+  .cm-mapwrap { min-width: 0; }
+  .cm-map { width: 100%; height: auto; display: block; border-radius: 12px; overflow: hidden; }
+  .cm-sea { fill: color-mix(in srgb, var(--accent-soft) 35%, var(--paper)); }
+  .cm-c { fill: #E5E7EC; stroke: var(--paper-raised); stroke-width: 0.25; cursor: pointer; transition: fill 0.35s ease; }
+  .cm-c:hover { stroke: var(--ink); stroke-width: 0.6; }
+  .cm-c.is-on { stroke: var(--ink); stroke-width: 0.9; }
+  .cm-strait { fill: none; stroke: var(--ink); stroke-width: 0.7; }
+  .cm-strait-t { font-size: 4px; font-weight: 700; fill: var(--ink); }
+  .cm-legend { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.55rem; font-size: 0.76rem; color: var(--muted); flex-wrap: wrap; }
+  .cm-ramp { width: 9rem; height: 0.55rem; border-radius: 99px; background: linear-gradient(90deg, #FCE7EC, #F59BB0, #E11D48, #881337); }
+  .cm-nodata { display: inline-flex; align-items: center; gap: 0.3rem; margin-left: 0.6rem; }
+  .cm-nodata i { width: 0.8rem; height: 0.55rem; border-radius: 3px; background: #E5E7EC; display: inline-block; }
+  .cm-card { border-radius: 14px; background: var(--paper); border: 1px solid var(--line); padding: 1.1rem 1.2rem; min-height: 16rem; }
+  .cm-empty { font-size: 0.92rem; }
+  .cm-card :global(h3) { font-size: 1.45rem; margin: 0; }
+  .cm-card :global(.cm-sub) { font-size: 0.8rem; color: var(--muted); margin-top: 0.15rem; }
+  .cm-card :global(.cm-kpis) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; margin-top: 0.9rem; }
+  .cm-card :global(.cm-kpi) { background: var(--paper-raised); border-radius: 10px; padding: 0.6rem 0.7rem; border: 1px solid var(--line); }
+  .cm-card :global(.cm-kpi b) { display: block; font-family: var(--font-display); font-size: 1.35rem; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .cm-card :global(.cm-kpi span) { font-size: 0.74rem; color: var(--muted); line-height: 1.3; display: block; }
+  .cm-card :global(.cm-row) { margin-top: 0.85rem; font-size: 0.86rem; line-height: 1.5; }
+  .cm-card :global(.cm-row h4) { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--steel); margin-bottom: 0.3rem; }
+  .cm-card :global(.cm-bars) { display: grid; gap: 0.3rem; }
+  .cm-card :global(.cm-bars div) { display: grid; grid-template-columns: 6.5rem 1fr 2.6rem; align-items: center; gap: 0.5rem; font-size: 0.8rem; }
+  .cm-card :global(.cm-bars i) { display: block; height: 0.5rem; border-radius: 99px; background: var(--accent); min-width: 2px; }
+  .cm-card :global(.cm-bars em) { font-style: normal; text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+  .cm-card :global(.cm-note) { font-size: 0.74rem; color: var(--muted); margin-top: 0.7rem; line-height: 1.45; }
+  .cm-src { font-size: 0.74rem; line-height: 1.5; margin-top: 0.9rem; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  @media (max-width: 900px) { .cm-body { grid-template-columns: 1fr; } .cm-card { min-height: 0; } }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.cm');
+  if (root) {
+    type C = { iso: string; name: string; gs?: number; m?: number; year?: number; imp?: number; mirror?: boolean;
+      top?: [string, number][]; w?: { food: number; energy: number; transport: number };
+      pt?: { e: number; lo: number; hi: number; series: string; from: string; to: string } };
+    const D: Record<string, C> = JSON.parse(root.dataset.countries!);
+    const rank: string[] = JSON.parse(root.dataset.rank!);
+    const paths = root.querySelectorAll<SVGPathElement>('.cm-c');
+    const card = document.getElementById('cm-card')!;
+    const select = document.getElementById('cm-select') as HTMLSelectElement;
+    let mode: 'gs' | 'fuel' | 'food' = 'gs';
+    let shock = (window as any).__hz ?? { dlog: Math.log(98.6 / 70), disrupt: 1.49, L: 67, brent: 98.6 };
+    let current = '';
+
+    const stops = [[252, 231, 236], [245, 155, 176], [225, 29, 72], [136, 19, 55]];
+    const ramp = (t: number) => {
+      t = Math.max(0, Math.min(1, t)) * (stops.length - 1);
+      const i = Math.min(stops.length - 2, Math.floor(t)), f = t - i;
+      const c = stops[i].map((v, k) => Math.round(v + (stops[i + 1][k] - v) * f));
+      return `rgb(${c.join(',')})`;
+    };
+    const fuel = (c: C) => (c.pt ? c.pt.e * shock.dlog * shock.disrupt : null);
+    const scale = () => {
+      if (mode === 'gs') return { get: (c: C) => c.gs ?? null, max: 0.8, lo: '0%', hi: '80%+' };
+      if (mode === 'food') return { get: (c: C) => (c.w ? c.w.food / 100 : null), max: 0.6, lo: '0%', hi: '60%+' };
+      const mx = Math.max(0.05, 0.6 * shock.dlog * shock.disrupt);
+      return { get: (c: C) => fuel(c), max: mx, lo: '0%', hi: `+${(mx * 100).toFixed(0)}%` };
+    };
+    const paint = () => {
+      const s = scale();
+      paths.forEach((p) => {
+        const v = s.get(D[p.dataset.iso!] ?? ({} as C));
+        p.style.fill = v == null ? '' : ramp(v / s.max);
+      });
+      document.getElementById('cm-leg-lo')!.textContent = s.lo;
+      document.getElementById('cm-leg-hi')!.textContent = s.hi;
+    };
+    const pct = (v: number, d = 0) => `${(v * 100).toFixed(d)}%`;
+    const signed = (v: number) => `${v >= 0 ? '+' : '−'}${Math.abs(v * 100).toFixed(1)}%`;
+    const esc = (s: string) => s.replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch]!);
+
+    const show = (iso: string) => {
+      const c = D[iso];
+      if (!c) return;
+      current = iso;
+      paths.forEach((p) => p.classList.toggle('is-on', p.dataset.iso === iso));
+      select.value = iso;
+      const r = rank.indexOf(iso);
+      const kpis: string[] = [];
+      if (c.gs != null) kpis.push(`<div class="cm-kpi"><b>${pct(c.gs)}</b><span>of its oil imports come from the Gulf${r >= 0 ? `, #${r + 1} of ${rank.length}` : ''}</span></div>`);
+      const f = fuel(c);
+      kpis.push(f == null
+        ? `<div class="cm-kpi"><b>–</b><span>fuel at the pump: no estimate (no monthly fuel prices of its own)</span></div>`
+        : `<div class="cm-kpi"><b>${signed(f)}</b><span>fuel at the pump with ${shock.L} points lost (Brent $${shock.brent.toFixed(0)})</span></div>`);
+      if (c.m != null) kpis.push(c.m > 0
+        ? `<div class="cm-kpi"><b>${pct(c.m)}</b><span>of its oil imports are net imports: a net importer</span></div>`
+        : `<div class="cm-kpi"><b>${(1 - c.m).toFixed(1)}×</b><span>its oil imports go back out as exports: a net exporter</span></div>`);
+      if (c.imp != null) kpis.push(`<div class="cm-kpi"><b>$${c.imp >= 1 ? c.imp.toFixed(1) + 'bn' : (c.imp * 1000).toFixed(0) + 'm'}</b><span>oil imports in ${c.year}</span></div>`);
+      const top = c.top && c.top.length ? `<div class="cm-row"><h4>Biggest Gulf suppliers</h4><div class="cm-bars">${c.top.map(([n, s]) => `<div><span>${esc(n)}</span><i style="width:${(s * 100).toFixed(0)}%"></i><em>${pct(s)}</em></div>`).join('')}</div></div>` : '';
+      const w = c.w ? `<div class="cm-row"><h4>Household budget</h4><div class="cm-bars">${([['Food', c.w.food], ['Housing and energy', c.w.energy], ['Transport', c.w.transport]] as [string, number][]).map(([n, v]) => `<div><span>${n}</span><i style="width:${Math.min(100, v * 1.6).toFixed(0)}%"></i><em>${v.toFixed(0)}%</em></div>`).join('')}</div></div>` : '';
+      const note = [
+        c.pt ? `Pass-through ${c.pt.e.toFixed(2)} (90% range ${c.pt.lo.toFixed(2)} to ${c.pt.hi.toFixed(2)}), ${esc(c.pt.series)}, ${c.pt.from} to ${c.pt.to}; times 1.49 in a supply disruption.` : '',
+        c.mirror ? 'Trade figures are its partners\' records, so the Gulf share is a lower bound.' : '',
+        c.gs == null ? 'No UN Comtrade oil trade figures for this country.' : '',
+      ].filter(Boolean).join(' ');
+      card.innerHTML = `<h3>${esc(c.name)}</h3><p class="cm-sub">${c.year ? `UN Comtrade ${c.year}` : 'Limited data'}</p><div class="cm-kpis">${kpis.join('')}</div>${top}${w}${note ? `<p class="cm-note">${note}</p>` : ''}`;
+    };
+
+    paths.forEach((p) => p.addEventListener('click', () => show(p.dataset.iso!)));
+    select.addEventListener('change', () => select.value && show(select.value));
+    root.querySelectorAll<HTMLButtonElement>('.cm-quick button').forEach((b) => b.addEventListener('click', () => show(b.dataset.iso!)));
+    root.querySelectorAll<HTMLButtonElement>('.cm-modes button').forEach((b) =>
+      b.addEventListener('click', () => {
+        mode = b.dataset.mode as typeof mode;
+        root.querySelectorAll('.cm-modes button').forEach((o) => o.setAttribute('aria-checked', String(o === b)));
+        paint();
+      }));
+    window.addEventListener('hz:shock', (e) => {
+      shock = (e as CustomEvent).detail;
+      if (mode === 'fuel') paint();
+      if (current) show(current);
+    });
+    paint();
+    show('IND');
+  }
+</script>

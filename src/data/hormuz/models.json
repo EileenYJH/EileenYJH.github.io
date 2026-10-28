@@ -1,0 +1,330 @@
+{
+ "note": "Read from the deployed Hormuz Flow app's Models page (window.MODELS), which reads each figure from the team's notes/ at build time. Models by Alexandru-Sebastian Ene.",
+ "cards": [
+  {
+   "id": "levy",
+   "group": "oil",
+   "title": "Oil price distribution",
+   "kind": "Lévy processes + GARCH",
+   "asks": "How big are Brent's moves over a day, a week and a month, and how often do the extremes come? It gives the spread of prices the chain is fed, not their direction.",
+   "stats": [
+    {
+     "v": "+0.2432 ± 0.1025",
+     "label": "nats a day: fat tails beat the bell curve",
+     "note": "Student-t over the Gaussian, test log score on 4556 days to 2026-10-20",
+     "src": "notes/non-gaussian-results.md",
+     "date": "2026-10-24"
+    },
+    {
+     "v": "+0.0946 ± 0.0126",
+     "label": "nats a day from a changing volatility",
+     "note": "GARCH-CGMY over the same jumps with constant volatility",
+     "src": "notes/levy-fourier-results.md",
+     "date": "2026-10-24"
+    },
+    {
+     "v": "−0.0000 ± 0.0000",
+     "label": "nats a day from a learned tail shape",
+     "note": "Fourier-learned Lévy measure over plain CGMY, both with GARCH: no gain",
+     "src": "notes/levy-fourier-results.md",
+     "date": "2026-10-24"
+    },
+    {
+     "v": "3.98",
+     "label": "1-month error (CRPS, points), against 5.28 for a bootstrap",
+     "note": "Brent's monthly change, GARCH-CGMY paths (t −5.1); 85% inside the 90% band",
+     "src": "notes/oil-paths-results.md",
+     "date": "2026-10-24"
+    }
+   ],
+   "tested": "8 Lévy processes fitted on Brent before 2008-10-15 and scored on 4556 unseen days to 2026-10-20, with rolling refits for every year since 1998 on Iridis. Monthly paths backtested on 214 forecast origins (2008-01 to 2025-10). Cross-checks between scripts, machines and closed forms: 10 of 11 pass.",
+   "limits": [
+    "It doesn't predict direction: its central forecast is about \"same as today\".",
+    "Daily data hold too few extremes to learn a tail shape (about 17 days beyond 4 sd in 21 years), which is the one cross-check that fails: the learned tail's coefficients don't reproduce.",
+    "In crises its bands are too narrow: 75% of 6-month outcomes fall inside the 90% band."
+   ]
+  },
+  {
+   "id": "flow",
+   "group": "oil",
+   "title": "Lost flow → Brent",
+   "kind": "Event study + regression",
+   "asks": "When tankers stop crossing Hormuz, how much does Brent rise for each point of normal flow lost, and how fast does that fade?",
+   "stats": [
+    {
+     "v": "0.70%",
+     "label": "of Brent per point of lost flow at the peak, day 22",
+     "note": "log premium, band 0.47% to 0.91%, fitted to the 2026 closure on the IEA's lost flow",
+     "src": "notes/flow-premium-iea.csv",
+     "date": "2026-10-25"
+    },
+    {
+     "v": "0.51%",
+     "label": "per point once it settles",
+     "note": "the plateau, held flat beyond the 159 observed trading days: an assumption",
+     "src": "notes/flow-premium-iea.csv",
+     "date": "2026-10-25"
+    },
+    {
+     "v": "+52.6%",
+     "label": "Brent 20 trading days into the 2026 closure",
+     "note": "$119.56 on 2026-04-01, against 5 days before it began",
+     "src": "notes/flow-price-link.md",
+     "date": "2026-10-24"
+    },
+    {
+     "v": "−0.129 ± 0.123",
+     "label": "% of Brent per point, 2019–2025 months",
+     "note": "monthly regression without the closure: too small to tell from zero",
+     "src": "notes/flow-price-link.md",
+     "date": "2026-10-24"
+    }
+   ],
+   "tested": "Out of sample on the 2023–24 Bab el-Mandeb disruption: the 2026 response, scaled to Hormuz-equivalent flow, predicts its Brent move within noise at every horizon from 5 to 120 trading days. The band comes from 2019–2025 placebo days.",
+   "limits": [
+    "Its size rests on one event: no loss since 2019 except 2026 is big enough to test it, and a loss under about 26 points can't be told from Brent's own 20-day noise.",
+    "The closure mixes lost barrels with a risk premium and stock releases.",
+    "PortWatch sees AIS-visible tankers only, so the curve is fitted per point of the IEA's count, which includes dark transits."
+   ]
+  },
+  {
+   "id": "chain",
+   "group": "chain",
+   "title": "Knock-on links",
+   "kind": "Regressions, 108 folds each",
+   "asks": "When oil rises 10%, how much do petrol, energy bills, inflation, the Fed and mortgages move, and which links survive data they never saw?",
+   "stats": [
+    {
+     "v": "+5.875 ± 0.681",
+     "label": "% on US petrol within 2 months",
+     "note": "per 10% oil rise; holds at every k",
+     "src": "notes/oil-chain-cv.md",
+     "date": "2026-10-24"
+    },
+    {
+     "v": "+0.393 ± 0.073",
+     "label": "points on US headline CPI within a year",
+     "note": "per 10% oil rise; beats a constant in 74% of 108 folds",
+     "src": "notes/oil-chain-cv.md",
+     "date": "2026-10-24"
+    },
+    {
+     "v": "+0.23 to +1.77",
+     "label": "the Fed's response per point of core inflation",
+     "note": "Taylor-rule coefficient, depending on which block is held out: unstable",
+     "src": "notes/oil-chain-cv.md",
+     "date": "2026-10-24"
+    }
+   ],
+   "tested": "Each link's whole window, 1991–2026, is cut into k = 8 to 16 blocks (108 folds per link). Each block is held out once with a gap the length of the lags, and a forward version predicts each block from earlier ones only.",
+   "limits": [
+    "These are average historical pass-throughs, mixing demand- and supply-driven oil moves: not the causal effect of a supply shock.",
+    "Oil barely reaches core inflation, so the Fed step is shown as a range, not a forecast.",
+    "Mortgages follow the 10-year yield, not the policy rate."
+   ]
+  },
+  {
+   "id": "bayes",
+   "group": "chain",
+   "title": "Bayesian pass-through",
+   "kind": "Bayesian, MCMC",
+   "asks": "One model for 22 series (inflation, unemployment, policy rates and industry costs in the US, UK and euro area): given an oil path, where will each be in 1 to 12 months, and how sure is it?",
+   "stats": [
+    {
+     "v": "+0.218",
+     "label": "inflation skill, given the oil path",
+     "note": "all horizons; 0 = climatology",
+     "src": "notes/macro-bayes-results.md",
+     "date": "2026-10-24"
+    },
+    {
+     "v": "+0.106",
+     "label": "inflation skill, forecasting oil too",
+     "note": "nothing after the forecast date is known",
+     "src": "notes/macro-bayes-results.md",
+     "date": "2026-10-24"
+    },
+    {
+     "v": "+3.6",
+     "label": "% on US CPI, 2025-09 to 2026-09",
+     "note": "actual; the model said +3.4 (+2.0..+4.8) from 2025-09, given the oil path",
+     "src": "notes/macro-bayes-results.md",
+     "date": "2026-10-24"
+    },
+    {
+     "v": "85%",
+     "label": "of inflation outcomes inside its 90% band",
+     "note": "target 90%",
+     "src": "notes/macro-bayes-results.md",
+     "date": "2026-10-24"
+    }
+   ],
+   "tested": "8 forward-chaining folds, 214 forecast origins (2008-01 to 2025-10), each fitted only on earlier months. The sampler converged on every fold (max R-hat 1.037, min ESS 134). It beats the anchored network ensemble on inflation (Diebold–Mariano −0.099 (t −4.2)).",
+   "limits": [
+    "Unemployment: no skill (−0.014), and its oil response has the demand sign, so it is not a what-if link.",
+    "Its bands are a little narrow: 85% of inflation, 87% of costs and 74% of unemployment outcomes land inside the 90% band.",
+    "Scored on revised data, not the figures as first published, and it doesn't separate supply from demand shocks."
+   ]
+  },
+  {
+   "id": "global",
+   "group": "chain",
+   "title": "Global network",
+   "kind": "Neural network",
+   "asks": "One small neural network shared by all the series, simulated forward month by month. Does it beat the Bayesian model, and how does it stand against the Fed's and professional forecasters' inflation forecasts?",
+   "stats": [
+    {
+     "v": "+0.286",
+     "label": "inflation skill, given the oil path",
+     "note": "Bayesian model +0.218",
+     "src": "notes/macro-global-results.md",
+     "date": "2026-10-25"
+    },
+    {
+     "v": "+0.176",
+     "label": "inflation skill, forecasting oil too",
+     "note": "Bayesian model +0.106; difference −0.069 (t −3.3)",
+     "src": "notes/macro-global-results.md",
+     "date": "2026-10-25"
+    },
+    {
+     "v": "8% higher",
+     "label": "error than the SPF, US CPI over a year",
+     "note": "CRPS, 212 shared months; t +1.4, not significant",
+     "src": "notes/macro-global-results.md",
+     "date": "2026-10-25"
+    },
+    {
+     "v": "2% lower",
+     "label": "error than the Cleveland Fed, same test",
+     "note": "at 1 month: 9% lower (t −1.9)",
+     "src": "notes/macro-global-results.md",
+     "date": "2026-10-25"
+    }
+   ],
+   "tested": "The same 8 folds as the Bayesian model, 5 seeds per variant. The forecast mode knows nothing after the forecast date: each draw follows its own oil path, bootstrapped from training months and scaled to oil-options volatility (OVX). Each SPF survey is counted from the end of its release month.",
+   "limits": [
+    "None of our models beats the professional forecasters on US CPI over a year; none of those gaps is significant.",
+    "In May 2025 the SPF expected +3.0% over the next year and the network +1.8%; CPI rose +4.1%.",
+    "The surveys were made in real time; we are scored on revised data, which flatters us slightly.",
+    "Unemployment still trails a plain ridge regression."
+   ]
+  },
+  {
+   "id": "col",
+   "group": "chain",
+   "title": "Cost of living, item by item",
+   "kind": "Bayesian, by basket item",
+   "asks": "Through the basket item by item (bread, meat, electricity, gas, petrol, air fares, rent) in the US, UK and euro area: how much does an oil and gas supply shock add, and how wide is the range?",
+   "stats": [
+    {
+     "v": "53/54",
+     "label": "2026 outcomes inside the 90% band",
+     "note": "fitted to 2026-02, scored 7 months on; the average link 44/54",
+     "src": "notes/cost-of-living.md",
+     "date": "2026-10-25"
+    },
+    {
+     "v": "+0.530",
+     "label": "motor-fuel skill, given oil and gas",
+     "note": "all horizons; 0 = climatology",
+     "src": "notes/cost-of-living.md",
+     "date": "2026-10-25"
+    },
+    {
+     "v": "+0.394",
+     "label": "US CPI skill, built item by item",
+     "note": "given oil and gas",
+     "src": "notes/cost-of-living.md",
+     "date": "2026-10-25"
+    },
+    {
+     "v": "1% higher",
+     "label": "error than the SPF, US CPI over a year",
+     "note": "forecasting oil too, timing matched (t +0.5, n 201); the Cleveland Fed: 8% lower",
+     "src": "notes/cost-of-living.md",
+     "date": "2026-10-25"
+    }
+   ],
+   "tested": "8 forward-chaining folds, 216 forecast origins (2008-01 to 2025-12), from 11 converged fits on Iridis. Two event tests fitted before the shock: the 2026 closure (10 supply-disruption months in the fit) and 2022's. Against the surveys it only uses the CPI they had when they were made.",
+   "limits": [
+    "Only two supply shocks since 2000, so the extra pass-through in a disruption is learned from very little.",
+    "At 1 to 3 months it trails the Cleveland Fed's nowcast, which reads daily oil and weekly petrol prices.",
+    "2022's food surge is outside what it can explain.",
+    "Unemployment and rates have no validated oil link."
+   ]
+  },
+  {
+   "id": "nn",
+   "group": "checks",
+   "title": "Deep sequence ensemble",
+   "kind": "Neural networks, first attempt",
+   "asks": "Can deep sequence networks (LSTM, TCN, Transformer, N-BEATS) learn the knock-on chain straight from monthly data? Its failure is why the global network exists.",
+   "stats": [
+    {
+     "v": "+0.004",
+     "label": "inflation skill, ensemble mean",
+     "note": "best single network +0.024; the stacker −0.153",
+     "src": "notes/macro-nn-results.md",
+     "date": "2026-10-24"
+    },
+    {
+     "v": "+0.030",
+     "label": "points on US CPI from a 10% oil rise",
+     "note": "against +0.36 for the validated linear link",
+     "src": "notes/macro-nn-results.md",
+     "date": "2026-10-24"
+    },
+    {
+     "v": "72%",
+     "label": "of inflation outcomes inside its 90% band",
+     "note": "target 90%",
+     "src": "notes/macro-nn-results.md",
+     "date": "2026-10-24"
+    }
+   ],
+   "tested": "Five architectures in two sizes with 6 seeds each, on the same 8 forward-chaining folds (Iridis job 1971341). In its own diagnostics, shuffled training targets drop its skill to 0 or below: no leak.",
+   "limits": [
+    "Too little data: 287 monthly origins, and validation loss bottomed out after 1–2 epochs, so the networks barely trained.",
+    "Fixing the oil pass-through to the validated links helped prices, but the anchor did the work, not the networks.",
+    "Oil stocks as an extra input: no reliable gain (`notes/stocks-ablation.md`)."
+   ]
+  },
+  {
+   "id": "verify",
+   "group": "checks",
+   "title": "Independent verification",
+   "kind": "Audit",
+   "asks": "If someone else re-runs the code from the saved runs, do they get the same numbers? Does any test peek at the future?",
+   "stats": [
+    {
+     "v": "83",
+     "label": "automated tests pass",
+     "note": "the full suite",
+     "src": "notes/verification.md",
+     "date": "2026-10-24"
+    },
+    {
+     "v": "3 decimals",
+     "label": "every skill reproduces to",
+     "note": "from the saved run files, against the notes",
+     "src": "notes/verification.md",
+     "date": "2026-10-24"
+    },
+    {
+     "v": "12 of 15",
+     "label": "2026 outcomes inside the Bayesian 90% band",
+     "note": "12 months ahead, given the oil path",
+     "src": "notes/verification.md",
+     "date": "2026-10-24"
+    }
+   ],
+   "tested": "Checked on 2026-10-24 against commit eda796a with the model code unchanged and the inputs copied read-only. The leakage audit checks fold boundaries and publication lags by index arithmetic and perturbation tests.",
+   "limits": [
+    "The shuffled-target control fails as specified (inflation +0.026 instead of 0 or below): not leakage, but a soft yardstick.",
+    "The chain isn't validated end to end: flow → Brent rests on one event.",
+    "It covers the knock-on runs as they were on 2026-10-24; later notes, such as the cost-of-living model (2026-10-25) and the IEA premium curve (2026-10-25), are not covered."
+   ]
+  }
+ ]
+}
