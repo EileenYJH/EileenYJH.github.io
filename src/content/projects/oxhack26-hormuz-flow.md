@@ -48,10 +48,25 @@ challenges:
   - "Making AI text trustworthy on a free Gemini key: retries and pre-written answers for timeouts and rate limits, and a number check so the model can't introduce figures."
 repo: https://github.com/Alex-Sebastian-Ene/oxhack
 demo: https://alex-sebastian-ene.github.io/oxhack/
-images: []
+images:
+  - src: /images/projects/oxhack26-hormuz-flow/team.jpg
+    alt: The Hormuz Flow team of four at OxHack 26, in front of the sponsors banner
+    caption: Our team at OxHack 26, Oxford, 24–25 October 2026.
+    focus: "50% 25%"
+  - src: /images/projects/oxhack26-hormuz-flow/app-demo.jpg
+    alt: Hormuz Flow running on a laptop, showing the world map coloured by oil impact with country details
+    caption: The app's World view during the hackathon.
+  - src: /images/projects/oxhack26-hormuz-flow/opening.jpg
+    alt: The OxHack 26 opening session in a lecture theatre, with the welcome slide on two screens
+    caption: The OxHack 26 opening session.
+  - src: /images/projects/oxhack26-hormuz-flow/utp-banner.jpg
+    alt: Holding the UTP flag beside the OxHack 26 welcome banner
+    caption: Flying the UTP flag at OxHack 26.
+  - src: /images/projects/oxhack26-hormuz-flow/whiteboard.jpg
+    alt: Teammates working through the model at a whiteboard
+    caption: Working through the knock-on chain at the whiteboard.
 unknowns:
   - what Eileen learned and would do differently
-  - photos (OXHACK2026 Drive folder, waiting for download and approval)
   - "'no data' industry rows cut from about 167 to 17: not re-counted"
   - LinkedIn post or video
 ---
