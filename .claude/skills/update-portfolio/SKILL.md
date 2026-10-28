@@ -94,14 +94,37 @@ matching the existing entries:
   Eileen says otherwise. `flagship: true` only if she asks.
 - `status`, `completed`: only if known.
 - `results`: each `{ text, source }`; the source is shown in small print.
-- `images`: copy approved images into `public/images/projects/<id>/`,
-  compress anything over ~500 KB (e.g. with `npx sharp-cli` or `ffmpeg`),
-  write real alt text. Only images the handoff marks OK to publish, or that
-  Eileen approves. The first image becomes the full-screen hero.
+- `images`: see "Finding images" below. Save them as
+  `public/images/projects/<id>/<short-name>.jpg`, write real alt text, and
+  put the hero (best team or demo photo, landscape) first: it becomes the
+  full-screen opening image.
 - `visibility`: `draft` until Eileen has reviewed the wording; then `public`
   (or `unlisted` to build the page without listing it).
 - Body (below the frontmatter): optional 1–3 short paragraphs of extra
   detail, shown in "How it works" on the generated page.
+
+#### Finding images
+Eileen keeps project photos in Google Drive, in the folder
+**`Portfolio picture`**. Each project has a subfolder named after it (e.g.
+`sedic`, `OXHACK2026`); a few single photos sit loose in the top folder with
+a descriptive file name (e.g. `Devfest george town.HEIC`).
+1. Look there first. If a Google Drive tool is available, search for the
+   folder `Portfolio picture`, then a subfolder or file whose name matches
+   the project ID, name, event or context (case-insensitive). If there's no
+   Drive tool, ask Eileen to download that subfolder into
+   `handoffs/<id>-images/` (git-ignored) and continue once it's there.
+2. Then check the handoff's media table and the project repo for screenshots
+   or diagrams.
+3. **Show Eileen what you found and which ones you'd use** (file names, and
+   the image itself if you can view it), and wait for her OK. Photos with
+   faces, other people's work or confidential screens need her explicit yes.
+4. Convert and compress before adding: HEIC/PNG photos to JPEG, longest side
+   about 1800 px for the hero and 1400 px for others, quality ~80, ideally
+   under 400 KB each (`sharp` via `npx sharp-cli`, `ffmpeg`, or ImageMagick,
+   whichever is installed). Strip location metadata. Rename to short
+   kebab-case names (`team-stage.jpg`, not `WhatsApp Image 2026-10-28…`).
+5. If nothing usable exists, leave `images` empty (the generated page works
+   without a hero) and add "photos" to `unknowns`.
 
 ### 7. Pages and components
 - A project without its own page automatically gets the generated page

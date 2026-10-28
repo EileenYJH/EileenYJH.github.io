@@ -72,11 +72,14 @@ Not yet measured / unverified:
 
 ## 8. Media
 
-Images or videos that could go on the site (path in the project repo, what
-it shows, and whether it's cleared to publish: no faces without consent, no
-confidential screens):
+Photos live in Google Drive under `Portfolio picture/<project folder>`.
+Name the folder (or loose file) to use, plus any screenshots or diagrams in
+the project repo, what each shows, and whether it's cleared to publish (no
+faces without consent, no confidential screens):
 
-| File | Shows | OK to publish? |
+- Drive folder: `Portfolio picture/` ...
+
+| File (Drive or repo path) | Shows | OK to publish? |
 | --- | --- | --- |
 | | | |
 
