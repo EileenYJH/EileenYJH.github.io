@@ -42,7 +42,7 @@ validated in `src/content.config.ts`; a build fails if one is wrong.
 | `results` | `{ text, source }` cards. Only results with evidence. |
 | `challenges`, `learnings` | "What was hard" / "What I learned". |
 | `repo`, `demo`, `post` | Link buttons. `demo` only once verified working. |
-| `images` | `{ src, alt, caption }`, files in `public/`. The first is the hero. |
+| `images` | `{ src, alt, caption }`, files in `public/`. The first is the hero. Source photos come from Drive: `Portfolio picture/<project>`. |
 | `unknowns` | Things not yet confirmed. **Never shown on the site.** |
 
 Everything except `title` and `summary` is optional, and empty sections
@@ -112,10 +112,13 @@ You can combine them (e.g. a handoff plus a repo URL). The skill:
 3. checks the registry for an existing entry and updates it instead of
    duplicating;
 4. asks you once about missing key facts, and records the rest as `unknowns`;
-5. writes the entry (as `draft` until you've approved the wording), copying
-   and compressing approved images into `public/images/projects/<id>/`;
-6. runs tests and the build, previews the pages;
-7. commits locally and reports what changed, what's still unknown, and what to
+5. finds photos in your Google Drive folder `Portfolio picture/<project>`
+   (or asks you to download it into `handoffs/<id>-images/` if Drive isn't
+   connected), shows you its picks, then converts and compresses the ones
+   you approve into `public/images/projects/<id>/`;
+6. writes the entry (as `draft` until you've approved the wording);
+7. runs tests and the build, previews the pages;
+8. commits locally and reports what changed, what's still unknown, and what to
    review. It does not push or deploy until you say so.
 
 The full instructions are in `.claude/skills/update-portfolio/SKILL.md`.

@@ -30,15 +30,20 @@ stand on its own.
    commits, files, or Eileen herself attribute to her. If unclear, ask her
    one short question rather than guessing; if she isn't around, put it in
    Unknowns.
-5. **Fill the template.** Every factual row gets a source. Anything you
+5. **Media.** Event and team photos are in Eileen's Google Drive folder
+   `Portfolio picture`, one subfolder per project. If a Drive tool is
+   available, find the matching subfolder and list its files in section 8;
+   otherwise ask Eileen for the folder name. Add useful screenshots or
+   diagrams from this repo. Don't copy images anywhere: just list them.
+6. **Fill the template.** Every factual row gets a source. Anything you
    couldn't confirm is written as `UNKNOWN` and repeated in section 10. Never
    estimate or round up a number, invent a placing, or describe something as
    deployed unless you verified it.
-6. **Scrub before saving.** Remove API keys, tokens, passwords, `.env`
+7. **Scrub before saving.** Remove API keys, tokens, passwords, `.env`
    contents, connection strings, private hostnames or IPs, internal
    company data, and other people's personal details. Mention in section 10
    that confidential material was left out, if any was.
-7. **Save and hand over.** Write the file to the repo root (or where Eileen
+8. **Save and hand over.** Write the file to the repo root (or where Eileen
    asks). Don't commit it unless she asks: it may hold private notes. Then tell
    her, in a few lines: where the file is, the main unknowns, and the next
    step: open her portfolio repo and run
