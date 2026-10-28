@@ -5,6 +5,8 @@ tags: [Power electronics, Autodesk Eagle, PCB design, LTspice]
 flagship: false
 href: /projects/power-supply
 order: 6
+color: "#15803D"
+context: "Electronics lab, UTP"
 ---
 
 A fixed 5 V DC power supply using a full-wave center-tap rectifier, designed

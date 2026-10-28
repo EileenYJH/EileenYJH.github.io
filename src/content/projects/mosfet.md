@@ -5,6 +5,8 @@ tags: [Semiconductor fabrication, photolithography, device physics, I-V characte
 flagship: false
 href: /projects/mosfet
 order: 5
+color: "#138A8A"
+context: "Cleanroom lab, UTP"
 ---
 
 A four-mask NMOS process run at the ADTEC Taiping cleanroom for EFB1074

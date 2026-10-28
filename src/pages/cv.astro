@@ -2,7 +2,7 @@
 // CV / resume built from the same data as the rest of the site, so it never
 // drifts out of date. "Download PDF" prints just the A4 sheet; the switches
 // choose which sections go in.
-import { getCollection } from 'astro:content';
+import { listedProjects, projectHref, splitTitle } from '../lib/projects';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { timeline } from '../data/timeline';
 
@@ -24,10 +24,9 @@ const exchange = timeline.find((m) => /Sheffield/.test(m.title));
 const foundation = timeline.find((m) => /Foundation/.test(m.title));
 const scholar = timeline.find((m) => /PESP/.test(m.title));
 
-const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order).map((p) => {
-  const [name, ...rest] = p.data.title.split(': ');
-  return { name, what: rest.join(': '), summary: p.data.summary, tags: p.data.tags, href: p.data.href };
-});
+const projects = (await listedProjects()).map((p) => ({
+  ...splitTitle(p.data.title), summary: p.data.summary, tags: p.data.tags, href: projectHref(p),
+}));
 const skills = [...new Set(projects.flatMap((p) => p.tags))];
 const short = (u: string) => u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 ---

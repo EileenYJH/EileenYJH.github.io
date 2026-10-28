@@ -9,7 +9,15 @@ every push to `main`.
 | --------------- | --------------------------------------- |
 | `npm run dev`   | Dev server at http://localhost:4321     |
 | `npm run build` | Production build to `dist/`             |
-| `npm test`      | Run unit tests (fire score and routing) |
+| `npm test`      | Unit tests + project registry checks    |
+| `npm run check` | Tests + build (run before merging)      |
+
+## Adding or updating a project
+
+Projects live in `src/content/projects/<id>.md` (the project registry). In
+Claude Code, run `/update-portfolio <handoff file, repo URL or notes>`. At the
+end of a project in another repo, run `/project-handoff` there first. Full
+guide: [`docs/portfolio-workflow.md`](docs/portfolio-workflow.md).
 
 ## Writing a blog post
 

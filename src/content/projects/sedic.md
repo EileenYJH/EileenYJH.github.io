@@ -5,6 +5,8 @@ tags: [PyTorch, RF signal processing, multi-label CNN, RadioML]
 flagship: false
 href: /projects/sedic
 order: 4
+color: "#6D28D9"
+context: "SEDIC 2026 · Track 1 winner"
 ---
 
 Team NEXA's track-winning entry to Project Overwatch, Track 1 of SEDIC 2026

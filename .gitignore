@@ -1,3 +1,7 @@
 node_modules/
 dist/
 .astro/
+
+# Project handoff files can contain private notes: keep them local.
+handoffs/*
+!handoffs/README.md
