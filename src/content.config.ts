@@ -62,8 +62,12 @@ const projects = defineCollection({
     // Only set a demo URL you have opened and confirmed works.
     demo: url.optional(),
     post: url.optional(),
+    // Extra external links shown as buttons, e.g. Devpost, slides, video.
+    links: z.array(z.object({ label: z.string(), href: url })).default([]),
     // `focus` is the CSS object-position for the hero crop, e.g. "50% 30%".
     images: z.array(z.object({ src: sitePath, alt: z.string(), caption: z.string().optional(), focus: z.string().optional() })).default([]),
+    // Screenshots or diagrams of the system, shown under "How it works".
+    screenshots: z.array(z.object({ src: sitePath, alt: z.string(), caption: z.string().optional() })).default([]),
 
     // Fields still unconfirmed, e.g. ["completion date", "test accuracy"].
     // Never rendered on the site; a reminder for the next update.
