@@ -116,10 +116,11 @@ You can combine them (e.g. a handoff plus a repo URL). The skill:
    (or asks you to download it into `handoffs/<id>-images/` if Drive isn't
    connected), shows you its picks, then converts and compresses the ones
    you approve into `public/images/projects/<id>/`;
-6. writes the entry (as `draft` until you've approved the wording);
+6. writes the entry;
 7. runs tests and the build, previews the pages;
-8. commits locally and reports what changed, what's still unknown, and what to
-   review. It does not push or deploy until you say so.
+8. commits, pushes, opens a pull request and merges it, so the live site
+   updates (standing approval from Eileen). It stops and asks instead if a
+   check fails or something needs your answer.
 
 The full instructions are in `.claude/skills/update-portfolio/SKILL.md`.
 
@@ -163,4 +164,5 @@ Recommended flow:
    Pages" action finishes (Actions tab).
 4. Check the live page.
 
-Claude will only push, open a PR or merge after you explicitly say so.
+`/update-portfolio` does steps 2–4 for you automatically once checks pass.
+Say "draft" or "don't publish" when you want an update held back.

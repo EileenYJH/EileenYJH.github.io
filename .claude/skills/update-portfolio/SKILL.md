@@ -29,8 +29,13 @@ If nothing was given, ask for one of these and stop.
 - **Don't touch unrelated work.** Run `git status` first. If there are
   uncommitted changes you didn't make, leave them alone and don't include them
   in your commit; mention them in the summary.
-- **No push, no deploy, no merge to `main`** without Eileen's explicit yes in
-  this conversation. Pushing to `main` deploys the live site.
+- **Publishing: standing approval.** Eileen has asked for every update to be
+  pushed and published automatically (28 Oct 2026). Once tests and the build
+  pass and the preview looks right, set `visibility: public`, push the branch,
+  open a pull request and merge it into `main`, which deploys the live site.
+  Hold back and ask instead if any check fails, if she says "draft" or "don't
+  publish" for this update, or if something needs her answer first (a photo
+  with faces she hasn't cleared, an unconfirmed claim she wants on the page).
 - **Preserve the design.** Don't change `global.css`, the layout, fonts,
   colours of existing projects or existing hand-built pages unless asked.
 
@@ -74,7 +79,8 @@ same project. If it's unclear whether two are the same, ask.
 If key facts are missing (role, what Eileen personally did, completion date,
 whether the repo is public, visibility), ask them in one message with
 AskUserQuestion or plain text. Don't block on nice-to-haves; record them in
-`unknowns`. If Eileen isn't responding, continue with `visibility: draft`.
+`unknowns`. If Eileen isn't responding, leave out anything that depends on
+her answer and carry on.
 
 ### 6. Write the entry
 Create or edit `src/content/projects/<id>.md` (kebab-case ID). Field
@@ -98,8 +104,8 @@ matching the existing entries:
   `public/images/projects/<id>/<short-name>.jpg`, write real alt text, and
   put the hero (best team or demo photo, landscape) first: it becomes the
   full-screen opening image.
-- `visibility`: `draft` until Eileen has reviewed the wording; then `public`
-  (or `unlisted` to build the page without listing it).
+- `visibility`: `public` when published (see Hard rules); `unlisted` builds
+  the page without listing it; `draft` only when Eileen asks to hold it back.
 - Body (below the frontmatter): optional 1–3 short paragraphs of extra
   detail, shown in "How it works" on the generated page.
 
@@ -150,16 +156,23 @@ Run, and fix anything you caused:
   then set it back.
 There is no linter or `astro check` in this repo; don't add one unasked.
 
-### 9. Commit locally and report
+### 9. Commit, publish and report
 - Stage only the files you changed (`git add <paths>`, never `git add -A`).
   Commit on the branch with a message like
   `Add <name> to portfolio` / `Update <name> project entry`.
+- Publish (standing approval, unless one of the hold-back cases applies):
+  1. `git fetch origin main` and rebase if `main` moved; rerun `npm run check`.
+  2. `git push -u origin <branch>`.
+  3. Open a pull request into `main` (`gh pr create`, or the REST API
+     `gh api repos/<owner>/<repo>/pulls` if GraphQL is unavailable).
+  4. Merge it (`gh pr merge --merge`, or
+     `gh api -X PUT repos/<owner>/<repo>/pulls/<n>/merge`).
+  5. Wait for the "Deploy to GitHub Pages" run to succeed
+     (`gh run list --branch main --limit 1`), then open the live project page
+     and check it loads with the new content.
 - Report to Eileen, briefly:
-  1. what was added or changed (files),
-  2. the card summary as it will appear,
+  1. what was added or changed, and the live link,
+  2. the card summary as it appears,
   3. **unknowns** still open and anything you left out on purpose,
-  4. test/build results and what you previewed,
-  5. next step: review, then say "push" to push the branch and open a PR,
-     or "merge" to merge into `main` (which deploys).
-- Only after an explicit yes: `git push -u origin <branch>` and, if `gh` is
-  available, `gh pr create`. Merge to `main` only when she says so.
+  4. test/build results, what you previewed, and the deploy result,
+  5. anything held back and why.

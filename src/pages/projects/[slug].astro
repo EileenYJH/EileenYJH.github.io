@@ -44,7 +44,7 @@ const hasBody = project.body?.trim().length;
 >
   <div class="gp" style={vars}>
     {hero ? (
-      <ProjectHero img={hero.src} alt={hero.alt} caption={hero.caption ?? ''} post={d.post} demo={d.demo} event={color}>
+      <ProjectHero img={hero.src} alt={hero.alt} caption={hero.caption ?? ''} post={d.post} demo={d.demo} event={color} focus={hero.focus}>
         {eyebrow && <p class="eyebrow gp-hero-eyebrow">{eyebrow}</p>}
         <h1>{name}</h1>
       </ProjectHero>
