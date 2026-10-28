@@ -1,0 +1,57 @@
+---
+// Eileen's industry research: how much of each industry's costs is tied to oil
+// or oil-linked inputs, each figure with its source (src/data/hormuz/industries.json).
+import data from '../../data/hormuz/industries.json';
+
+const rows = [...data.rows].sort((a, b) => b.share - a.share);
+---
+<div class="ib card" data-reveal>
+  <ol class="ib-list">
+    {rows.map((r, i) => (
+      <li>
+        <button type="button" class="ib-row" aria-expanded="false" aria-controls={`ib-${r.id}`}>
+          <span class="ib-name">{r.name}<small>{r.input}</small></span>
+          <span class="ib-track"><i style={`width:${r.share}%`}></i></span>
+          <b>{r.share % 1 ? r.share.toFixed(1) : r.share}%</b>
+        </button>
+        <div class="ib-more" id={`ib-${r.id}`} hidden>
+          {r.measure}. {r.region}, {r.year}. Source: <a href={r.url} target="_blank" rel="noopener">{r.source} ↗</a>
+        </div>
+      </li>
+    ))}
+  </ol>
+  <p class="muted ib-src">Shares of each industry's costs tied to oil or oil-linked inputs, from my research for the app's Industries tab. Measures differ (operating costs, variable costs, revenue, selling price), so compare them as orders of magnitude. Click a row for the exact measure and source.</p>
+</div>
+
+<style>
+  .ib { padding: clamp(1rem, 2.6vw, 1.5rem); margin-top: 1rem; }
+  .ib-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.15rem 1.4rem; align-items: start; }
+  @media (max-width: 900px) { .ib-list { grid-template-columns: 1fr; } }
+  .ib-row {
+    width: 100%; font: inherit; color: inherit; text-align: left; cursor: pointer;
+    display: grid; grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr) 3.2rem; gap: 0.9rem; align-items: center;
+    padding: 0.55rem 0.6rem; border: 0; border-radius: 10px; background: transparent;
+  }
+  .ib-row:hover, .ib-row[aria-expanded='true'] { background: var(--accent-soft); }
+  .ib-name { font-size: 0.9rem; font-weight: 600; display: grid; line-height: 1.25; }
+  .ib-name small { font-size: 0.74rem; font-weight: 500; color: var(--muted); }
+  .ib-track { height: 0.65rem; border-radius: 99px; background: #EEF0F4; overflow: hidden; }
+  .ib-track i { display: block; height: 100%; border-radius: 99px; background: var(--accent); }
+  .ib-row b { text-align: right; font-variant-numeric: tabular-nums; }
+  .ib-more { font-size: 0.8rem; color: var(--muted); line-height: 1.5; padding: 0.2rem 0.6rem 0.6rem; }
+  .ib-more a { color: var(--accent); }
+  .ib-src { font-size: 0.78rem; line-height: 1.5; margin-top: 0.8rem; }
+  @media (max-width: 560px) {
+    .ib-row { grid-template-columns: minmax(0, 1fr) 3rem; }
+    .ib-track { grid-column: 1 / -1; grid-row: 2; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.ib-row').forEach((b) =>
+    b.addEventListener('click', () => {
+      const open = b.getAttribute('aria-expanded') !== 'true';
+      b.setAttribute('aria-expanded', String(open));
+      (document.getElementById(b.getAttribute('aria-controls')!) as HTMLElement).hidden = !open;
+    }));
+</script>

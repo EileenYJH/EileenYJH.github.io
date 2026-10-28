@@ -1,0 +1,196 @@
+---
+// The chain the app runs, in miniature: lost flow -> Brent -> US petrol -> US CPI.
+// Same curve and links as the app (see src/data/hormuz/chain.json for sources).
+// Broadcasts `hz:shock` so the country map and industry bars follow the slider.
+import chain from '../../data/hormuz/chain.json';
+
+const W = 520, H = 220, PADL = 44, PADB = 28, PADT = 12, PADR = 12;
+const L0 = 67, e0 = chain.settled;
+const b0 = chain.brent0 * Math.exp(e0.mid * L0), r0 = (b0 / chain.brent0 - 1) * 100;
+const init = {
+  brent: `$${b0.toFixed(0)}`,
+  band: `90% band $${(chain.brent0 * Math.exp(e0.low * L0)).toFixed(0)} to $${(chain.brent0 * Math.exp(e0.high * L0)).toFixed(0)}`,
+  petrol: `+${((chain.petrol.per10 / 10) * r0).toFixed(0)}%`,
+  cpi: `+${((chain.cpi.per10 / 10) * r0).toFixed(1)} pts`,
+  mbd: ((L0 / 100) * chain.prewar_mbd).toFixed(1),
+};
+const x = (l: number) => PADL + (l / 100) * (W - PADL - PADR);
+const yMax = 260;
+const y = (b: number) => PADT + (1 - (Math.min(b, yMax) - 50) / (yMax - 50)) * (H - PADT - PADB);
+const curve = (e: number) => Array.from({ length: 51 }, (_, i) => {
+  const l = i * 2;
+  return `${x(l).toFixed(1)},${y(chain.brent0 * Math.exp(e * l)).toFixed(1)}`;
+}).join(' ');
+const band = (lo: number, hi: number) => {
+  const top = Array.from({ length: 51 }, (_, i) => `${x(i * 2).toFixed(1)},${y(chain.brent0 * Math.exp(hi * i * 2)).toFixed(1)}`);
+  const bot = Array.from({ length: 51 }, (_, i) => `${x(100 - i * 2).toFixed(1)},${y(chain.brent0 * Math.exp(lo * (100 - i * 2))).toFixed(1)}`);
+  return [...top, ...bot].join(' ');
+};
+const ticksY = [70, 100, 150, 200, 250];
+const ev = chain.event;
+const evMax = 125;
+---
+<div class="hz-chain card" data-reveal data-chain={JSON.stringify(chain)}>
+  <div class="hz-l">
+  <div class="hz-ctl">
+    <label class="hz-lbl" for="hz-lost">Oil lost through the strait <output id="hz-lost-out">67</output> <span class="muted">points of normal flow</span></label>
+    <input type="range" id="hz-lost" min="0" max="100" step="1" value="67" aria-describedby="hz-lost-help" />
+    <p class="muted hz-help" id="hz-lost-help"><span id="hz-mbd">{init.mbd}</span> million barrels a day missing, of about {chain.prewar_mbd} before the war.</p>
+    <div class="hz-presets" role="group" aria-label="Scenarios">
+      {chain.presets.map(([label, v]) => (
+        <button type="button" data-l={v} aria-pressed={v === 67 ? 'true' : 'false'}>{label} <span>{v}</span></button>
+      ))}
+    </div>
+    <div class="hz-mode" role="radiogroup" aria-label="Timing">
+      <button type="button" role="radio" data-mode="settled" aria-checked="true">Once it settles</button>
+      <button type="button" role="radio" data-mode="peak" aria-checked="false">At the peak (day {chain.peak.day})</button>
+    </div>
+  </div>
+
+  <aside class="hz-real">
+    <p class="hz-k">What actually happened in 2026</p>
+    <svg viewBox="0 0 300 90" role="img" aria-label="Brent in the 2026 closure: $70.69 five days before, $119.56 twenty trading days in, $88.24 after 120">
+      <polyline points={ev.map((e) => `${(10 + ((Number(e[1]) + 5) / evMax) * 280).toFixed(1)},${(80 - ((Number(e[2]) - 65) / 60) * 70).toFixed(1)}`).join(' ')} class="real-line" />
+      {ev.map((e) => (
+        <circle cx={(10 + ((Number(e[1]) + 5) / evMax) * 280).toFixed(1)} cy={(80 - ((Number(e[2]) - 65) / 60) * 70).toFixed(1)} r="3.5" class="real-dot"><title>{`${e[0]}: $${e[2]}, strait flow ${e[3]}% of normal`}</title></circle>
+      ))}
+    </svg>
+    <p class="muted hz-real-cap">Brent went from <b>$70.69</b> to <b>$119.56</b> in the first 20 trading days (+52.6%), then eased to $88 by late August while the strait stayed almost shut.</p>
+  </aside>
+  </div>
+  <div class="hz-r">
+  <ol class="hz-links" aria-live="polite">
+    <li class="hz-node">
+      <span class="hz-k">Brent crude</span>
+      <span class="hz-v" id="hz-brent">{init.brent}</span>
+      <span class="hz-s" id="hz-brent-band">{init.band}</span>
+    </li>
+    <li class="hz-node">
+      <span class="hz-k">US petrol, 2 months on</span>
+      <span class="hz-v" id="hz-petrol">{init.petrol}</span>
+      <span class="hz-s">+{chain.petrol.per10}% per 10% oil rise</span>
+    </li>
+    <li class="hz-node">
+      <span class="hz-k">US inflation, a year on</span>
+      <span class="hz-v" id="hz-cpi">{init.cpi}</span>
+      <span class="hz-s">+{chain.cpi.per10} pts per 10% oil rise</span>
+    </li>
+  </ol>
+
+  <figure class="hz-plot">
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Brent price against oil lost through the strait, with a 90% band">
+      {ticksY.map((t) => (
+        <g>
+          <line x1={PADL} x2={W - PADR} y1={y(t)} y2={y(t)} class="grid" />
+          <text x={PADL - 6} y={y(t) + 4} class="tick" text-anchor="end">${t}</text>
+        </g>
+      ))}
+      {[0, 25, 50, 75, 100].map((t) => <text x={x(t)} y={H - 8} class="tick" text-anchor="middle">{t}</text>)}
+      <polygon id="hz-band" points={band(chain.settled.low, chain.settled.high)} class="band" />
+      <polyline id="hz-curve" points={curve(chain.settled.mid)} class="curve" />
+      <line id="hz-vline" x1={x(67)} x2={x(67)} y1={PADT} y2={H - PADB} class="vline" />
+      <circle id="hz-dot" cx={x(67)} cy={y(70 * Math.exp(chain.settled.mid * 67))} r="6" class="dot" />
+    </svg>
+    <figcaption class="muted">Brent against points of normal flow lost. Shaded: the model's 90% band. Pre-war Brent ${chain.brent0}.</figcaption>
+  </figure>
+
+  <p class="muted hz-src">Same curve and links as the app: a log premium per point of the IEA's lost flow, fitted to the 2026 closure, and the knock-on links validated on 108 held-out folds each. Petrol and inflation scale those per-10% links, so read them as rough sizes.</p>
+  </div>
+</div>
+
+<style>
+  .hz-chain { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); gap: 1.6rem 2.2rem; padding: clamp(1.2rem, 3vw, 2rem); margin-top: 1.8rem; }
+  .hz-ctl { display: grid; gap: 0.8rem; align-content: start; }
+  .hz-lbl { font-weight: 600; font-size: 0.95rem; }
+  .hz-lbl output { font-family: var(--font-display); font-size: 1.6rem; color: var(--accent); margin-inline: 0.2rem; }
+  .hz-ctl input[type='range'] { width: 100%; accent-color: var(--accent); }
+  .hz-help { font-size: 0.88rem; }
+  .hz-presets, .hz-mode { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .hz-presets button, .hz-mode button {
+    font: inherit; font-size: 0.82rem; font-weight: 550; cursor: pointer;
+    padding: 0.38rem 0.75rem; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink);
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .hz-presets button span { color: var(--muted); margin-left: 0.15rem; }
+  .hz-presets button[aria-pressed='true'], .hz-mode button[aria-checked='true'] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .hz-presets button[aria-pressed='true'] span { color: rgba(255, 255, 255, 0.8); }
+  .hz-links { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; align-content: start; counter-reset: n; }
+  .hz-node { position: relative; display: grid; gap: 0.15rem; padding: 0.9rem 0.9rem 0.8rem; border-radius: 12px; background: var(--accent-soft); }
+  .hz-node + .hz-node::before { content: '→'; position: absolute; left: -0.62rem; top: 50%; transform: translate(-50%, -50%); color: var(--accent); font-weight: 700; }
+  .hz-k { font-size: 0.74rem; font-weight: 650; text-transform: uppercase; letter-spacing: 0.04em; color: var(--steel); }
+  .hz-v { font-family: var(--font-display); font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 650; color: var(--accent); line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .hz-s { font-size: 0.76rem; color: var(--muted); line-height: 1.35; }
+  .hz-l, .hz-r { display: grid; gap: 1.2rem; align-content: start; min-width: 0; }
+  .hz-plot { margin: 0; }
+  .hz-plot svg { width: 100%; height: auto; display: block; }
+  .hz-plot figcaption { font-size: 0.8rem; margin-top: 0.3rem; }
+  .grid { stroke: var(--line); stroke-width: 1; }
+  .tick { font-size: 10px; fill: var(--muted); font-family: inherit; }
+  .band { fill: rgba(var(--accent-rgb), 0.12); transition: all 0.3s ease; }
+  .curve { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+  .vline { stroke: var(--accent); stroke-dasharray: 3 4; stroke-width: 1.2; }
+  .dot { fill: var(--accent); stroke: #fff; stroke-width: 2.5; }
+  .hz-real { padding: 1rem; border: 1px dashed var(--line); border-radius: 12px; }
+  .hz-real svg { width: 100%; height: auto; margin: 0.4rem 0; }
+  .real-line { fill: none; stroke: var(--ink); stroke-width: 2; }
+  .real-dot { fill: var(--paper-raised); stroke: var(--ink); stroke-width: 2; }
+  .hz-real-cap { font-size: 0.84rem; line-height: 1.5; }
+  .hz-src { font-size: 0.78rem; line-height: 1.5; }
+  @media (max-width: 860px) {
+    .hz-chain { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 520px) {
+    .hz-links { grid-template-columns: 1fr; }
+    .hz-node + .hz-node::before { content: '↓'; left: 50%; top: -0.32rem; }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.hz-chain');
+  if (root) {
+    const C = JSON.parse(root.dataset.chain!);
+    const $ = (id: string) => document.getElementById(id)!;
+    const slider = $('hz-lost') as HTMLInputElement;
+    const W = 520, H = 220, PADL = 44, PADB = 28, PADT = 12, PADR = 12, yMax = 260;
+    const x = (l: number) => PADL + (l / 100) * (W - PADL - PADR);
+    const y = (b: number) => PADT + (1 - (Math.min(b, yMax) - 50) / (yMax - 50)) * (H - PADT - PADB);
+    const pts = (e: number) => Array.from({ length: 51 }, (_, i) => `${x(i * 2).toFixed(1)},${y(C.brent0 * Math.exp(e * i * 2)).toFixed(1)}`);
+    const bandPts = (lo: number, hi: number) => [...pts(hi), ...pts(lo).reverse()].join(' ');
+    let mode: 'settled' | 'peak' = 'settled';
+    const sign = (v: number, d = 0) => `${v >= 0 ? '+' : '−'}${Math.abs(v).toFixed(d)}`;
+
+    const render = () => {
+      const L = Number(slider.value), e = C[mode];
+      const brent = C.brent0 * Math.exp(e.mid * L);
+      const lo = C.brent0 * Math.exp(e.low * L), hi = C.brent0 * Math.exp(e.high * L);
+      const rise = (brent / C.brent0 - 1) * 100;
+      $('hz-lost-out').textContent = String(L);
+      $('hz-mbd').textContent = ((L / 100) * C.prewar_mbd).toFixed(1);
+      $('hz-brent').textContent = `$${brent.toFixed(0)}`;
+      $('hz-brent-band').textContent = L ? `90% band $${lo.toFixed(0)} to $${hi.toFixed(0)}` : 'pre-war level';
+      $('hz-petrol').textContent = `${sign((C.petrol.per10 / 10) * rise)}%`;
+      $('hz-cpi').textContent = `${sign((C.cpi.per10 / 10) * rise, 1)} pts`;
+      $('hz-curve').setAttribute('points', pts(e.mid).join(' '));
+      $('hz-band').setAttribute('points', bandPts(e.low, e.high));
+      $('hz-vline').setAttribute('x1', String(x(L)));
+      $('hz-vline').setAttribute('x2', String(x(L)));
+      $('hz-dot').setAttribute('cx', String(x(L)));
+      $('hz-dot').setAttribute('cy', String(y(brent)));
+      root.querySelectorAll<HTMLButtonElement>('.hz-presets button').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.l) === L)));
+      const detail = { L, mode, brent, dlog: Math.log(brent / C.brent0), disrupt: C.disrupt.mid };
+      (window as any).__hz = detail;
+      window.dispatchEvent(new CustomEvent('hz:shock', { detail }));
+    };
+    slider.addEventListener('input', render);
+    root.querySelectorAll<HTMLButtonElement>('.hz-presets button').forEach((b) =>
+      b.addEventListener('click', () => { slider.value = b.dataset.l!; render(); }));
+    root.querySelectorAll<HTMLButtonElement>('.hz-mode button').forEach((b) =>
+      b.addEventListener('click', () => {
+        mode = b.dataset.mode as 'settled' | 'peak';
+        root.querySelectorAll('.hz-mode button').forEach((o) => o.setAttribute('aria-checked', String(o === b)));
+        render();
+      }));
+    render();
+  }
+</script>

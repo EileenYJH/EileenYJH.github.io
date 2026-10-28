@@ -68,6 +68,12 @@
   --accent-rgb: 109, 40, 217;
   --accent-soft: #ECE4FB;
 }
+/* Hormuz Flow: crude-oil red (supply shock). */
+[data-theme='hormuz'] {
+  --accent: #BE123C;
+  --accent-rgb: 190, 18, 60;
+  --accent-soft: #FBE4EA;
+}
 
 * { box-sizing: border-box; margin: 0; }
 

@@ -1,0 +1,258 @@
+---
+// Hormuz Flow (OxHack 26). Text facts (role, contributions, team, links,
+// challenges) come from the registry entry src/content/projects/oxhack26-hormuz-flow.md;
+// the interactive parts read src/data/hormuz/*.json, taken from the team's app and notes.
+import { getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectHero from '../../components/project/ProjectHero.astro';
+import ShockChain from '../../components/hormuz/ShockChain.astro';
+import CountryMap from '../../components/hormuz/CountryMap.astro';
+import ModelLab from '../../components/hormuz/ModelLab.astro';
+import IndustryBars from '../../components/hormuz/IndustryBars.astro';
+import ScreenTabs from '../../components/hormuz/ScreenTabs.astro';
+
+const entry = (await getEntry('projects', 'oxhack26-hormuz-flow'))!;
+const d = entry.data;
+const P = '/images/projects/oxhack26-hormuz-flow';
+const hero = d.images[0];
+const weekend = d.images.slice(1);
+const labels: Record<string, string> = {
+  'app-globe.jpg': 'World', 'app-globe-plastics.jpg': 'Product layers', 'app-strait.jpg': 'Strait',
+  'app-households.jpg': 'Households', 'app-models.jpg': 'Models', 'app-landing.jpg': 'Landing',
+};
+const shots = d.screenshots.map((s) => ({ ...s, label: labels[s.src.split('/').pop()!] ?? 'View' }));
+const links = [
+  d.demo && { href: d.demo, label: 'Open the live app' },
+  d.repo && { href: d.repo, label: 'Source on GitHub' },
+  ...d.links,
+  d.post && { href: d.post, label: 'LinkedIn post' },
+].filter(Boolean) as { href: string; label: string }[];
+
+const problem = [
+  { v: '≈20', unit: 'mb/d', label: 'of crude and products crossed the strait before the war', src: 'IEA' },
+  { v: '3.5 vs 10', unit: 'mb/d', label: 'what ship trackers and US officials said still got through: three times apart, because many tankers switch their trackers off', src: 'team research, sources in the repo' },
+  { v: '+52.6%', unit: '', label: 'Brent in the first 20 trading days of the 2026 closure, $70.69 to $119.56', src: 'FRED, IMF PortWatch' },
+];
+
+const pipeline = [
+  { k: 'Data', t: 'IMF PortWatch, IEA, FRED, Eurostat, ONS, BLS, UN Comtrade, FAOSTAT, IMF', s: 'each with a source and date' },
+  { k: 'Models', t: 'Python experiments, run offline (some on the Iridis cluster)', s: 'tested on held-out folds' },
+  { k: 'Notes', t: 'Results saved as CSV and JSON notes', s: 'each with the date it was generated' },
+  { k: 'Build', t: 'A Python build bakes the notes into one self-contained HTML page', s: 'patch steps fail loudly' },
+  { k: 'Browser', t: 'No server: the page interpolates between saved scenarios', s: 'GitHub Pages' },
+];
+
+const gemini = [
+  { k: '1', t: 'Send only the facts', s: 'Gemini gets only the numbers the panel is showing.' },
+  { k: '2', t: 'Gemini explains', s: '"Why these numbers?" in plain words, labelled as AI-written.' },
+  { k: '3', t: 'Check every number', s: 'Each figure in the answer is matched against the facts sent; any that don\'t match are flagged.' },
+];
+const curly = (s: string) => s.replace(/"([^"]*)"/g, '\u201C$1\u201D');
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const mine = d.contributions.map((c) => {
+  const m = c.match(/^([^:]+):\s*([\s\S]*)$/);
+  return m ? { h: curly(m[1]), t: cap(m[2]) } : { h: 'Data audit', t: c };
+});
+---
+<BaseLayout
+  overlayNav
+  theme="hormuz"
+  title="Hormuz Flow: an oil shock, country by country | Eileen Yeoh"
+  description={d.summary}
+>
+  <ProjectHero img={hero.src} alt={hero.alt} caption={hero.caption ?? ''} focus={hero.focus} post={d.post} demo={d.demo} event="#F59E0B">
+    <p class="eyebrow" data-reveal>Project 09 · 2026 · OxHack 26, Oxford</p>
+    <h1>Hormuz Flow</h1>
+    <p class="hz-tagline" data-reveal>Follow the missing oil from the strait to the price of diesel, the grocery bill and the cost of living, country by country.</p>
+    <ul class="hz-tags" data-reveal>
+      {['Team of four · 2-day hackathon', '175 countries', 'Every number sourced', 'Python models', 'Gemini, number-checked'].map((t) => <li>{t}</li>)}
+    </ul>
+  </ProjectHero>
+
+  <div class="hz">
+    <section class="wrap hz-sec hz-intro">
+      <div class="hz-intro-grid">
+        <div>
+          <p class="eyebrow" data-reveal>The problem</p>
+          <h2 data-split>Three answers to one question.</h2>
+          <p class="hz-lead" data-reveal>{d.problem}</p>
+          <div class="hz-links" data-reveal>
+            {links.map((l, i) => <a class:list={['btn', { 'btn--ghost': i > 0 }]} href={l.href} target="_blank" rel="noopener">{l.label} ↗</a>)}
+          </div>
+        </div>
+        <div class="hz-facts">
+          {problem.map((p, i) => (
+            <div class="hz-fact" data-reveal data-reveal-delay={i * 0.08}>
+              <b>{p.v}<small>{p.unit}</small></b>
+              <span>{p.label}</span>
+              <em>{p.src}</em>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap hz-sec" id="try">
+      <p class="eyebrow" data-reveal>Try it · the shock chain</p>
+      <h2 data-split>Close the strait and watch it travel.</h2>
+      <p class="muted hz-p" data-reveal>Drag the slider, or replay 2026 as the IEA counts it. The first month overshoots, so switch between the peak and where it settles.</p>
+      <ShockChain />
+    </section>
+
+    <section class="wrap hz-sec" id="countries">
+      <p class="eyebrow" data-reveal>Every country</p>
+      <h2 data-split>Same shock, very different bills.</h2>
+      <p class="muted hz-p" data-reveal>Colour the map by how much of a country's oil comes from the Gulf, what the shock above does to its pump prices, or how much of its budget goes on food. Then pick a country: its own suppliers, budget and fuel pass-through. Fuel follows the slider.</p>
+      <CountryMap />
+    </section>
+
+    <section class="wrap hz-sec" id="models">
+      <p class="eyebrow" data-reveal>The data and machine-learning side</p>
+      <h2 data-split>Models scored on data they never saw.</h2>
+      <ol class="hz-pipe" data-reveal>
+        {pipeline.map((p) => <li><span class="k">{p.k}</span><span class="t">{p.t}</span><span class="s">{p.s}</span></li>)}
+      </ol>
+      <ModelLab />
+    </section>
+
+    <section class="wrap hz-sec" id="role">
+      <p class="eyebrow" data-reveal>My part</p>
+      <h2 data-split>Industries, explanations and the interface.</h2>
+      <p class="hz-lead" data-reveal>{d.role}</p>
+      <div class="hz-mine">
+        {mine.map((m, i) => (
+          <div class="card hz-mine-card" data-reveal data-reveal-delay={(i % 3) * 0.06}>
+            <span class="hz-n">{String(i + 1).padStart(2, '0')}</span>
+            {m.h && <h3>{m.h}</h3>}
+            <p>{m.t}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="hz-sub">
+        <h3 class="hz-h3" data-reveal>“Why these numbers?”, without made-up numbers</h3>
+        <ol class="hz-gem" data-reveal>
+          {gemini.map((g) => <li class="card"><span class="hz-gk">{g.k}</span><div><b>{g.t}</b><p>{g.s}</p></div></li>)}
+        </ol>
+        <p class="muted hz-small" data-reveal>It runs as a small local service and is off unless the page asks for it. The API key never reaches the page or the repository.</p>
+      </div>
+
+      <div class="hz-sub">
+        <h3 class="hz-h3" data-reveal>How exposed is each industry?</h3>
+        <IndustryBars />
+      </div>
+    </section>
+
+    <section class="wrap hz-sec" id="app">
+      <p class="eyebrow" data-reveal>The app</p>
+      <h2 data-split>Four views, one page, no server.</h2>
+      <ScreenTabs shots={shots} />
+    </section>
+
+    <section class="wrap hz-sec">
+      <p class="eyebrow" data-reveal>What was hard</p>
+      <h2 data-split>Two days, four people, one HTML file.</h2>
+      <div class="hz-hard">
+        {d.challenges.map((c, i) => (
+          <div class="card hz-hard-card" data-reveal data-reveal-delay={i * 0.06}><span class="hz-n">{String(i + 1).padStart(2, '0')}</span><p>{c}</p></div>
+        ))}
+      </div>
+    </section>
+
+    <section class="wrap hz-sec">
+      <p class="eyebrow" data-reveal>From the weekend</p>
+      <div class="hz-days">
+        {weekend.map((w, i) => (
+          <figure data-reveal data-reveal-delay={i * 0.05}>
+            <img src={w.src} alt={w.alt} loading="lazy" decoding="async" />
+            {w.caption && <figcaption>{w.caption}</figcaption>}
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    <section class="wrap hz-sec hz-end">
+      <div class="card hz-team" data-reveal>
+        <div>
+          <p class="eyebrow">Team</p>
+          <p class="hz-team-names">{d.team.join(' · ')}</p>
+          <p class="muted hz-small">{entry.body?.split('\n\n').slice(-1)[0]?.replace(/\n/g, ' ')}</p>
+        </div>
+        <div>
+          <p class="eyebrow">Built with</p>
+          <ul class="hz-built">{d.technologies.map((t) => <li>{t}</li>)}</ul>
+        </div>
+      </div>
+      <a class="btn" href="/projects">← All projects</a>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .hz-tagline { font-size: clamp(1.05rem, 1.6vw, 1.3rem); max-width: 40rem; margin-top: 1rem; color: rgba(255, 255, 255, 0.92); }
+  .hz-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.2rem; }
+  .hz-tags li { font-size: 0.78rem; font-weight: 600; padding: 0.3rem 0.8rem; border-radius: 999px; background: rgba(255, 255, 255, 0.14); color: #fff; border: 1px solid rgba(255, 255, 255, 0.28); backdrop-filter: blur(4px); }
+
+  .hz-sec { padding-block: clamp(2.8rem, 7vh, 4.8rem); }
+  .hz-sec + .hz-sec { border-top: 1px solid var(--line); }
+  .hz h2 { max-width: 22ch; }
+  .hz-p { max-width: 46rem; margin-top: 0.6rem; }
+  .hz-lead { font-size: 1.08rem; line-height: 1.7; margin-top: 0.9rem; }
+  .hz-small { font-size: 0.82rem; line-height: 1.55; margin-top: 0.7rem; }
+  .hz-h3 { font-size: 1.15rem; }
+
+  .hz-intro-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
+  .hz-links { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; }
+  .hz-facts { display: grid; gap: 0.7rem; }
+  .hz-fact { display: grid; gap: 0.2rem; padding: 1rem 1.1rem; border-radius: 14px; background: var(--paper-raised); border: 1px solid var(--line); border-left: 4px solid var(--accent); }
+  .hz-fact b { font-family: var(--font-display); font-size: clamp(1.7rem, 3vw, 2.3rem); color: var(--accent); line-height: 1.05; }
+  .hz-fact b small { font-size: 0.5em; margin-left: 0.25rem; color: var(--steel); }
+  .hz-fact span { font-size: 0.9rem; line-height: 1.45; }
+  .hz-fact em { font-style: normal; font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+
+  .hz-pipe { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.5rem; margin-top: 1.6rem; counter-reset: p; }
+  .hz-pipe li { position: relative; display: grid; gap: 0.25rem; align-content: start; padding: 0.9rem; border-radius: 12px; background: var(--paper-raised); border: 1px solid var(--line); }
+  .hz-pipe li + li::before { content: '→'; position: absolute; left: -0.5rem; top: 1rem; transform: translateX(-50%); color: var(--accent); font-weight: 700; }
+  .hz-pipe .k { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+  .hz-pipe .t { font-size: 0.84rem; font-weight: 550; line-height: 1.4; }
+  .hz-pipe .s { font-size: 0.74rem; color: var(--muted); }
+
+  .hz-mine { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0.8rem; margin-top: 1.6rem; }
+  .hz-mine-card { grid-column: span 2; }
+  .hz-mine-card:nth-child(-n + 2) { grid-column: span 3; }
+  .hz-mine-card, .hz-hard-card { padding: 1.2rem 1.3rem; }
+  .hz-mine-card h3 { font-size: 1.02rem; margin-top: 0.25rem; }
+  .hz-mine-card p, .hz-hard-card p { font-size: 0.9rem; line-height: 1.6; margin-top: 0.4rem; }
+  .hz-n { font-family: var(--font-display); font-weight: 700; color: var(--accent); font-size: 0.85rem; }
+  .hz-sub { margin-top: 2.6rem; }
+  .hz-gem { list-style: none; padding: 0; margin-top: 1rem; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.8rem; }
+  .hz-gem li { position: relative; display: grid; grid-template-columns: 2rem 1fr; gap: 0.8rem; align-items: start; padding: 1.1rem; }
+  .hz-gem li + li::before { content: '→'; position: absolute; left: -0.4rem; top: 50%; transform: translate(-50%, -50%); color: var(--accent); font-weight: 700; }
+  .hz-gk { width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.9rem; }
+  .hz-gem b { font-size: 0.95rem; }
+  .hz-gem p { font-size: 0.86rem; color: var(--muted); line-height: 1.5; margin-top: 0.15rem; }
+
+  .hz-hard { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.8rem; margin-top: 1.6rem; }
+
+  .hz-days { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.6rem; margin-top: 1.2rem; }
+  .hz-days figure { margin: 0; position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4 / 5; background: var(--line); }
+  .hz-days img { width: 100%; height: 100%; object-fit: cover; }
+  .hz-days figcaption { position: absolute; inset: auto 0 0 0; padding: 1.6rem 0.8rem 0.7rem; font-size: 0.78rem; color: #fff; background: linear-gradient(transparent, rgba(11, 15, 28, 0.78)); }
+
+  .hz-end { display: grid; gap: 1.4rem; justify-items: start; padding-bottom: 1rem; }
+  .hz-team { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; padding: 1.5rem; }
+  .hz-team-names { font-size: 1.05rem; font-weight: 600; margin-top: 0.4rem; }
+  .hz-built { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.6rem; }
+  .hz-built li { font-size: 0.78rem; font-weight: 550; padding: 0.25rem 0.7rem; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); }
+
+  @media (max-width: 960px) {
+    .hz-intro-grid, .hz-team, .hz-gem { grid-template-columns: 1fr; }
+    .hz-gem li + li::before { display: none; }
+    .hz-mine { grid-template-columns: 1fr; }
+    .hz-mine-card, .hz-mine-card:nth-child(-n + 2) { grid-column: auto; }
+    .hz-pipe { grid-template-columns: 1fr 1fr; }
+    .hz-pipe li + li::before { display: none; }
+    .hz-hard { grid-template-columns: 1fr; }
+    .hz-days { grid-template-columns: 1fr 1fr; }
+  }
+</style>

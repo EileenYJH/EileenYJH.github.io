@@ -5,6 +5,7 @@ tagline: "The Strait of Hormuz closed in March 2026, and estimates of how much o
 tags: [Data visualisation, JavaScript, Python, Gemini API]
 visibility: public
 order: 9
+href: /projects/oxhack26-hormuz-flow
 color: "#BE123C"
 context: "OxHack 26 · Oxford · team of four"
 status: completed
