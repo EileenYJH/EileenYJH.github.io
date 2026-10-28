@@ -26,7 +26,7 @@ contributions:
   - "\"Why these numbers?\" explanations: a local service that sends Gemini only the figures a panel shows, then checks every number in the answer against those figures and flags any it can't match. The API key never reaches the page or the repo."
   - "App interface: country focus (zoom to the country and open its detail below the map), the Models page in tabs with sources behind info buttons, and layout fixes to the legend, country tabs and Shock card."
   - "A data audit of every number shown in the app, which replaced a hand-set shortage premium with the team's measured 1.49× disruption multiplier and aligned the slider with the measure the price curve was fitted on."
-team: [Alex-Sebastian Ene, Ed Denton, Yasmin, Eileen Yeoh]
+team: [Alexandru-Sebastian Ene, Edward Denton, Yasmin Ramli, Eileen Yeoh]
 implementation: >-
   A single self-contained HTML page with no server. Python experiments compute
   the models offline and save their outputs as CSV and JSON; a Python build
@@ -48,6 +48,7 @@ challenges:
   - "Making AI text trustworthy on a free Gemini key: retries and pre-written answers for timeouts and rate limits, and a number check so the model can't introduce figures."
 repo: https://github.com/Alex-Sebastian-Ene/oxhack
 demo: https://alex-sebastian-ene.github.io/oxhack/
+post: https://www.linkedin.com/feed/update/urn:li:activity:7521157386674425856/
 images:
   - src: /images/projects/oxhack26-hormuz-flow/team.jpg
     alt: The Hormuz Flow team of four at OxHack 26, in front of the sponsors banner
@@ -68,7 +69,6 @@ images:
 unknowns:
   - what Eileen learned and would do differently
   - "'no data' industry rows cut from about 167 to 17: not re-counted"
-  - LinkedIn post or video
 ---
 
 Every number in the app shows its source and date, simulated data is labelled
@@ -77,5 +77,5 @@ includes dark tankers) rather than only what ship trackers can see. Gemini
 never produces a number: it rewrites facts it is given, and its answers are
 labelled as AI-written.
 
-The statistical and machine-learning models are Alex-Sebastian Ene's, and the
-original strait page, app shell and flow estimate are Ed Denton's.
+The statistical and machine-learning models are Alexandru-Sebastian Ene's, and
+the original strait page, app shell and flow estimate are Edward Denton's.
