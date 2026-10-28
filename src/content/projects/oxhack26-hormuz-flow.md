@@ -3,7 +3,7 @@ title: "Hormuz Flow: following an oil shock from the strait to 175 countries"
 summary: A one-page web app that traces lost oil flow through the Strait of Hormuz into the oil price, product prices, industry costs and the cost of living in 175 countries, with a source and a range on every number. I built the industry-impact view and its number-checked AI explanations.
 tagline: "The Strait of Hormuz closed in March 2026, and estimates of how much oil still got through disagreed threefold. Hormuz Flow asks the next question: how far does a loss of flow carry, and for which countries?"
 tags: [Data visualisation, JavaScript, Python, Gemini API]
-visibility: draft
+visibility: public
 order: 9
 color: "#BE123C"
 context: "OxHack 26 · Oxford · team of four"
